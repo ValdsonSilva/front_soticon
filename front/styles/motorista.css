@@ -1,0 +1,105 @@
+body {
+    font-family: Arial, sans-serif;
+    background-size:100%;
+}
+
+    #diaSemana{
+        color: #fff;
+        font-size: 55px;
+        display: flex;
+        justify-content: center;
+        margin: 4% 0;
+        }
+        
+    #diaAtual{
+        color: #fff;
+        font-size: 40px;
+        display: flex;
+        justify-content: center;
+        }
+    p{
+        color: #fff;
+        font-size: 40px;
+        text-align: center;
+    }
+    
+    span{
+        font-weight: bold;
+        color: white;
+        margin: 10px;
+        font-size: 1em;
+        }
+        
+        .spright{
+        float: right;
+        margin: 2%;
+        }
+        
+        .spleft{
+        float: left;
+        margin: 2%;
+        }
+        
+        .sqrdiv{
+        height: 100px;
+        width: 50%;
+        border: 2px solid white;
+        margin: 0% auto;
+        box-sizing: border-box;
+        }
+        
+        .sqrtop{
+        height: 100px;
+        width: 50%;
+        border: 2px solid white;
+        margin: 0% auto;
+        box-sizing: border-box;
+        border-radius: 25px 25px 0px 0px;
+        }
+        
+        .sqrbottom{
+        height: 100px;
+        width: 50%;
+        border: 2px solid white;
+        margin: 0% auto;
+        box-sizing: border-box;
+        border-radius: 0px 0px 25px 25px;
+        }
+        
+        a {
+            display: flex;
+            justify-content: center;
+            margin-top: 50px;
+            color: #fff;
+            font-size: 30px;
+
+        }
+
+        .link {
+            height: 58px;
+            width: 320px;
+            border: 3px solid #ffff;
+            background: transparent;
+            border-radius: 40px;
+            cursor: pointer;
+            text-decoration: none;
+        
+            font:400;
+            font-size: 30px;
+            color: #ffff;
+            box-shadow: 0px 4px 4px 0px #00000040;
+        
+            display: grid;
+            place-content: center;
+        }
+        
+        .link:hover {
+            font-size: 35px;
+            border: 5px solid #ffff;
+            transition: font-size 0.3s ease-in-out;
+        }
+        
+
+       
+
+        

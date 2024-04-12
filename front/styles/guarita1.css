@@ -1,0 +1,140 @@
+@charset "utf-8";
+
+*{
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    box-sizing: border-box;
+}
+
+.container{
+    display: grid;
+    place-content: center;
+    margin-top: 50px;
+}
+
+.caixa{
+    width: 803px;
+    height: 474px;
+    border: solid 4px #fff;
+    border-radius: 50px;
+}
+
+.logo {
+    display: flex;
+    justify-content: center;
+}
+
+.dia,.data,.horario{
+
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 34px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #fff;
+}
+
+.botao {
+    display: grid;
+    place-content: center;
+
+    margin-top: 80px;
+}
+
+a {
+    border: 3px solid #ffff;
+    background-color: transparent;
+    border-radius: 30px;
+    box-shadow: 0px 4px 4px 0px #00000040;
+    width: 218px;
+    height: 68px;
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+a:hover {
+    transition: 200ms ease-in;
+    border: 6px solid #ffff;
+}
+
+.dia{
+    position: relative;
+    margin-top: 83px;
+    margin-left: 60px;
+}
+
+.data{
+    position: relative;
+    margin-top: -30px;
+    margin-right: 60px;
+    margin-left: 500px;
+}
+
+.horario{
+    position: relative;
+    margin-top: 70px;
+    text-align: center;
+}
+
+.link {
+    height: 58px;
+    width: 320px;
+    border: 3px solid #ffff;
+    background: transparent;
+    border-radius: 40px;
+    cursor: pointer;
+    text-decoration: none;
+
+    font:400;
+    font-size: 30px;
+    color: #ffff;
+    box-shadow: 0px 4px 4px 0px #00000040;
+
+    display: grid;
+    place-content: center;
+}
+
+.link:hover {
+    font-size: 35px;
+    border: 5px solid #ffff;
+    transition: font-size 0.3s ease-in-out;
+}
+
+@media screen and (max-width: 767px) {
+    /*diminuir o tamanho da ciaxa*/
+    .caixa{
+        width: 600px;
+    }
+
+    /*diminuir o tamanho das letras*/
+    .dia,.data,.horario{
+        font-size: 25px;
+    }
+
+    .data{
+        margin-left: 300px;
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1023px){
+    /*diminuir o tamanho da ciaxa*/
+    .caixa{
+        width: 700px;
+    }
+
+    /*diminuir o tamanho das letras*/
+    .dia,.data,.horario{
+        font-size: 25px;
+    }
+    
+    .data{
+        margin-left: 400px;
+    }
+}

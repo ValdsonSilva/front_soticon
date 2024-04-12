@@ -1,0 +1,138 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Direção</title>
+
+    <link rel="stylesheet" href="{%static 'css/soticon/direction.css'%}">
+    <link rel="icon" href="{% static 'img/logo.png'%}">
+
+</head>
+<body background="{% static 'img/backgroundCortex.jpg' %}">
+
+    <!--<section class="Back_button">
+        <button class="circulo" type="button">
+            <div class="ceta"></div>
+        </button>
+    </section>-->
+    
+    <section class="logo">
+
+        <img  src="{%static 'img/logoOnibus.png'%}" alt="imagem do ônibus" width="200px" height="200px">
+    </section>
+    <p class="n3">Sexta-feira</p>
+    <div class="container3">
+        <!--Ct5 = Caixa topo do dia 4-->
+        <div class="caixa topo ct5">
+            <!--horario5 = sexta-feira
+            r3 = terceira rota da sexta-feira-->
+            <p class="horario d5 r3">Horario/ocorreu</p>
+            <p class="rota d5 r3">Rota das 22</p>
+            <p class="data d5 r3">Data</p>
+            <p class="status d5 r3">Status:inicial</p>
+            <p class="explicacao d5 r3">causa</p>
+            <button type="button" class="bo d5 r3">Detalhes</button>
+            <!--Texto que aparece no lugar do botão-->
+            <p class="justificativa d5 r3">.</p>
+        </div>
+        <!--Cm5 = Caixa meio do dia 5-->
+        <div class=" caixa cm5">
+            <p class="horario d5 r2">Horario/ocorreu</p>
+            <p class="rota d5 r2">Rota das 22</p>
+            <p class="data d5 r2">Data</p>
+            <p class="status d5 r2">Status:inicial</p>
+            <p class="explicacao d5 r2">causa</p>
+            <button type="button" class="bo d5 r2">Detalhes</button>
+            <!--Texto que aparece no lugar do botão-->
+            <p class="justificativa d5 r2">.</p>
+        </div>
+        <!--Cf5 = Caixa footer do dia 5-->
+        <div class="caixa footer cf5">
+            <p class="horario d5 r2">Horario/ocorreu</p>
+            <p class="rota d5 r2">Rota das 22</p>
+            <p class="data d5 r2">Data</p>
+            <p class="status d5 r2">Status:inicial</p>
+            <p class="explicacao d5 r2">causa</p>
+            <button type="button" class="bo d5 r1">Detalhes</button>
+            <!--Texto que aparece no lugar do botão-->
+            <p class="justificativa d5 r1">.</p>
+        </div>
+        <br>
+        <br>
+    </div>
+
+    <p class="n3">Quinta-feira</p>
+    <div class="container3">
+        <!--Ct4 = Caixa topo do dia 4-->
+        <div class="caixa topo ct4">
+            <p class="horario d4 r3">Horario/ocorreu</p>
+            <p class="rota d4 r3">Rota das 22</p>
+            <p class="data d4 r3">Data</p>
+            <p class="status d4 r3">Status:inicial</p>
+            <p class="explicacao d4 r3">causa</p>
+            <button type="button" class="bo d4 r3">Detalhes</button>
+            <!--Texto que aparece no lugar do botão-->
+            <p class="justificativa d4 r3">.</p>
+        </div>
+
+        <div class="caixa cm4">
+            <p class="horario d4 r2">Horario/ocorreu</p>
+            <p class="rota d4 r2">Rota das 22</p>
+            <p class="data d4 r2">Data</p>
+            <p class="status d4 r2">Status:inicial</p>
+            <p class="explicacao d4 r2">causa</p>
+            <button type="button" class="bo d4 r2">Detalhes</button>
+            <!--Texto que aparece no lugar do botão-->
+            <p class="justificativa d4 r2">.</p>
+        </div>
+
+        <div class="caixa footer cf4">
+            <p class="horario d4 r1">Horario/ocorreu</p>
+            <p class="rota d4 r1">Rota das 22</p>
+            <p class="data d4 r1">Data</p>
+            <p class="status d4 r1">Status:inicial</p>
+            <p class="explicacao d4 r1">causa</p>
+            <button type="button" class="bo d4 r1">Detalhes</button>
+            <!--Texto que aparece no lugar do botão-->
+            <p class="justificativa d4 r1">.</p>
+        </div>
+        <br>
+        <br>
+    </div>
+
+    <p class="n3">Quarta-feira</p>
+    <div class="container3">
+        <div class="caixa topo c3"></div>
+        <div class="caixa"></div>
+        <div class="caixa footer "></div>
+    </div>
+    <br>
+    <br>
+
+    <p class="n3">Terça-feira</p>
+    <div class="container3">
+        <div class="caixa topo c2"></div>
+        <div class="caixa"></div>
+        <div class="caixa footer "></div>
+    </div>
+    <br>
+    <br>
+
+    <p class="n3">Segunda-feira</p>
+    <div class="container3">
+        <div class="caixa topo c1"></div>
+        <div class="caixa"></div>
+        <div class="caixa  footer "></div>
+    </div>
+    <br>
+    <br>
+    <a href="{% url 'logout' %}" class="link">Logout</a>
+
+</body>
+<script>
+    localStorage.setItem('token', '{{ "Token fb4746f5c937f1b33ab6b6657acd9bc50448ad9f" }}');
+  </script>
+</html>

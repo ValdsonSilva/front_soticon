@@ -1,0 +1,42 @@
+{%load static%}
+<!DOCTYPE html>
+<!-- saved from url=(0059)file:///C:/Users/IfpiFlo-Radio/Desktop/html%20aa/assss.html -->
+<html lang="pt-br"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>motorista</title>
+  <link rel="icon" href="{% static 'img/logoOnibus.png' %}" type="image/x-icon">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/soticon/motorista.css' %}" media="screen" />
+</head>
+<body background="{% static 'img/backgroundCortex.png' %}">
+
+  <p id="diaSemana"></p>
+  <p id="diaAtual"></p>
+  <p>Números de alunos que vão entrar no ônibus</p>
+
+  <div class = "sqrtop">
+		<span class = "spleft">rota das 12h</span>
+		<span class = "spright">status: finalizada</span>
+		<div>
+		<a> 79/84</a>
+		</div>
+		</div>
+		<div class = "sqrdiv">
+		<span class = "spleft">rota das 18h</span>
+		<span class = "spright">status: em reserva</span>
+		<div>
+		<a> 3/84</a>
+		</div>
+		</div>
+		<div class = "sqrbottom">
+		<span class = "spleft">rota das 22h</span>
+		<span class = "spright">status: não iniciada</span>
+		<div>
+		<a> 0/84 </a>
+		</div>
+		<a href="{% url 'logout' %}" class="link">Logout</a>
+  </div>
+
+  <script src="{% static 'js/soticon/motorista.js'$%}"></script>
+ </body>
+</html>

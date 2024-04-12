@@ -1,0 +1,499 @@
+@charset "utf-8";
+
+
+* {
+    padding: 0px;
+    margin: 0px;
+    font-family: Arial, Helvetica, sans-serif;
+    box-sizing: border-box;
+}
+
+
+.logo {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.link {
+    height: 58px;
+    width: 320px;
+    border: 3px solid #ffff;
+    background: transparent;
+    border-radius: 40px;
+    cursor: pointer;
+    text-decoration: none;
+
+    font:400;
+    font-size: 30px;
+    color: #ffff;
+    box-shadow: 0px 4px 4px 0px #00000040;
+
+    display: grid;
+    place-content: center;
+}
+
+.link:hover {
+    font-size: 35px;
+    border: 5px solid #ffff;
+    transition: font-size 0.3s ease-in-out;
+}
+
+.caixa1 {
+    place-content: center;
+    display: grid;
+    place-content: center;
+    width: 100%;
+    background-color: cornflowerblue;
+}
+
+.containerUm {
+    width: 100%;
+    height: 170px;
+    /* padding-left: 200px; */
+    /* background-color: blueviolet; */
+    display: flex;
+    justify-content: center;
+}
+
+
+.containerUm form {
+    /* background-color: rgb(255, 171, 15); */
+    width: 90%;
+    margin-inline: 30%;
+}
+
+
+.cpf {
+    margin-top: 131px;
+    margin-left: 26px;
+    font-size: 25px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 34px;
+    letter-spacing: 0em;
+    text-align: left;
+
+    color: #ffff;
+}
+
+.input {
+    box-sizing: border-box;
+    border: 1.84028px solid #FFFFFF;
+    border-radius: 46.0069px;
+    height: 60px;
+    width: 600px;
+    margin-top: 10px;
+    margin-left: 0px;
+    bottom: 0%;
+    background: transparent;
+    cursor: pointer;
+    outline-style: none;
+    font-size: 25px;
+    color: #FFFFFF;
+
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 31px;
+    letter-spacing: 0em;
+    text-indent: 35px;
+}
+
+.input:hover {
+    border: 4px solid #FFFFFF;
+    transition: 300ms;
+    animation: ease-out;
+}
+
+.input::placeholder {
+    color: #fff;
+}
+
+.botao1 {
+    height: 60px;
+    width: 150px;
+    margin-left: 25px;
+    top: 165px;
+    background-color: transparent;
+    cursor: pointer;
+    color: #ffff;
+
+    border: 3px solid #FFFFFF;
+    border-radius: 40px;
+
+    font-size: 25px;
+    font-weight: 700;
+    line-height: 31px;
+    letter-spacing: 0em;
+    text-align: center;
+}
+
+.botao1:hover {
+    border: 4px solid #FFFFFF;
+    transition: 300ms;
+    animation: ease-out;
+}
+
+.seta {
+    height: 100px;
+    margin-top: -22px; 
+    margin-left: -15px;
+}
+
+.proximo {
+    position: absolute;
+    width: 150px;
+    height: 60px;
+    cursor: pointer;
+    color: #ffff;
+    margin-top: 13px;
+    margin-left: 30px;
+
+    border: 3px solid #FFFFFF;
+    background-color: transparent;
+    border-radius: 30px;
+}
+
+.proximo:hover {
+    border: 4px solid #FFFFFF;
+}
+
+ /*On click
+    Navigate to: "guarita";
+    Animate: Instant;
+    animation-duration: 0ms;
+    pós hover: border: 4px*/
+
+.container2 {
+    display: flex;
+    justify-content: center;
+}
+
+.linha {
+    display: flex;
+    justify-content: center;
+    height: 7px;
+    width: 1823px;
+    margin-left: 94px;
+    margin-right: 95px;
+    margin-top: 80px;
+    border-radius: 3px;
+
+    background: #D9D9D9;
+
+}
+
+.cont_container3 {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.container3 {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 88px;
+    /*background-color: blueviolet;*/
+
+    width: 900px;
+    height: 159px;
+}
+
+.fotocaixa {
+    height: 159px;
+    width: 120px;
+    background-color: #FFFFFF;
+    border-radius: 12px;
+}
+
+/* dentro do container 3*/
+.cont1 {
+    margin-top: 32px;
+}
+
+h3 {
+    font-size: 38px;
+    font-weight: 700;
+    line-height: 43px;
+    letter-spacing: 0em;
+    text-align: center;
+    color: #FFFFFF;
+}
+
+p {
+   
+    font-size: 25px;
+    font-weight: 700;
+    line-height: 28px;
+    letter-spacing: 0em;
+    text-align: center;
+    color: #FFFFFF;
+
+}
+
+.status {
+    display: grid;
+    place-content: center;
+    text-align: center;
+
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 25px;
+    letter-spacing: 0em;
+    color: #FFFFFF;
+    box-sizing: border-box;
+    width: 166px;
+    height: 47px;
+    left: 1005px;
+    margin-top: 65px;
+
+    background: #394538;
+    border: 3px solid #FFFFFF;
+    border-radius: 10px;
+}
+
+@media screen and (max-width: 767px) {
+    .logo {
+        display: flex;
+        justify-content: center;
+    }
+
+    .containerUm {
+        display: flex;
+        justify-content: center;
+        height: 150px;
+    }
+
+    .containerUm > form {
+        margin-right: 400px;
+    }
+
+    .cpf {
+        margin-top: 131px;
+        margin-left: 26px;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 34px;
+        letter-spacing: 0em;
+        text-align: left;
+    
+        color: #ffff;
+    
+    }
+
+    .input {
+        box-sizing: border-box;
+        border: 1.84028px solid #FFFFFF;
+        border-radius: 46.0069px;
+        height: 50px;
+        width: 300px;
+        margin-top: 10px;
+        margin-left: 20px;
+        bottom: 0%;
+        background: transparent;
+        cursor: pointer;
+        outline-style: none;
+        color: #FFFFFF;
+    
+        font-size: 25px;
+        font-weight: 700;
+        line-height: 31px;
+        letter-spacing: 0em;
+        text-indent: 35px;
+       
+    }
+
+    .botao1 {
+        height: 50px;
+        width: 120px;
+        margin-left: 15px;
+        margin-top: 0px;
+        background-color: transparent;
+        cursor: pointer;
+        color: #ffff;
+    
+        border: 3px solid #FFFFFF;
+        border-radius: 40px;
+    
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 31px;
+        letter-spacing: 0em;
+        text-align: center;
+    }
+
+    .fundo {
+        padding-top: 30px;
+    }
+
+    .seta {
+        height: 60px;
+        margin-top: -7px;
+        margin-left: 1px;
+    }
+
+    .proximo {
+        width: 125px;
+        height: 50px;
+        margin-left: 15px;
+    }
+
+    .linha {
+        display: flex;
+        justify-content: center;
+        height: 7px;
+        width: 1823px;
+        margin-left: 94px;
+        margin-right: 95px;
+        margin-top: 50px;
+        border-radius: 3px;
+    
+        background: #D9D9D9;
+    
+    }
+
+    .cont_container3 {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 15px;
+        margin-top: -15px;
+
+        /*background-color: aqua;*/
+        padding-bottom: 60px;
+    }
+
+    .container3 {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 88px;
+        /*background-color: blueviolet;*/
+    
+        width: 600px;
+        height: 159px;
+    }
+
+    .fotocaixa {
+        height: 159px;
+        width: 120px;
+        background-color: #FFFFFF;
+        border-radius: 12px;
+    }
+    
+    /* dentro do container 3*/
+    .cont1 {
+        padding-top: 30px;
+        margin-top: 32px;
+        /*background-color: #394538;*/
+    }
+    
+    h3 {
+        font-size: 25px;
+        font-weight: 700;
+        line-height: 4px;
+        letter-spacing: 0em;
+        text-align: center;
+        color: #FFFFFF;
+    }
+    
+    p {
+       
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 28px;
+        letter-spacing: 0em;
+        text-align: center;
+        color: #FFFFFF;
+    
+    }
+    
+    .status {
+        display: grid;
+        place-content: center;
+        text-align: center;
+    
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 25px;
+        letter-spacing: 0em;
+        color: #FFFFFF;
+        box-sizing: border-box;
+        width: 150px;
+        height: 40px;
+        left: 1005px;
+        margin-top: 65px;
+    
+        background: #394538;
+        border: 3px solid #FFFFFF;
+        border-radius: 10px;
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1023px){
+    .logo {
+        display: flex;
+        justify-content: center;
+    }
+
+    .containerUm {
+        display: flex;
+        justify-content: center;
+    }
+
+    .containerUm > form {
+        margin-right: 400px;
+    }
+
+
+    .cpf {
+        font-size: 25px;
+    }
+
+    .input {
+        height: 54px;
+        width: 435px;
+    }
+
+    .botao1 {
+        width: 150px;
+        height: 54px;
+        font-size: 22px;
+        margin-left: 10px;
+    }
+
+    .proximo {
+        width: 150px;
+        height: 54px;
+        margin-top: 10px;
+        margin-left: 10px;
+    }
+
+    .fundo {
+        text-align: center;
+        height: 100px;
+        padding-top: 40px;
+    }
+
+    .seta {
+        margin-top: -25px;
+        margin-left: -15px;
+    }
+
+    .linha {
+        display: flex;
+        justify-content: center;
+        height: 7px;
+        width: 1823px;
+        margin-left: 94px;
+        margin-right: 95px;
+        margin-top: 55px;
+        border-radius: 3px;
+    
+        background: #D9D9D9;
+    
+    }
+
+    .container3 {
+        width: 750px;
+    }
+    
+}

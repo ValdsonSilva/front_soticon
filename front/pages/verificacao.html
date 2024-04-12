@@ -1,0 +1,92 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificacao</title>
+    <link rel="icon" href="{% static 'img/logoOnibus.png' %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static 'css/soticon/verificacao.css' %}">
+</head>
+
+1<body background="{% static  'img/backgroundCortex.jpg' %}">
+
+    <figure class="logo">
+        <img src="{% static 'img/logoOnibus.png' %}" alt="imagem do ônibus" width="200px" height="200px">
+    </figure>
+
+    <div class="caixaUm">
+        <div class="containerUm">
+            <form action="{% url 'verificar:verificar' %}" method="post">
+                {% csrf_token %}
+                <span for="caixa" class="cpf">CPF</span><br>
+                <input type="text" class="input" name="idUsuario" id="idUsuario" placeholder="Digite algo">
+
+                <button type="submit" name="Proximo" class="proximo">
+                    <img src="{% static 'img/seta.png' %}" alt="" class="seta">
+                </button>
+            </form>
+        </div>
+    </div>
+
+
+
+    <div class="container2">
+        <div class="linha"></div>
+    </div>
+
+    <!-- Lista de Rotas -->
+    <ul>
+        {% for chave, valor in lista_rotas.items %}
+            <li>
+                <strong>ID:</strong> {{ valor.id }}<br>
+                <strong>Observacao:</strong> {{ valor.observacao }}<br>
+                <strong>Data:</strong> {{ valor.data }}<br>
+                <strong>Situacao:</strong> {{ valor.situacao }}<br>
+                <strong>Data e Hora:</strong> {{ valor.dataHora }}<br>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <!-- Lista de Tickets -->
+    {% if json_dicio %}
+        <p>Tickets:</p>
+        <ul>
+            {% for key, value in json_dicio.items %}
+                <li><strong>{{ key }}:</strong> {{ value }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <div class="cont_container3">
+        <div class="container3">
+            {% if alunos %}
+                {% for chave, valor in alunos.items %}
+                    <figure class="fotocaixa">
+                        <!-- Substitua a URL da imagem do aluno -->
+                        <img src="{% static 'path/para/imagem/aluno.jpg' %}" alt="Foto do aluno">
+                    </figure>
+    
+                    <div class="cont1">
+                        <h3>{{ valor.nome }}</h3><br>
+                        <p>Posição {{ valor.posicao }}</p>
+                    </div>
+    
+                    <div class="cont2">
+                        <div class="status">{{ valor.id }}</div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>Nenhum aluno disponível.</p>
+            {% endif %}
+        </div>
+        <a href="{% url 'logout' %}" class="link">Logout</a>
+    </div>
+    
+    <script src="{% static 'js/soticon/verificacao.js' %}"></script>
+
+</body>
+
+</html>
