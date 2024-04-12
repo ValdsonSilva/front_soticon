@@ -1,4 +1,3 @@
-{%load static%}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,13 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Guarita</title>
     
-    <link rel="stylesheet" href="{% static 'css/soticon/guarita1.css' %}">
-    <link rel="icon" href="{% static 'img/logoOnibus.png' %}">
+    <link rel="stylesheet" href="../styles/guarita1.css">
+    <link rel="icon" href="../styles/guarita1.css">
 </head>
-<body background="{% static 'img/backgroundCortex.jpg' %}">
+<body background="../assets/backgroundCortex.jpg">
     <!--Imagem do ônibus-->
     <figure class="logo">
-        <img  src="{% static 'img/logoOnibus.png' %}" alt="imagem do ônibus" width="200px" height="200px">
+        <img  src="../assets/logoOnibus.png" alt="imagem do ônibus" width="200px" height="200px">
     </figure>
 
     <div class="container">
@@ -24,35 +23,15 @@
             <p class="horario">Ônibus das xx:xxh</p>
 
             <div class="botao">
-                {% comment %} <a href="{%url 'verificacao:verificacao' id={{rotas.1.id}} %}">Monitorar</a> {% endcomment %}
-                <a href="{%url 'verificacao:verificacao'%}">Monitorar</a>
+                <a href="">Monitorar</a>
             </div>
             
         </div>
     </div>
 
-    <!-- Lista de Rotas -->
-    <ul>
-        {% for chave, valor in lista_rotas.items %}
-        <span>
-            <li>
-                <strong>ID:</strong> {{ valor.id }}<br>
-                <strong>Observacao:</strong> {{ valor.observacao }}<br>
-                <strong>Data:</strong> {{ valor.data }}<br>
-                <strong>Situacao:</strong> {{ valor.situacao }}<br>
-                <strong>Data e Hora:</strong> {{ valor.dataHora }}<br>
-            </li>
-        {% endfor %}
-    </ul>
-
-    <a href="{% url 'logout' %}" class="link">Logout</a>
-
-
-    {% comment %} rotas {% endcomment %}
-    {{rotas.1.id}}
+    <!-- <a href="{% url 'logout' %}" class="link">Logout</a> -->
 
     <!--Esse trecho de código não estava funcionando por erro na escrita do mesmo-->
-    <script src="{% static 'js/soticon/guarita.js' %}"></script>
-    <!--Renomeei o arquivo Js guarita1.js para guarita.js somente-->
+    <script src="../scripts/guarita.js"></script>
 </body>
 </html>
