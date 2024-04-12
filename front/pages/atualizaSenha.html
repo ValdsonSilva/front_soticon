@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/a772aefe7b.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static 'css/home/recSenha.css' %}">
+    <title>CORTEX - IFPI/NOVA SENHA</title>
+</head>
+<body background="{% static 'img/home/backgroundCortex6.png' %}">
+<h1>
+    <img src="{% static 'img/home/logoifpi.png' %}" alt="Instituto federal de educação, ciência e tecnologia. PIAUÍ">
+</h1>
+<div id="form">
+    <form action="{% url 'index'%}" method="">
+        
+        <h2>Recuperar senha</h2>
+        <h3>Para recuperar o seu acesso informe a sua matricula</h3>
+        
+        <label for="Nsenha">Nova senha</label>
+        <div class="input">
+            <i class="fa-solid fa-user"></i>
+            <input type="password" placeholder="Nova senha" id="Nsenha">
+        </div>
+        <label for="Rsenha">Repita a sua nova senha</label>
+        <div class="input">
+            <i class="fa-solid fa-user"></i>
+            <input type="password" placeholder="Repita a sua nova senha" id="Rsenha">
+        </div>
+        
+        <div class="botao">
+            <button>Atualizar senha</button>
+        </div>
+    </form>
+</div>
+
+</body>
+<script>
+    function funcaoBesta()
+    {
+        alert('Besta!');
+    }
+</script>
+
+</html>
