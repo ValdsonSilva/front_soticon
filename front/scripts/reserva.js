@@ -63,11 +63,6 @@ function Dayweek() {
 //Chamando a função do dia da semana
 Dayweek();
 
-// document.getElementB("bo").addEventListener("click", function(event) {
-//     event.preventDefault(); //impede o envio do form
-// });
-
-
 //Setando o conteúdo do botão ao clicar
 const Botao = document.querySelector("#bo");
 const Posicao = document.querySelector(".Posicao")
@@ -77,7 +72,6 @@ Botao.addEventListener("click", () => {
        if (estadoBotao) {
            Botao.innerText = "+"
            Botao.setAttribute("style", "");
-        //    Posicao.innerText = "";
 
        } else {
             Botao.innerText = `-`
@@ -94,22 +88,111 @@ Botao.addEventListener("click", () => {
 });
 
 
-// lógica de reserva de ticket
+// Obter o token da URL
+const urlParams = new URLSearchParams(window.location.search);
+const token = urlParams.get('token');
+const refresh = urlParams.get('refreshToken')
 
-// todos os botões de class bo
-const botoes = document.querySelectorAll(".bo")
+console.log("O token chegou: ", token)
+console.log("O refresh chegou: ", refresh)
 
-botoes.forEach((botoes) => {
-    botoes.addEventListener("click", () => {
-        if (botoes.classList.contains("c1")){
-            alert("botão 12")
-        }
-        else if (botoes.classList.contains("c2")){
-            alert("botão 18")
-        }
-        else if (botoes.classList.contains("c3")){
-            alert("botão 22")
-        }
-    })
-})
+// verificando o token que chegou
+function verificarToken(token, refresh) {
 
+    const url = "http://127.0.0.1:8000/api/token/verify/";
+
+    // objetos com os dados que serão passados no corpo da requsição
+    const data = {
+        token: token
+    };
+
+    // configurando a solicitação
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    };
+
+    // Fazendo a solicitação POST para verificar o token
+    fetch(url, options)
+        .then(response => {
+            // verificar resposta
+            if (!response.ok) {
+                throw new Error("Erro ao verificar o token: " + response.status);
+            }
+            // deu tudo certo e o user pode continuar nessa tela
+            console.log("O token foi aceito")
+        })
+        .catch(error => {
+            // Lidar com erros
+            console.error("Ocorreu um erro ao verificar o token: ", error);
+            
+            // Verificar se o erro é de token inválido (401)
+            if (error.message.includes('401')) {
+                // Consumir o endpoint do refresh token
+                consumirRefreshToken(refresh);
+            }
+        })
+}
+// chamando a função
+verificarToken(token, refresh)
+
+// veriável global
+let novoTokenDeAcesso;
+
+function consumirRefreshToken(refresh) {
+
+    // endpoint do refresh token
+    const url = "http://127.0.0.1:8000/api/token/refresh/";
+
+    // obejtos com dados para serem passados no corpo da requisição
+    const data = {
+        refresh: refresh
+    };
+
+    // configuração da solicitação
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    }
+
+    // fazendo a solicitação POST
+    fetch(url, options)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Erro ao consumir o refresh token: " + response.status);
+            }
+            // convertendo a resposta para Json
+            return response.json();
+        })
+        .then(data => {
+            // verificar se o token de acesso foi recebido
+            if (data.access){
+                // Token de acesso recebido com sucesso
+                novoTokenDeAcesso = data.access;
+                console.log('Novo token de acesso: ', novoTokenDeAcesso)
+            } 
+            else {
+                // refresh inválido
+                throw new Error("Erro ao receber o refresh token")
+            }
+        })
+        .catch(error => {
+            // Lidar com erros
+            console.error("Ocorreu um erro ao consumir o refresh token: ", error);
+
+            // verificar se o erro é de token expirado
+            if (error.message.includes('401') || error.message.includes('403')) {
+                // redireciona o usuário para a tela de login novamente
+                window.location.href = "../pages/index.html"
+            }
+            else if (error.message.includes('400')) {
+                window.location.href = "../pages/index.html"
+            }
+        })
+}

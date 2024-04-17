@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://kit.fontawesome.com/a772aefe7b.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../styles/login.css">
+    <link rel="icon" href="../assets/logoOnibus.png">
     <title>CORTEX - IFPI/LOGIN</title>
 </head>
 <body background="../assets/backgroundCortex.jpg">
@@ -13,13 +14,13 @@
       <img src="../assets/logoifpi.png" alt="Instituto federal de educação, ciência e tecnologia. PIAUÍ">
   </h1>
   <div id="form">
-      <form id="login-form" action="#" method="POST">
+      <form id="login-form" onsubmit="handleFormSubmit(event)" method="POST">
           <h2><img src="../assets/logoform.png" alt="" width="200"></h2>
           
-          <label for="usuario">Nome de usuário</label>
+          <label for="usuario">Login do usuário</label>
           <div class="input">
             <i class="fa-solid fa-user"></i>
-            <input type="text" placeholder="Nome de usuário" id="usuario" name="usuario" required>
+            <input type="text" placeholder="Login do usuário" id="cpf" name="usuario" required>
           </div>
         
           <label for="senha">Senha</label>
@@ -29,15 +30,13 @@
           </div>
         
           <div class="botao">
-            <button type="submit">Entrar</button>
+            <button type="submit" id="login">Entrar</button>
           </div>
         
           <a href="#" rel="noopener noreferrer" id="recSenha">Esqueci minha senha</a>
-        </form>
+      </form>
   </div>
 </body>
-<script>
-  localStorage.setItem('token', '{{ "" }}');
-</script>
+<script src="../scripts/login.js"></script>
 
 </html>
