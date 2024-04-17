@@ -107,7 +107,7 @@ function redirecionarParaProximaTela() {
     // Ambos os tokens estão válidos, redirecionar o usuário para a tela de reserva
     const token = localStorage.getItem('token');
     const refreshToken = localStorage.getItem('refreshToken');
-    const url = '../pages/reserva_ticket.html?token=' + encodeURIComponent(token) + '&refreshToken=' + encodeURIComponent(refreshToken);
+    const url = '../front/pages/reserva_ticket.html?token=' + encodeURIComponent(token) + '&refreshToken=' + encodeURIComponent(refreshToken);
     window.location.href = url;
 }
 
