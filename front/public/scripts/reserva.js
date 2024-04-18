@@ -1,3 +1,5 @@
+import url_base from "../../url_base";
+
 //Função para mostrar a data da rota do ônibus no formato dd/mm/aaaa
 const data = document.querySelectorAll(".data");
 window.onload = function() {
@@ -99,7 +101,7 @@ console.log("O refresh chegou: ", refresh)
 // verificando o token que chegou
 function verificarToken(token, refresh) {
 
-    const url = "http://127.0.0.1:8000/api/token/verify/";
+    const url = url_base + "api/token/verify/";
 
     // objetos com os dados que serão passados no corpo da requsição
     const data = {
@@ -145,7 +147,7 @@ let novoTokenDeAcesso;
 function consumirRefreshToken(refresh) {
 
     // endpoint do refresh token
-    const url = "http://127.0.0.1:8000/api/token/refresh/";
+    const url = url_base + "api/token/refresh/";
 
     // obejtos com dados para serem passados no corpo da requisição
     const data = {
@@ -189,10 +191,10 @@ function consumirRefreshToken(refresh) {
             // verificar se o erro é de token expirado
             if (error.message.includes('401') || error.message.includes('403')) {
                 // redireciona o usuário para a tela de login novamente
-                window.location.href = "../../pages/index.html"
+                window.location.href = "../index.html"
             }
             else if (error.message.includes('400')) {
-                window.location.href = "../../pages/index.html"
+                window.location.href = "../index.html"
             }
         })
 }

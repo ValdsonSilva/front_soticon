@@ -1,3 +1,5 @@
+import url_base from "../../url_base";
+
 // acessando botão do formulário
 document.getElementById("login").addEventListener("click", function() {
     // acessando valores dos inputs
@@ -29,7 +31,7 @@ function handleFormSubmit(event) {
 // Função para fazer a solicitação POST para o endpoint /api/token
 function getToken() {
     // endpoint para gerar o token
-    const url = "https://soareslukas9090.pythonanywhere.com/api/token/";
+    const url = url_base + "api/token/";
 
     // parâmetros do usuário (cpf e senha)
     const cpf = document.getElementById("cpf").value;
@@ -82,7 +84,7 @@ function getToken() {
             console.log("refresh ", data.refresh)
 
             // redireciona para a tela de login em caso de erro
-            window.location.href = "../pages/index.html";
+            window.location.href = "./index.html";
             window.alert("Tente realizar o login novamente!")
         })
 }
@@ -107,7 +109,7 @@ function redirecionarParaProximaTela() {
     // Ambos os tokens estão válidos, redirecionar o usuário para a tela de reserva
     const token = localStorage.getItem('token');
     const refreshToken = localStorage.getItem('refreshToken');
-    const url = '../public/pages/reserva_ticket.html?token=' + encodeURIComponent(token) + '&refreshToken=' + encodeURIComponent(refreshToken);
+    const url = './pages/reserva_ticket.html?token=' + encodeURIComponent(token) + '&refreshToken=' + encodeURIComponent(refreshToken);
     window.location.href = url;
 }
 
