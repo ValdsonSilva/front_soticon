@@ -29,7 +29,7 @@ function handleFormSubmit(event) {
 // Função para fazer a solicitação POST para o endpoint /api/token
 function getToken() {
     // endpoint para gerar o token
-    const url = "http://127.0.0.1:8000/api/token/";
+    const url = "https://soareslukas9090.pythonanywhere.com/api/token/";
 
     // parâmetros do usuário (cpf e senha)
     const cpf = document.getElementById("cpf").value;
@@ -107,7 +107,7 @@ function redirecionarParaProximaTela() {
     // Ambos os tokens estão válidos, redirecionar o usuário para a tela de reserva
     const token = localStorage.getItem('token');
     const refreshToken = localStorage.getItem('refreshToken');
-    const url = '../front/pages/reserva_ticket.html?token=' + encodeURIComponent(token) + '&refreshToken=' + encodeURIComponent(refreshToken);
+    const url = '../public/pages/reserva_ticket.html?token=' + encodeURIComponent(token) + '&refreshToken=' + encodeURIComponent(refreshToken);
     window.location.href = url;
 }
 

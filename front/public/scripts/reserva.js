@@ -189,10 +189,10 @@ function consumirRefreshToken(refresh) {
             // verificar se o erro é de token expirado
             if (error.message.includes('401') || error.message.includes('403')) {
                 // redireciona o usuário para a tela de login novamente
-                window.location.href = "../index.html"
+                window.location.href = "../../pages/index.html"
             }
             else if (error.message.includes('400')) {
-                window.location.href = "../index.html"
+                window.location.href = "../../pages/index.html"
             }
         })
 }
