@@ -1,4 +1,4 @@
-const url_base = "https://soareslukas9090.pythonanywhere.com/";
+const url_base = "https://cortex-r9o8.onrender.com/";
 
 //Função para mostrar a data da rota do ônibus no formato dd/mm/aaaa
 const data = document.querySelectorAll(".data");

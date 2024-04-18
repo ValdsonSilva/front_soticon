@@ -1,4 +1,4 @@
-const url_base = "https://soareslukas9090.pythonanywhere.com/";
+const url_base = "https://cortex-r9o8.onrender.com/";
 // acessando botão do formulário
 document.getElementById("login").addEventListener("click", function() {
     // acessando valores dos inputs

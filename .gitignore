@@ -65,3 +65,5 @@ node_modules/
 # dotenv environment variables file
 .env
 front/.firebase/hosting.cHVibGlj.cache
+/front/.firebase
+*.cache
