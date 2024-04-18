@@ -1,4 +1,4 @@
-import url_base from "../../url_base";
+const url_base = "https://soareslukas9090.pythonanywhere.com/";
 
 //Função para mostrar a data da rota do ônibus no formato dd/mm/aaaa
 const data = document.querySelectorAll(".data");

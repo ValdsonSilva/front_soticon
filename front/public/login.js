@@ -1,5 +1,4 @@
-import url_base from "../../url_base";
-
+const url_base = "https://soareslukas9090.pythonanywhere.com/";
 // acessando botão do formulário
 document.getElementById("login").addEventListener("click", function() {
     // acessando valores dos inputs
