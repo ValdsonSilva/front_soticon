@@ -90,9 +90,10 @@ Botao.addEventListener("click", () => {
 });
 
 
-// Obter o token do localstorage
-const token = localStorage.getItem('token');
-const refresh = localStorage.getItem('refreshToken');
+// Obter o token da URL
+const urlParams = new URLSearchParams(window.location.search);
+const token = urlParams.get('token');
+const refresh = urlParams.get('refreshToken')
 
 console.log("O token chegou: ", token)
 console.log("O refresh chegou: ", refresh)

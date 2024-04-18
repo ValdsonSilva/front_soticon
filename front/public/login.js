@@ -13,6 +13,20 @@ document.getElementById("login").addEventListener("click", function() {
     }
 })
 
+// acessando elementos do formulário de longin 
+function handleFormSubmit(event) {
+    event.preventDefault();
+
+    // Obter os valores dos campos de entrada
+    const userInput = document.getElementById("cpf").value;
+    const passwordInput = document.getElementById("senha").value;
+
+    // Exibir os dados no console
+    console.log("Dados do formulário de login:");
+    console.log("Nome de usuário:", userInput);
+    console.log("Senha:", passwordInput);
+}
+
 // Função para fazer a solicitação POST para o endpoint /api/token
 function getToken() {
     // endpoint para gerar o token
@@ -74,13 +88,6 @@ function getToken() {
         })
 }
 
-// função para redirecionar o user para a proxima tela
-function redirecionarParaProximaTela() {
-    // Ambos os tokens estão válidos, redirecionar o usuário para a tela de reserva
-    const url = './pages/reserva_ticket.html'
-    window.location.href = url;
-}
-
 // função que já passa o usuário para a próxima tela se ele estiver logado
 function veficarTokens() {
     const token = localStorage.getItem('token');
@@ -88,40 +95,28 @@ function veficarTokens() {
 
     // verificar se ambos os tokens estão presentes
     if (token && refreshToken) {
-        // verificar se o token de acesso foi expirado
-        if (verificarTokenExpirado(token)) {
-            // se tiver expirado, permanece na tela de login
-            window.location.href = "./index.html";
-        }
-        else {
-            // token de acesso válido, redirecionar usuário
-            redirecionarParaProximaTela();
-        }
+        // redirecionar usuário
+        redirecionarParaProximaTela();
     }
 }
 // chamando função
 veficarTokens();
 
-// verificando tempo de expiração do token
-function verificarTokenExpirado(tokenKey) {
-    const tokenData = decodeToken(tokenKey);
-    const expirationTime = tokenData.exp * 1000 // Expiração em segundos, converter para milissegundos
-    const currenTime = Date.now();
+// função para redirecionar o user para a proxima tela
+function redirecionarParaProximaTela() {
 
-    // comparar a data de expiração com a data atual
-    if (expirationTime < currenTime) {
-        // remover o token expirado do localstorage
-        localStorage.removeItem('token');
-        localStorage.removeItem('refreshToken');
-        return true; // indica que o token expirou
-    }
-
-    return false; //indica que o token ainda é válido
+    // Ambos os tokens estão válidos, redirecionar o usuário para a tela de reserva
+    const token = localStorage.getItem('token');
+    const refreshToken = localStorage.getItem('refreshToken');
+    const url = './pages/reserva_ticket.html?token=' + encodeURIComponent(token) + '&refreshToken=' + encodeURIComponent(refreshToken);
+    window.location.href = url;
 }
 
-// função para decodificar o token
-function decodeToken(token) {
-    const payload = token.split('.')[1];
-    const token_decodificado = atob(payload);
-    return JSON.stringify(token_decodificado);
+// verificando tempo de expiração do token
+function verificarTokenExpirado(tokenKey) {
+    const token = localStorage.getItem(tokenKey);
+    const tempoDeExpiracao = localStorage.getItem("tempo de expiração " + tokenKey);
+    const agora = new Date().getTime();
+
+    return agora > tempoDeExpiracao
 }
