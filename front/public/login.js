@@ -1,4 +1,4 @@
-const url_base = "https://cortex-r9o8.onrender.com/";
+const url_base = "https://web-5gnex1an3lly.up-us-nyc1-k8s-1.apps.run-on-seenode.com/";
 // acessando botão do formulário
 document.getElementById("login").addEventListener("click", function() {
     // acessando valores dos inputs
