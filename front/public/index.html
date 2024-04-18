@@ -1,40 +1,42 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://kit.fontawesome.com/a772aefe7b.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="./login.css">
-    <link rel="icon" href="../front/images/logoOnibus.png">
-    <title>CORTEX - IFPI/LOGIN</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://kit.fontawesome.com/a772aefe7b.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="./login.css">
+  <link rel="icon" href="./images/logoOnibus.png">
+  <title>CORTEX - IFPI/LOGIN</title>
 </head>
-<body background="https://i.imgur.com/2fxumlR.jpeg">
+
+<body background="./images/backgroundCortex.jpg">
   <h1>
-      <img src="../front/images/logoifpi.png" alt="Instituto federal de educação, ciência e tecnologia. PIAUÍ">
+    <img src="./images/logoifpi.png" alt="Instituto federal de educação, ciência e tecnologia. PIAUÍ">
   </h1>
   <div id="form">
-      <form id="login-form" onsubmit="handleFormSubmit(event)" method="POST">
-          <h2><img src="https://i.imgur.com/HQU0IRT.png" alt="" width="200"></h2>
-          
-          <label for="usuario">Login do usuário</label>
-          <div class="input">
-            <i class="fa-solid fa-user"></i>
-            <input type="text" placeholder="Login do usuário" id="cpf" name="usuario" required>
-          </div>
-        
-          <label for="senha">Senha</label>
-          <div class="input">
-            <i class="fa-solid fa-lock"></i>
-            <input type="password" placeholder="Senha" id="senha" name="senha" required>
-          </div>
-        
-          <div class="botao">
-            <button type="submit" id="login">Entrar</button>
-          </div>
-        
-          <a href="#" rel="noopener noreferrer" id="recSenha">Esqueci minha senha</a>
-      </form>
+    <form id="login-form" onsubmit="handleFormSubmit(event)" method="POST">
+      <h2><img src="./images/logoform.png" alt="" width="200"></h2>
+
+      <label for="usuario">Login do usuário</label>
+      <div class="input">
+        <i class="fa-solid fa-user"></i>
+        <input type="text" placeholder="Login do usuário" id="cpf" name="usuario" required>
+      </div>
+
+      <label for="senha">Senha</label>
+      <div class="input">
+        <i class="fa-solid fa-lock"></i>
+        <input type="password" placeholder="Senha" id="senha" name="senha" required>
+      </div>
+
+      <div class="botao">
+        <button type="submit" id="login">Entrar</button>
+      </div>
+
+      <a href="#" rel="noopener noreferrer" id="recSenha">Esqueci minha senha</a>
+    </form>
   </div>
 </body>
 <script src="./login.js"></script>
