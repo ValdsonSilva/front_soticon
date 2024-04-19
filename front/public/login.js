@@ -95,8 +95,16 @@ function veficarTokens() {
 
     // verificar se ambos os tokens estão presentes
     if (token && refreshToken) {
-        // redirecionar usuário
-        redirecionarParaProximaTela();
+        if (!verificarTokenExpirado(token)) {
+            // redireciona para a próxima tela
+            redirecionarParaProximaTela()
+
+        } else {
+            window.location.href = "./index.html";
+        }
+    } else {
+        // redireciona o usuário
+        window.location.href = "./index.html";
     }
 }
 // chamando função
@@ -104,19 +112,30 @@ veficarTokens();
 
 // função para redirecionar o user para a proxima tela
 function redirecionarParaProximaTela() {
-
     // Ambos os tokens estão válidos, redirecionar o usuário para a tela de reserva
-    const token = localStorage.getItem('token');
-    const refreshToken = localStorage.getItem('refreshToken');
-    const url = './pages/reserva_ticket.html?token=' + encodeURIComponent(token) + '&refreshToken=' + encodeURIComponent(refreshToken);
+    const url = './pages/reserva_ticket.html'
     window.location.href = url;
 }
 
 // verificando tempo de expiração do token
 function verificarTokenExpirado(tokenKey) {
-    const token = localStorage.getItem(tokenKey);
-    const tempoDeExpiracao = localStorage.getItem("tempo de expiração " + tokenKey);
-    const agora = new Date().getTime();
+    const tokenData = decodeToken(tokenKey);
+    const expirationTime = tokenData.exp * 1000 // Expiração em segundos, converter para milissegundos
+    const currentTime = Date.now();
 
-    return agora > tempoDeExpiracao
+    // comparar a data de expiração com a data atual
+    if (expirationTime < currentTime) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('refreshToken');
+        return true; // indica que o token expirou
+    }
+
+    return false; // indica que o token ainda é válido
+}
+
+// decodificando o token
+function decodeToken(token) {
+    const payload = token.split('.')[1]
+    const decodeToken = atob(payload);
+    return JSON.parse(decodeToken);
 }
