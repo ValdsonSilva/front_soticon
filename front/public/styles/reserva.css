@@ -18,7 +18,12 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    width: 100%;
+    height: auto;
     padding-bottom: 20px;
+    gap: 10px;
+    /* border: 3px solid #ffff;
+    border-radius: 23px 23px 23px 23px; */
 }
 
 .caixa{
@@ -26,6 +31,7 @@
     height: 360px;
     border: 3px solid #ffff;
     backdrop-filter: blur(10px);
+    border-radius: 23px 23px 23px 23px;
 }
 
 .dia{
@@ -41,19 +47,6 @@
 }
 
 .data{
-    position: relative;
-    left: 470px;
-    top: 45px;
-
-
-    font-size: 27px;
-    font-weight: 700;
-    line-height: 30px;
-    letter-spacing: 0em;
-    color: #ffff;
-}
-
-.adayllton{
     position: relative;
     left: 470px;
     top: 45px;
@@ -140,22 +133,14 @@ button:hover{
     transition: font-size 0.3s ease-in-out;
 }
 
-.caixa.c1{
-    border-radius: 23px 23px 0px 0px;
-}
-
-.caixa.c3{
-    border-radius: 0px 0px 23px 23px;
-}
-
 @media screen and (max-width: 767px){
     .caixa{
-        width: 500px;
+        width: 300px;
         height: 300px
     }
 
     .dia,.data,.hora{
-        font-size: 25px;
+        font-size: 17px;
     }
 
     .dia{
@@ -163,20 +148,26 @@ button:hover{
     }
 
     .data{
-        top: 10px;
-        left: 280px;
+        top: 15px;
+        left: 180px;
     }
 
     .hora{
-        top: 45px;
+        top: 70px;
     }
     
     .botao_container{
-       margin-top: 70px;
+       margin-top: 100px;
     }
 
     button{
-        width: 300px;
+        width: 200px;
+        height: 50px;
+        font-size: 45px;
+    }
+
+    button:hover{
+        font-size: 55px;
     }
     
 }

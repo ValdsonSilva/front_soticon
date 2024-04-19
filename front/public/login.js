@@ -7,7 +7,7 @@ document.getElementById("login").addEventListener("click", function() {
 
     if (cpf !== "" && password !== "") {
         // gerar token
-        getToken()
+        getToken(cpf, password)
     } else {
         console.log("Preencha os campos do formulário")
     }
@@ -28,13 +28,9 @@ function handleFormSubmit(event) {
 }
 
 // Função para fazer a solicitação POST para o endpoint /api/token
-function getToken() {
+function getToken(cpf, password) {
     // endpoint para gerar o token
     const url = url_base + "api/token/";
-
-    // parâmetros do usuário (cpf e senha)
-    const cpf = document.getElementById("cpf").value;
-    const password = document.getElementById("senha").value;
 
     // obejeto com os dados a serem enviados no corpo da solicitação
     const data = {
@@ -81,7 +77,7 @@ function getToken() {
             console.error("Ocorreu um erro: ", error.message)
             console.log("token ", data.access);
             console.log("refresh ", data.refresh)
-
+            
             // redireciona para a tela de login em caso de erro
             window.location.href = "./index.html";
             window.alert("Tente realizar o login novamente!")
@@ -102,9 +98,6 @@ function veficarTokens() {
         } else {
             window.location.href = "./index.html";
         }
-    } else {
-        // redireciona o usuário
-        window.location.href = "./index.html";
     }
 }
 // chamando função
