@@ -35,64 +35,39 @@ DataDiária();
 
 
 //Função para mostrar o dia da semana
-const dia = document.querySelectorAll(".dia");
-function Dayweek() {
-    const Dia = new Date().getDay();
+// const dia = document.querySelectorAll(".dia");
+// function Dayweek() {
+//     const Dia = new Date().getDay();
 
-    for (var i = 0; i < dia.length; i++){
-        dia[i].innerText = `${Dia}`
+//     for (var i = 0; i < dia.length; i++){
+//         dia[i].innerText = `${Dia}`
 
-        switch (Dia) {
-            case 1:
-                dia[i].innerText = `Segunda-feira`
-                break
-            case 2:
-                dia[i].innerText = `Terça-feira`
-                break
-            case 3:
-                dia[i].innerText =  `Quarta-feira`
-                break
-            case 4:
-                dia[i].innerText = `Quinta-feira`
-                break
-            case 5:
-                dia[i].innerText = `Sexta-feira`
-                break
-            case 6:
-                dia[i].innerText = `Sábado`
-                break
-            default:
-                dia[i].innerText = `Dia inválido`
-        }
-    }
-}
-//Chamando a função do dia da semana
-Dayweek();
-
-//Setando o conteúdo do botão ao clicar
-// const Botao = document.querySelector("#bo");
-// const Posicao = document.querySelector(".Posicao")
-// let estadoBotao = false;
-// Botao.addEventListener("click", () => {
-       
-//        if (estadoBotao) {
-//            Botao.innerText = "+"
-//            Botao.setAttribute("style", "");
-
-//        } else {
-//             Botao.innerText = `-`
-        
-//             Botao.setAttribute("style", "none; display: grid; place-content: center;")
-
-//             // Posicao.innerText = "Posição 23/58"
-//        }
-       
-//        //Aqui invertemos o estado do botão
-//        estadoBotao = !estadoBotao;
-
-//        console.log("Tá dando certo aqui cara, o problema é ai fora!")
-// });
-
+//         switch (Dia) {
+//             case 1:
+//                 dia[i].innerText = `Segunda-feira`
+//                 break
+//             case 2:
+//                 dia[i].innerText = `Terça-feira`
+//                 break
+//             case 3:
+//                 dia[i].innerText =  `Quarta-feira`
+//                 break
+//             case 4:
+//                 dia[i].innerText = `Quinta-feira`
+//                 break
+//             case 5:
+//                 dia[i].innerText = `Sexta-feira`
+//                 break
+//             case 6:
+//                 dia[i].innerText = `Sábado`
+//                 break
+//             default:
+//                 dia[i].innerText = `Dia inválido`
+//         }
+//     }
+// }
+// //Chamando a função do dia da semana
+// Dayweek();
 
 // Obter o token da URL
 const urlParams = new URLSearchParams(window.location.search);
@@ -216,37 +191,128 @@ function ConsumirRefreshToken(refresh) {
 
 let data_rota = DayData();
 console.log(data_rota.toUpperCase())
+let rotasDoDia;
 
-// listar todas as rotas do dia
-window.onload = function ListarRotasDoDIa() {
+async function ListarRotasDoDIa() {
     // url da requisição
-    const url = url_base + `/rotas/?data=${data_rota}`;
-    
+    const url = url_base + `api/soticon/v1/rotas/?data=${data_rota}`;
+
     const options = {
         method: 'GET',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization' : `Bearer ${localStorage.getItem('token')}`
         }
     };
 
-    fetch(url, options)
-        .then(response => {
-            // deu erro na busca das rotas do dia
-            if (!response.ok) {
-                throw new Error("Erro ao puxar as rotas do dia!");
-            }
-            // Deu certo a busca das rotas do dia
-            response.json()
-        })
-        .then(data => {
-            console.log(data)
-        })
-        .catch(erro => {
-            console.error("Erro durante a requisição das rotas do dia: ", erro.message)
+    try {
+        const response = await fetch(url, options);
+        // deu erro na busca das rotas do dia
+        if (!response.ok) {
+            throw new Error("Erro ao puxar as rotas do dia!");
+        }
+        const data = await response.json();
+        console.log("Rotas do dia: ", data.results);
+        rotasDoDia = data.results;
+        return data.results;
 
-            // window.alert("Não foi possível carregar as rotas do dia! \nTente novamente mais tarde.")
-        })
+    } catch (erro) {
+        console.error("Erro durante a requisição das rotas do dia: ", erro.message);
+    }
 }
+
+ListarRotasDoDIa().then(() => {
+    console.log("Rotas: ", rotasDoDia)
+})
+
+document.addEventListener("DOMContentLoaded", function() {
+
+    ListarRotasDoDIa().then(rotas => {
+        // pegando container da tela
+        var container = document.querySelector(".container");
+        container.innerHTML = '';
+
+        // mapeando e adicionando os itens ao container
+        rotas.forEach(function(item, index) {
+            var caixa = document.createElement('div');
+            caixa.classList.add('caixa');
+
+            // nomo do dia da semana
+            var paragrafoDIa = document.createElement('p');
+            paragrafoDIa.classList.add('dia');
+            paragrafoDIa.textContent = Dayweek(item.data);
+
+            // data no formato "dd/mm/yyyy"
+            var spanData = document.createElement('span');
+            spanData.classList.add('data');
+            spanData.textContent = formatDate(item.data)
+
+            // hora da rota
+            var paragrafoHora = document.createElement('p');
+            paragrafoHora.classList.add('hora');
+            paragrafoHora.textContent = formatHorario(item.horario)
+
+            var divBotaoContainer = document.createElement('div');
+            divBotaoContainer.classList.add('botao_container');
+
+            var botao = document.createElement('button');
+            botao.setAttribute('type', 'submit');
+            botao.setAttribute('id', 'bo' + item.id); // Adicionando um ID único para cada botão
+            botao.textContent = '+';
+
+            // adicionando ouvinte do evento de clique no botão
+            botao.addEventListener("click", function() {
+                // chama a função de reservar ticket
+                reservarTicket(index);
+            })
+
+            var paragrafoPosicao = document.createElement('p');
+            paragrafoPosicao.textContent = item.posicao;
+            paragrafoPosicao.classList.add('Posicao');
+            
+            // Adicionando elementos filhos à div .caixa
+            caixa.appendChild(paragrafoDIa);
+            caixa.appendChild(spanData);
+            caixa.appendChild(paragrafoHora);
+            caixa.appendChild(divBotaoContainer);
+            divBotaoContainer.appendChild(botao);
+            divBotaoContainer.appendChild(paragrafoPosicao);
+            
+            // Adicionando a div .caixa ao container principal
+            container.appendChild(caixa);
+        })
+    })
+
+    // array para armazenar o estado de cada botão
+    var estadoBotoes = new Array(listaDeRotas.length).fill(false);
+
+    // função para reservar um tícket específico
+    function reservarTicket(index) {
+        console.log("Ticket reservado para o ônibus " + listaDeRotas[index].hora)
+
+        const Botao = document.getElementById("#bo" + index);
+        const Posicao = Botao.nextElementSibling.querySelector('.Posicao');
+
+        Botao.addEventListener("click", () => {
+            
+            if (estadoBotoes[index]) {
+                Botao.innerText = "+"
+                Botao.removeAttribute("style");
+                Posicao.innerText = "";
+
+            } else {
+                Botao.innerText = `-`
+                Botao.setAttribute("style", "none; display: grid; place-content: center;")
+                Posicao.innerText = "Posição 23/58"
+            }
+            
+            //Aqui invertemos o estado do botão
+            estadoBotoes[index] = !estadoBotoes[index];
+
+            console.log("Tá dando certo aqui cara, o problema é ai fora!")
+        });
+    }
+})
 
 // função para pegar a data do dia no formato 'yyyy-mm-dd'
 function DayData() {
@@ -275,91 +341,39 @@ function DayData() {
     }
 }
 
-document.addEventListener("DOMContentLoaded", function() {
-    // listar os dados das rotas na tela
-    var listaDeRotas = [
-        { dia: "Segunda-feira", data: "2024-04-19", hora: "Ônibus das 12:00h"},
-        { dia: "Segunda-feira", data: "2024-04-19", hora: "Ônibus das 17:00h"},
-        { dia: "Segunda-feira", data: "2024-04-19", hora: "Ônibus das 22:00h"},
-    ]
+// Função para mostrar o dia da semana
+function Dayweek(data) {
+    const diasSemana = ["Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado"];
+    const dia = new Date(data).getDay();
+    return diasSemana[dia];
+}
 
-    // pegando container da tela
-    var container = document.querySelector(".container");
+// data formatado "dd/mm/yyyy"
+function formatDate(dateString) {
+    const parts = dateString.split('-');
+    const year = parts[0];
+    const month = parts[1];
+    const day = parts[2];
+    return `${day}/${month}/${year}`;
+}
 
-    // mapeando e adicionando os itens ao container
-    listaDeRotas.forEach(function(item, index) {
-        var caixa = document.createElement('div');
-        caixa.classList.add('caixa');
+// horário da rota formatado
+function formatHorario(horarioString) {
+    const horario = new Date(horarioString);
+    const hours = horario.getHours();
+    const minutes = horario.getMinutes();
+    const formattedHours = String(hours).padStart(2, '0');
+    const formattedMinutes = String(minutes).padStart(2, '0');
+    return `Ônibus das ${formattedHours}:${formattedMinutes}h`;
+}
 
-        var paragrafoDIa = document.createElement('p');
-        paragrafoDIa.classList.add('dia');
-        paragrafoDIa.textContent = item.dia;
+// POST /tickets/
+// Cria um novo ticket.
 
-        var spanData = document.createElement('span');
-        spanData.classList.add('data');
-        spanData.textContent = item.data
-
-        var paragrafoHora = document.createElement('p');
-        paragrafoHora.classList.add('hora');
-        paragrafoHora.textContent = item.hora
-
-        var divBotaoContainer = document.createElement('div');
-        divBotaoContainer.classList.add('botao_container');
-
-        var botao = document.createElement('button');
-        botao.setAttribute('type', 'submit');
-        botao.setAttribute('id', 'bo' + index); // Adicionando um ID único para cada botão
-        botao.textContent = '+';
-
-        // adicionando ouvinte do evento de clique no botão
-        botao.addEventListener("click", function() {
-            // chama a função de reservar ticket
-            reservarTicket(index);
-        })
-
-        var paragrafoPosicao = document.createElement('p');
-        paragrafoPosicao.textContent = item.posicao;
-        paragrafoPosicao.classList.add('Posicao');
-        
-        // Adicionando elementos filhos à div .caixa
-        caixa.appendChild(paragrafoDIa);
-        caixa.appendChild(spanData);
-        caixa.appendChild(paragrafoHora);
-        caixa.appendChild(divBotaoContainer);
-        divBotaoContainer.appendChild(botao);
-        divBotaoContainer.appendChild(paragrafoPosicao);
-        
-        // Adicionando a div .caixa ao container principal
-        container.appendChild(caixa);
-    })
-
-    // array para armazenar o estado de cada botão
-    var estadoBotoes = new Array(listaDeRotas.length).fill(false);
-
-    // função para reservar um tícket específico
-    function reservarTicket(index) {
-        console.log("Ticket reservado para o ônibus " + listaDeRotas[index].hora)
-
-        const Botao = document.getElementById("#bo" + index);
-        const Posicao = Botao.nextElementSibling.querySelector('.Posicao');
-
-        Botao.addEventListener("click", () => {
-            
-               if (estadoBotoes[index]) {
-                    Botao.innerText = "+"
-                    Botao.removeAttribute("style");
-                    Posicao.innerText = "";
-
-               } else {
-                    Botao.innerText = `-`
-                    Botao.setAttribute("style", "none; display: grid; place-content: center;")
-                    Posicao.innerText = "Posição 23/58"
-               }
-            
-               //Aqui invertemos o estado do botão
-               estadoBotoes[index] = !estadoBotoes[index];
-
-               console.log("Tá dando certo aqui cara, o problema é ai fora!")
-        });
-    }
-})
+// Parâmetros necessários:
+// rota (inteiro): O ID da rota associada ao ticket.
+// user_soticon (inteiro): O ID do usuário associado ao ticket.
+// usado (boolean): O status "usado" do ticket
+// reservado (boolean): O status "reservado" do ticket
+// posicao_fila (inteiro): O ID da posição da fila associada ao ticket.
+// Acesso apenas para usuários autenticados.
