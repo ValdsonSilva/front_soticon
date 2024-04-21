@@ -47,6 +47,17 @@ function getToken(cpf, password) {
         body: JSON.stringify(data)
     }
 
+    const loginButton = document.getElementById("login");
+
+    // Crie o ícone de carregamento linear
+    const loadingIcon = document.createElement('i');
+    loadingIcon.classList.add('fas', 'fa-sync-alt', 'fa-spin', 'loading-icon');
+
+    // Adicione o ícone ao botão
+    loginButton.innerHTML = '';
+    loginButton.appendChild(loadingIcon);
+
+
     // Fazendo a solicitação POST usando a API Fetch
     fetch(url, options)
         .then(response => {
@@ -68,6 +79,7 @@ function getToken(cpf, password) {
 
                 // Redirecionar o usuário para a próxima tela (tela de reserva)
                 redirecionarParaProximaTela();
+                loginButton.innerHTML = 'Login';
             }
             else {
                 throw new Error("Token não recebido na resposta");
@@ -79,6 +91,7 @@ function getToken(cpf, password) {
             console.log("refresh ", data.refresh)
             
             // redireciona para a tela de login em caso de erro
+            loginButton.innerHTML = 'Login';
             window.location.href = "./index.html";
             window.alert("Tente realizar o login novamente!")
         })

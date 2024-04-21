@@ -1,81 +1,20 @@
 const url_base = "https://web-5gnex1an3lly.up-us-nyc1-k8s-1.apps.run-on-seenode.com/";
 
-//Função para mostrar a data da rota do ônibus no formato dd/mm/aaaa
-const data = document.querySelectorAll(".data");
-function DataDiária() {
-    const minhadata = new Date();
-    const dia = minhadata.getDate();
-   
-    const mes = minhadata.getMonth() + 1;
-    const ano = new Date().getUTCFullYear();
 
-    for (var i = 0; i < data.length; i++) {
-        data[i].innerText = `Data:${dia}/${mes}/${ano}`
+// obter o token do localstorage senão retorna o usuário para tela de login
+const token = localStorage.getItem('token') ? localStorage.getItem('token') : window.location.href = "../index.html";
+const refresh = localStorage.getItem('refreshToken') ? localStorage.getItem('refreshToken') : window.location.href = "../index.html";
 
-        if (dia < 10){
-            data[i].innerText = `Data:0${dia}/${mes}/${ano}`
-    
-            if (mes < 10){
-                data[i].innerText = `Data:0${dia}/0${mes}/${ano}`
-            }
-        }
-    
-        if (mes < 10){
-            data[i].innerText = `Data:${dia}/0${mes}/${ano}`
-        
-            if (dia < 10){
-                data[i].innerText = `Data:0${dia}/0${mes}/${ano}`
-            
-            }
-        }
-    }
+// decodificando o token
+function decodeToken(token) {
+    const payload = token.split('.')[1]
+    const decodeToken = atob(payload);
+    return JSON.parse(decodeToken);
 }
-// chamando a função
-DataDiária();
+const token_decodificado = decodeToken(token)
 
 
-//Função para mostrar o dia da semana
-// const dia = document.querySelectorAll(".dia");
-// function Dayweek() {
-//     const Dia = new Date().getDay();
-
-//     for (var i = 0; i < dia.length; i++){
-//         dia[i].innerText = `${Dia}`
-
-//         switch (Dia) {
-//             case 1:
-//                 dia[i].innerText = `Segunda-feira`
-//                 break
-//             case 2:
-//                 dia[i].innerText = `Terça-feira`
-//                 break
-//             case 3:
-//                 dia[i].innerText =  `Quarta-feira`
-//                 break
-//             case 4:
-//                 dia[i].innerText = `Quinta-feira`
-//                 break
-//             case 5:
-//                 dia[i].innerText = `Sexta-feira`
-//                 break
-//             case 6:
-//                 dia[i].innerText = `Sábado`
-//                 break
-//             default:
-//                 dia[i].innerText = `Dia inválido`
-//         }
-//     }
-// }
-// //Chamando a função do dia da semana
-// Dayweek();
-
-// Obter o token da URL
-const urlParams = new URLSearchParams(window.location.search);
-const token = localStorage.getItem('token');
-const refresh = localStorage.getItem('refreshToken');
-
-console.log("O token chegou: ", token)
-console.log("O refresh chegou: ", refresh)
+console.log("O token decodificado: ", token_decodificado)
 
 // verificando o token que chegou
 function VerificarToken(token, refresh) {
@@ -115,9 +54,8 @@ function VerificarToken(token, refresh) {
                 // Consumir o endpoint do refresh token
                 ConsumirRefreshToken(refresh);
             }
-            if (error.message.includes('400')) {
-                window.location.href = "../index.html"
-            }
+            
+            window.location.href = "../index.html"
         })
 }
 // chamando a função
@@ -166,7 +104,10 @@ function ConsumirRefreshToken(refresh) {
                 localStorage.setItem('token', novoTokenDeAcesso)
 
                 console.log('Novo token de acesso: ', novoTokenDeAcesso)
-                console.log('Novo refresh: ', novoRefresh)
+                // console.log('Novo refresh: ', novoRefresh)
+
+                // recarrega a tela
+                window.location.reload()
             } 
             else {
                 // refresh inválido
@@ -176,6 +117,9 @@ function ConsumirRefreshToken(refresh) {
         .catch(error => {
             // Lidar com erros
             console.error("Ocorreu um erro ao consumir o refresh token: ", error);
+
+            localStorage.removeItem('token')
+            localStorage.removeItem('refreshToken')
 
             // verificar se o erro é de token expirado
             if (error.message.includes('401') || error.message.includes('403')) {
@@ -187,7 +131,6 @@ function ConsumirRefreshToken(refresh) {
             }
         })
 }
-
 
 let data_rota = DayData();
 console.log(data_rota.toUpperCase())
@@ -218,6 +161,7 @@ async function ListarRotasDoDIa() {
 
     } catch (erro) {
         console.error("Erro durante a requisição das rotas do dia: ", erro.message);
+        window.location.reload()
     }
 }
 
@@ -225,15 +169,31 @@ ListarRotasDoDIa().then(() => {
     console.log("Rotas: ", rotasDoDia)
 })
 
+// listando rotas na tela
 document.addEventListener("DOMContentLoaded", function() {
 
+    // Exibir ícone de carregamento
+    const iconContainer = document.querySelector(".icon-container");
+    const loadingIcon = document.createElement('i');
+    const frase = document.createElement('h1');
+    frase.innerHTML = "Carregando tickets..."
+
+    loadingIcon.classList.add('fas', 'fa-spinner', 'fa-spin', 'loading-icon');
+    iconContainer.appendChild(loadingIcon)
+    iconContainer.appendChild(frase)
+
     ListarRotasDoDIa().then(rotas => {
+
+        // Remover ícone de carregamento após o conteúdo ser carregado
+        iconContainer.removeChild(loadingIcon);
+        iconContainer.removeChild(frase)
+
         // pegando container da tela
         var container = document.querySelector(".container");
         container.innerHTML = '';
 
         // mapeando e adicionando os itens ao container
-        rotas.forEach(function(item, index) {
+        rotas.forEach(function(item) {
             var caixa = document.createElement('div');
             caixa.classList.add('caixa');
 
@@ -260,10 +220,18 @@ document.addEventListener("DOMContentLoaded", function() {
             botao.setAttribute('id', 'bo' + item.id); // Adicionando um ID único para cada botão
             botao.textContent = '+';
 
+            let user_soticon;
+
             // adicionando ouvinte do evento de clique no botão
             botao.addEventListener("click", function() {
-                // chama a função de reservar ticket
-                reservarTicket(index);
+                // passando o user_soticon
+                GetUserSoticon().then(resp => {
+                    user_soticon = resp
+                    // Aqui você pode usar o valor de user_soticon
+                    console.log("O id user_soticon: ", user_soticon);
+                    // chamando função de reservar ticket
+                    reservarTicket(item.id, user_soticon)
+                });
             })
 
             var paragrafoPosicao = document.createElement('p');
@@ -284,33 +252,119 @@ document.addEventListener("DOMContentLoaded", function() {
     })
 
     // array para armazenar o estado de cada botão
-    var estadoBotoes = new Array(listaDeRotas.length).fill(false);
+    var estadoBotoes = []
 
-    // função para reservar um tícket específico
-    function reservarTicket(index) {
-        console.log("Ticket reservado para o ônibus " + listaDeRotas[index].hora)
-
-        const Botao = document.getElementById("#bo" + index);
-        const Posicao = Botao.nextElementSibling.querySelector('.Posicao');
-
-        Botao.addEventListener("click", () => {
-            
-            if (estadoBotoes[index]) {
-                Botao.innerText = "+"
-                Botao.removeAttribute("style");
-                Posicao.innerText = "";
-
-            } else {
-                Botao.innerText = `-`
-                Botao.setAttribute("style", "none; display: grid; place-content: center;")
-                Posicao.innerText = "Posição 23/58"
-            }
-            
-            //Aqui invertemos o estado do botão
-            estadoBotoes[index] = !estadoBotoes[index];
-
-            console.log("Tá dando certo aqui cara, o problema é ai fora!")
+    // Desabilita todos os botões de reserva
+    function desabilitarBotoesReserva() {
+        const botoes = document.querySelectorAll('[id^="bo"]');
+        botoes.forEach(botao => {
+            const id_rota = botao.id.substring(2); // Extrai o ID da rota do ID do botão
+            estadoBotoes[id_rota] = false; // Inicializa o estado do botão no array
+            botao.disabled = true;
         });
+    }
+
+    // Habilita todos os botões de reserva
+    function habilitarBotoesReserva() {
+        const botoes = document.querySelectorAll('[id^="bo"]');
+        botoes.forEach(botao => {
+            botao.disabled = false;
+        });
+    }
+
+    // atribuindo estados com base na quantidade de rotas do dia
+    desabilitarBotoesReserva(); // Desabilita os botões antes de iniciar o processo
+   // Função para listar as rotas do dia e habilitar os botões após a conclusão da atribuição de estados
+    ListarRotasDoDIa()
+        .then(rotas => {
+            rotas.forEach(rota => {
+                estadoBotoes[rota.id] = false; // Inicializa o estado do botão no array
+            });
+            console.log("Rota processada!");
+            habilitarBotoesReserva(); // Habilita os botões após a conclusão da atribuição de estados
+        })
+        .catch(error => {
+            console.error('Erro na atribuição de estado dos botões!');
+        });
+
+    // url reservar_ticket = url_base + '/api/soticon/v1/reservarticket/'
+
+    // OBS: lembrar de se basear por o estado do tícket
+    function reservarTicket(id_rota, id_user_soticon) {
+        console.log("Ticket reservado para o ônibus: ", id_rota);
+
+        const Botao = document.getElementById("bo" + id_rota);
+        if (!Botao) {
+            console.error("Botão não encontrado para o índice:", id_rota);
+            return;
+        }
+        
+        const Posicao = Botao.nextElementSibling;
+        if (!Posicao) {
+            console.error("Próximo elemento irmão não encontrado para o botão:", Botao);
+            return;
+        }
+
+        // Criar o elemento do ícone de carregamento
+        const loadingIcon = document.createElement('i');
+        loadingIcon.setAttribute('id', 'loading-icon');
+        loadingIcon.classList.add('fas', 'fa-sync-alt', 'fa-spin');
+        loadingIcon.style.display = 'none';
+
+        // Adicionar o ícone de carregamento ao botão
+        Botao.innerHTML = '';
+        Botao.appendChild(loadingIcon);
+
+        // Mostrar o ícone de carregamento
+        loadingIcon.style.display = 'inline-block';
+
+        async function reservarOuCancelarTicket(rota, user_soticon){
+            try {
+                // const url = url_base + '/api/soticon/v1/reservarticket/';
+                // const metodoHTTP = estadoBotoes[id_rota] ? 'POST' : 'POST';
+                
+                // const response = await fetch(url, {
+                //     method: metodoHTTP,
+                //     headers: {
+                //         'Content-Type': 'application/json',
+                //         'Authorization': `Bearer ${localStorage.getItem('token')}`
+                //     },
+                //     body: JSON.stringify({
+                //         rota: id_rota,
+                //         user_soticon: id_user_soticon
+                //     })
+                // });
+    
+                // if (!response.ok) {
+                //     throw new Error('Erro ao processar a solicitação');
+                // }
+    
+                // const data = await response.json();
+
+                // Simulação de uma pausa de 1 segundo (você pode substituir isso pelo código real da requisição)
+                await new Promise(resolve => setTimeout(resolve, 3000)); 
+
+                console.log('Reserva de ticket processada com sucesso:', {rota, user_soticon});
+    
+                // Alterar o estado do botão e atualizar o texto e estilo
+                estadoBotoes[id_rota] = !estadoBotoes[id_rota];
+                Botao.innerText = estadoBotoes[id_rota] ? '-' : '+';
+                Posicao.innerText = estadoBotoes[id_rota] ? 'Posição 23/58' : '';
+                console.log(`Estado botão ${id_rota}: ${estadoBotoes[id_rota]}`)
+
+                // Ocultar ícone de carregamento após a requisição
+                loadingIcon.style.display = "none";
+    
+            } catch (error) {
+                console.error('Erro ao reservar/cancelar ticket:', error.message);
+            } finally {
+                // ocultar o ícone de carregamento
+                loadingIcon.style.display = 'none';
+            }
+        };
+
+        // Chamando a função interna com os parâmetros corretos
+        reservarOuCancelarTicket(id_rota, id_user_soticon);
     }
 })
 
@@ -345,7 +399,7 @@ function DayData() {
 function Dayweek(data) {
     const diasSemana = ["Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado"];
     const dia = new Date(data).getDay();
-    return diasSemana[dia];
+    return diasSemana[dia + 1];
 }
 
 // data formatado "dd/mm/yyyy"
@@ -367,13 +421,77 @@ function formatHorario(horarioString) {
     return `Ônibus das ${formattedHours}:${formattedMinutes}h`;
 }
 
-// POST /tickets/
-// Cria um novo ticket.
+async function getTickets() {
+    const url = url_base + "api/soticon/v1/tickets/";
 
-// Parâmetros necessários:
-// rota (inteiro): O ID da rota associada ao ticket.
-// user_soticon (inteiro): O ID do usuário associado ao ticket.
-// usado (boolean): O status "usado" do ticket
-// reservado (boolean): O status "reservado" do ticket
-// posicao_fila (inteiro): O ID da posição da fila associada ao ticket.
-// Acesso apenas para usuários autenticados.
+    const options = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization' : `Bearer ${localStorage.getItem('token')}`
+        }
+    }
+
+    try {
+        const response = await fetch(url, options);
+        if (!response.ok) {
+            throw new Error("Erro ao puxar os tickets" + erro);
+        }
+        const data = await response.json();
+        console.log("Aqui estão os tickets: ", data.results);
+        return data.results;
+
+    } catch (error) {
+        console.error("Erro durante a requisição dos tickets: ", error.message);
+    }
+}
+
+// endpoint user_soticon
+// conts url = url_base + "api/soticon/v1/user_soticon/?user=id/"
+
+async function GetUserSoticon(user_id) {
+    const url = url_base + `api/soticon/v1/users/?user=${user_id}/`
+
+    const options = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }
+
+    try {
+        const response = await fetch(url, options);
+        if (!response.ok) {
+            throw new Error("Erro ao pegar user_soticon" + response.status);
+        }
+        const data = await response.json();
+        console.log("Aqui está o user_soticon: ", data.results[2]);
+        return data.results[2].usuario
+
+    } catch (error) {
+        console.error("Erro durante a requisição do user_soticon: ", error.message);
+    }
+}
+GetUserSoticon(token_decodificado.user_id)
+console.log("User sistema: ", token_decodificado.user_id)
+
+// logout no front
+const logout_elemenst = document.querySelectorAll(".retornar")
+logout_elemenst.forEach(function(element) {
+    element.addEventListener("click", function(){
+        for (var i = 0; i < logout_elemenst.length; i++){
+            localStorage.removeItem('token')
+            localStorage.removeItem('refreshToken')
+            window.location.href = "../index.html"
+        }   
+    })
+})
+
+
+/* 
+    Eu preciso de algum dado do ticket/rota do aluno para verificar 
+o estado do botão de reserva para que ao carregar a página o estado 
+não seja perdido e o estilo do botão seja preservado.
+
+*/
+

@@ -133,6 +133,22 @@ button:hover{
     transition: font-size 0.3s ease-in-out;
 }
 
+.icon-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    color: #fff;
+    gap: 8px;
+}
+
+.loading-icon {
+    color: aliceblue;
+    font-size: 100px;
+}
+
+
 @media screen and (max-width: 767px){
     .caixa{
         width: 300px;
@@ -163,11 +179,15 @@ button:hover{
     button{
         width: 200px;
         height: 50px;
-        font-size: 45px;
+        font-size: 30px;
     }
 
     button:hover{
         font-size: 55px;
+    }
+
+    .loading-icon {
+        font-size: 80px;
     }
     
 }
