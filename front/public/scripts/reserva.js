@@ -450,7 +450,7 @@ async function getTickets() {
 // conts url = url_base + "api/soticon/v1/user_soticon/?user=id/"
 
 async function GetUserSoticon(user_id) {
-    const url = url_base + `api/soticon/v1/users/?user=${user_id}/`
+    const url = url_base + `api/soticon/v1/users/?usurario=${user_id}/`
 
     const options = {
         method: 'GET',
