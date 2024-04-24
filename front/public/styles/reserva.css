@@ -176,6 +176,10 @@ button:hover{
        margin-top: 100px;
     }
 
+    .Posicao {
+        font-size: 22px;
+    }
+
     button{
         width: 200px;
         height: 50px;

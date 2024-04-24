@@ -132,13 +132,59 @@ function ConsumirRefreshToken(refresh) {
         })
 }
 
+// endpoint user_soticon
+async function GetUserSoticon(user_id) {
+    const url = url_base + `api/soticon/v1/users/?usuario=${user_id}`
+
+    const options = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization' : `Bearer ${localStorage.getItem('token')}`
+        }
+    }
+
+    try {
+        const response = await fetch(url, options);
+        if (!response.ok) {
+            throw new Error("Erro ao pegar user_soticon" + response.status);
+        }
+        const data = await response.json();
+        console.log("Aqui está o user_soticon: ", data);
+        return data
+
+    } catch (error) {
+        console.error("Erro durante a requisição do user_soticon: ", error.message);
+    }
+}
+
+async function atualizarBotoesReservaVerify(id_rota, botao) {
+    try {
+        // Verificar se há tickets reservados associados à rota do botão
+        const resp = await GetUserSoticon(token_decodificado.user_id);
+        console.log("A droga do resp: ", resp)
+        if (resp && resp.tickets_reservados && resp.tickets_reservados.length > 0) {
+            const ticketReservado = resp.tickets_reservados.find(ticket => {
+                return ticket.rota && ticket.rota[0].id === id_rota && ticket.num_ticket === 1;
+            });
+            // Definir o conteúdo do botão com base na presença de tickets reservados
+            botao.textContent = ticketReservado ? "-" : "+";
+            console.log("Passou na condição: ", typeof(ticketReservado))
+        } else {
+            botao.textContent = "+"
+        }
+    } catch (error) {
+        console.error('Erro na atualização dos botões de reserva:', error);
+    }
+}
+
 let data_rota = DayData();
 console.log(data_rota.toUpperCase())
 let rotasDoDia;
 
 async function ListarRotasDoDIa() {
     // url da requisição
-    const url = url_base + `api/soticon/v1/rotas/?data=${data_rota}`;
+    const url = url_base + `api/soticon/v1/rotas/?data_valida=${data_rota}`;
 
     const options = {
         method: 'GET',
@@ -165,135 +211,181 @@ async function ListarRotasDoDIa() {
     }
 }
 
-ListarRotasDoDIa().then(() => {
-    console.log("Rotas: ", rotasDoDia)
-})
+// Exibir ícone de carregamento
+const iconContainer = document.querySelector(".icon-container");
+const loadingIcon = document.createElement('i');
+const frase = document.createElement('h1');
+frase.innerHTML = "Carregando tickets..."
+
+loadingIcon.classList.add('fas', 'fa-spinner', 'fa-spin', 'loading-icon');
+iconContainer.appendChild(loadingIcon)
+iconContainer.appendChild(frase)
+
+// pegando container da tela
+var container = document.querySelector(".container");
+container.innerHTML = '';
 
 // listando rotas na tela
-document.addEventListener("DOMContentLoaded", function() {
+async function montarElementosDaTela() {
+    // armazenando rotas do dia
+    const rotas = await ListarRotasDoDIa();
 
-    // Exibir ícone de carregamento
-    const iconContainer = document.querySelector(".icon-container");
-    const loadingIcon = document.createElement('i');
-    const frase = document.createElement('h1');
-    frase.innerHTML = "Carregando tickets..."
+    iconContainer.removeChild(loadingIcon);
+    iconContainer.removeChild(frase)
 
-    loadingIcon.classList.add('fas', 'fa-spinner', 'fa-spin', 'loading-icon');
-    iconContainer.appendChild(loadingIcon)
-    iconContainer.appendChild(frase)
+    // Mapeando e adicionando os itens ao container
+    for (const item of rotas) {
 
-    ListarRotasDoDIa().then(rotas => {
+        var caixa = document.createElement('div');
+        caixa.classList.add('caixa');
 
-        // Remover ícone de carregamento após o conteúdo ser carregado
-        iconContainer.removeChild(loadingIcon);
-        iconContainer.removeChild(frase)
+        // Nome do dia da semana
+        var paragrafoDia = document.createElement('p');
+        paragrafoDia.classList.add('dia');
+        paragrafoDia.textContent = Dayweek(item.data);
 
-        // pegando container da tela
-        var container = document.querySelector(".container");
-        container.innerHTML = '';
+        // Data no formato "dd/mm/yyyy"
+        var spanData = document.createElement('span');
+        spanData.classList.add('data');
+        spanData.textContent = formatDate(item.data)
 
-        // mapeando e adicionando os itens ao container
-        rotas.forEach(function(item) {
-            var caixa = document.createElement('div');
-            caixa.classList.add('caixa');
+        // Hora da rota
+        var paragrafoHora = document.createElement('p');
+        paragrafoHora.classList.add('hora');
+        paragrafoHora.textContent = formatHorario(item.horario)
 
-            // nomo do dia da semana
-            var paragrafoDIa = document.createElement('p');
-            paragrafoDIa.classList.add('dia');
-            paragrafoDIa.textContent = Dayweek(item.data);
+        var divBotaoContainer = document.createElement('div');
+        divBotaoContainer.classList.add('botao_container');
 
-            // data no formato "dd/mm/yyyy"
-            var spanData = document.createElement('span');
-            spanData.classList.add('data');
-            spanData.textContent = formatDate(item.data)
+        var botao = document.createElement('button');
+        botao.setAttribute('type', 'submit');
+        botao.setAttribute('id', 'bo' + item.id); // Adicionando um ID único para cada botão
+        // Chamando a função para atualizar o texto do botão
+        await atualizarBotoesReservaVerify(item.id, botao);
 
-            // hora da rota
-            var paragrafoHora = document.createElement('p');
-            paragrafoHora.classList.add('hora');
-            paragrafoHora.textContent = formatHorario(item.horario)
+        let user_soticon;
 
-            var divBotaoContainer = document.createElement('div');
-            divBotaoContainer.classList.add('botao_container');
-
-            var botao = document.createElement('button');
-            botao.setAttribute('type', 'submit');
-            botao.setAttribute('id', 'bo' + item.id); // Adicionando um ID único para cada botão
-            botao.textContent = '+';
-
-            let user_soticon;
-
-            // adicionando ouvinte do evento de clique no botão
-            botao.addEventListener("click", function() {
-                // passando o user_soticon
-                GetUserSoticon().then(resp => {
-                    user_soticon = resp
-                    // Aqui você pode usar o valor de user_soticon
-                    console.log("O id user_soticon: ", user_soticon);
-                    // chamando função de reservar ticket
-                    reservarTicket(item.id, user_soticon)
-                });
-            })
-
-            var paragrafoPosicao = document.createElement('p');
-            paragrafoPosicao.textContent = item.posicao;
-            paragrafoPosicao.classList.add('Posicao');
-            
-            // Adicionando elementos filhos à div .caixa
-            caixa.appendChild(paragrafoDIa);
-            caixa.appendChild(spanData);
-            caixa.appendChild(paragrafoHora);
-            caixa.appendChild(divBotaoContainer);
-            divBotaoContainer.appendChild(botao);
-            divBotaoContainer.appendChild(paragrafoPosicao);
-            
-            // Adicionando a div .caixa ao container principal
-            container.appendChild(caixa);
-        })
-    })
-
-    // array para armazenar o estado de cada botão
-    var estadoBotoes = []
-
-    // Desabilita todos os botões de reserva
-    function desabilitarBotoesReserva() {
-        const botoes = document.querySelectorAll('[id^="bo"]');
-        botoes.forEach(botao => {
-            const id_rota = botao.id.substring(2); // Extrai o ID da rota do ID do botão
-            estadoBotoes[id_rota] = false; // Inicializa o estado do botão no array
-            botao.disabled = true;
-        });
-    }
-
-    // Habilita todos os botões de reserva
-    function habilitarBotoesReserva() {
-        const botoes = document.querySelectorAll('[id^="bo"]');
-        botoes.forEach(botao => {
-            botao.disabled = false;
-        });
-    }
-
-    // atribuindo estados com base na quantidade de rotas do dia
-    desabilitarBotoesReserva(); // Desabilita os botões antes de iniciar o processo
-   // Função para listar as rotas do dia e habilitar os botões após a conclusão da atribuição de estados
-    ListarRotasDoDIa()
-        .then(rotas => {
-            rotas.forEach(rota => {
-                estadoBotoes[rota.id] = false; // Inicializa o estado do botão no array
+        // adicionando ouvinte do evento de clique no botão
+        botao.addEventListener("click", function() {
+            // passando o user_soticon
+            GetUserSoticon(token_decodificado.user_id).then(resp => {
+                user_soticon = resp.id
+                // Aqui você pode usar o valor de user_soticon
+                console.log("O id user_soticon: ", user_soticon);
+                // chamando função de reservar ticket
+                reservarTicket(item.id, user_soticon)
             });
-            console.log("Rota processada!");
-            habilitarBotoesReserva(); // Habilita os botões após a conclusão da atribuição de estados
         })
-        .catch(error => {
-            console.error('Erro na atribuição de estado dos botões!');
-        });
 
-    // url reservar_ticket = url_base + '/api/soticon/v1/reservarticket/'
+        var paragrafoPosicao = document.createElement('p');
+        paragrafoPosicao.textContent = item.posicao;
+        paragrafoPosicao.classList.add('Posicao');
+        paragrafoPosicao.textContent = "Posição 11/58"
+        
+        // Adicionando elementos filhos à div .caixa
+        caixa.appendChild(paragrafoDia);
+        caixa.appendChild(spanData);
+        caixa.appendChild(paragrafoHora);
+        caixa.appendChild(divBotaoContainer);
+        divBotaoContainer.appendChild(botao);
+        divBotaoContainer.appendChild(paragrafoPosicao);
+        
+        // Adicionando a div .caixa ao container principal
+        container.appendChild(caixa);
+    }
+
+    // ListarRotasDoDIa().then(rotas => {
+
+    //     // Remover ícone de carregamento após o conteúdo ser carregado
+    //     iconContainer.removeChild(loadingIcon);
+    //     iconContainer.removeChild(frase)
+
+    //     // pegando container da tela
+    //     var container = document.querySelector(".container");
+    //     container.innerHTML = '';
+
+    //     // mapeando e adicionando os itens ao container
+    //     rotas.forEach(function(item) {
+    //         var caixa = document.createElement('div');
+    //         caixa.classList.add('caixa');
+
+    //         // nomo do dia da semana
+    //         var paragrafoDIa = document.createElement('p');
+    //         paragrafoDIa.classList.add('dia');
+    //         paragrafoDIa.textContent = Dayweek(item.data);
+
+    //         // data no formato "dd/mm/yyyy"
+    //         var spanData = document.createElement('span');
+    //         spanData.classList.add('data');
+    //         spanData.textContent = formatDate(item.data)
+
+    //         // hora da rota
+    //         var paragrafoHora = document.createElement('p');
+    //         paragrafoHora.classList.add('hora');
+    //         paragrafoHora.textContent = formatHorario(item.horario)
+
+    //         var divBotaoContainer = document.createElement('div');
+    //         divBotaoContainer.classList.add('botao_container');
+
+    //         var botao = document.createElement('button');
+    //         botao.setAttribute('type', 'submit');
+    //         botao.setAttribute('id', 'bo' + item.id); // Adicionando um ID único para cada botão
+    //         // botao.textContent = "+"
+    //         atualizarBotoesReservaVerify(item.id, botao)
+
+    //         let user_soticon;
+
+    //         // adicionando ouvinte do evento de clique no botão
+    //         botao.addEventListener("click", function() {
+    //             // passando o user_soticon
+    //             GetUserSoticon(token_decodificado.user_id).then(resp => {
+    //                 user_soticon = resp.id
+    //                 // Aqui você pode usar o valor de user_soticon
+    //                 console.log("O id user_soticon: ", user_soticon);
+    //                 // chamando função de reservar ticket
+    //                 reservarTicket(item.id, user_soticon)
+    //             });
+    //         })
+
+    //         var paragrafoPosicao = document.createElement('p');
+    //         paragrafoPosicao.textContent = item.posicao;
+    //         paragrafoPosicao.classList.add('Posicao');
+            
+    //         // Adicionando elementos filhos à div .caixa
+    //         caixa.appendChild(paragrafoDIa);
+    //         caixa.appendChild(spanData);
+    //         caixa.appendChild(paragrafoHora);
+    //         caixa.appendChild(divBotaoContainer);
+    //         divBotaoContainer.appendChild(botao);
+    //         divBotaoContainer.appendChild(paragrafoPosicao);
+            
+    //         // Adicionando a div .caixa ao container principal
+    //         container.appendChild(caixa);
+    //     })
+    // })
+
+    // async function atualizarBotoesReservaVerify(id_rota, botao) {
+    //     try {
+    //         // Verificar se há tickets reservados associados à rota do botão
+    //         const resp = await GetUserSoticon(token_decodificado.user_id);
+    //         if (resp && resp.tickets_reservados && resp.tickets_reservados.length > 0) {
+    //             const ticketReservado = resp.tickets_reservados.find(ticket => {
+    //                 return ticket.rota.id === id_rota && ticket.num_ticket === 1;
+    //             });
+    //             // Definir o conteúdo do botão com base na presença de tickets reservados
+    //             botao.textContent = ticketReservado ? "-" : "+";
+    //         } 
+    //     } catch (error) {
+    //         console.error('Erro na atualização dos botões de reserva:', error);
+    //     }
+    // }
 
     // OBS: lembrar de se basear por o estado do tícket
     function reservarTicket(id_rota, id_user_soticon) {
-        console.log("Ticket reservado para o ônibus: ", id_rota);
+        console.log("Ticket reservado para a rota de id: ", id_rota);
 
         const Botao = document.getElementById("bo" + id_rota);
+        const bo_conteudo = Botao.textContent
         if (!Botao) {
             console.error("Botão não encontrado para o índice:", id_rota);
             return;
@@ -320,43 +412,48 @@ document.addEventListener("DOMContentLoaded", function() {
 
         async function reservarOuCancelarTicket(rota, user_soticon){
             try {
-                // const url = url_base + '/api/soticon/v1/reservarticket/';
-                // const metodoHTTP = estadoBotoes[id_rota] ? 'POST' : 'POST';
+                const url = url_base + 'api/soticon/v1/reservar_ticket/';
+
+                const datas = {
+                    rota : rota,
+                    user_soticon : user_soticon
+                }
+
+                const options = {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify(datas)
+                }
                 
-                // const response = await fetch(url, {
-                //     method: metodoHTTP,
-                //     headers: {
-                //         'Content-Type': 'application/json',
-                //         'Authorization': `Bearer ${localStorage.getItem('token')}`
-                //     },
-                //     body: JSON.stringify({
-                //         rota: id_rota,
-                //         user_soticon: id_user_soticon
-                //     })
-                // });
+                const response = await fetch(url, options);
     
-                // if (!response.ok) {
-                //     throw new Error('Erro ao processar a solicitação');
-                // }
+                if (!response.ok) {
+                    throw new Error('Erro ao processar a solicitação do ticket');
+                }
     
-                // const data = await response.json();
+                const data = await response.json();
 
-                // Simulação de uma pausa de 1 segundo (você pode substituir isso pelo código real da requisição)
-                await new Promise(resolve => setTimeout(resolve, 3000)); 
-
-                console.log('Reserva de ticket processada com sucesso:', {rota, user_soticon});
-    
-                // Alterar o estado do botão e atualizar o texto e estilo
-                estadoBotoes[id_rota] = !estadoBotoes[id_rota];
-                Botao.innerText = estadoBotoes[id_rota] ? '-' : '+';
-                Posicao.innerText = estadoBotoes[id_rota] ? 'Posição 23/58' : '';
-                console.log(`Estado botão ${id_rota}: ${estadoBotoes[id_rota]}`)
+                console.log('Reserva de ticket processada com sucesso:', data);
 
                 // Ocultar ícone de carregamento após a requisição
                 loadingIcon.style.display = "none";
+
+                if (bo_conteudo === "+") {
+                    Botao.textContent = "-";
+                } else if (bo_conteudo === "-") {
+                    Botao.textContent = "+";
+                }
+
+                Posicao.textContent = "11/58"
+
+                // window.location.reload()
     
             } catch (error) {
                 console.error('Erro ao reservar/cancelar ticket:', error.message);
+                Botao.textContent = "+"
             } finally {
                 // ocultar o ícone de carregamento
                 loadingIcon.style.display = 'none';
@@ -366,6 +463,10 @@ document.addEventListener("DOMContentLoaded", function() {
         // Chamando a função interna com os parâmetros corretos
         reservarOuCancelarTicket(id_rota, id_user_soticon);
     }
+}
+// Chamando a função para montar os elementos da tela
+montarElementosDaTela().catch(error => {
+    console.error("Erro ao carregar os elementos da tela: ", error)
 })
 
 // função para pegar a data do dia no formato 'yyyy-mm-dd'
@@ -445,35 +546,7 @@ async function getTickets() {
         console.error("Erro durante a requisição dos tickets: ", error.message);
     }
 }
-
-// endpoint user_soticon
-// conts url = url_base + "api/soticon/v1/user_soticon/?user=id/"
-
-async function GetUserSoticon(user_id) {
-    const url = url_base + `api/soticon/v1/users/?usurario=${user_id}/`
-
-    const options = {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    }
-
-    try {
-        const response = await fetch(url, options);
-        if (!response.ok) {
-            throw new Error("Erro ao pegar user_soticon" + response.status);
-        }
-        const data = await response.json();
-        console.log("Aqui está o user_soticon: ", data.results[2]);
-        return data.results[2].usuario
-
-    } catch (error) {
-        console.error("Erro durante a requisição do user_soticon: ", error.message);
-    }
-}
-GetUserSoticon(token_decodificado.user_id)
-console.log("User sistema: ", token_decodificado.user_id)
+getTickets()
 
 // logout no front
 const logout_elemenst = document.querySelectorAll(".retornar")
