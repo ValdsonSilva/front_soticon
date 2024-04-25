@@ -158,6 +158,7 @@ async function GetUserSoticon(user_id) {
     }
 }
 
+// função responsável por manter o estilo do botão de reserva
 async function atualizarBotoesReservaVerify(id_rota, botao) {
     try {
         // Verificar se há tickets reservados associados à rota do botão
@@ -165,13 +166,33 @@ async function atualizarBotoesReservaVerify(id_rota, botao) {
         console.log("A droga do resp: ", resp)
         if (resp && resp.tickets_reservados && resp.tickets_reservados.length > 0) {
             const ticketReservado = resp.tickets_reservados.find(ticket => {
-                return ticket.rota && ticket.rota[0].id === id_rota && ticket.num_ticket === 1;
+                return ticket.rota && ticket.rota[0].id === id_rota;
             });
             // Definir o conteúdo do botão com base na presença de tickets reservados
             botao.textContent = ticketReservado ? "-" : "+";
             console.log("Passou na condição: ", typeof(ticketReservado))
         } else {
             botao.textContent = "+"
+        }
+    } catch (error) {
+        console.error('Erro na atualização dos botões de reserva:', error);
+    }
+}
+
+async function atualizarPosicaoFIla(id_rota, posicao) {
+    try {
+        // Verificar se há tickets reservados associados à rota do botão
+        const resp = await GetUserSoticon(token_decodificado.user_id);
+        console.log("A droga do resp: ", resp)
+        if (resp && resp.tickets_reservados && resp.tickets_reservados.length > 0) {
+            const ticketReservado = resp.tickets_reservados.find(ticket => {
+                return ticket.rota && ticket.rota[0].id === id_rota;
+            });
+            // Definir o conteúdo do botão com base na presença de tickets reservados
+            posicao.textContent = ticketReservado ? `Posição ${resp.tickets_reservados[0].num_ticket}/58` : "";
+            console.log("Passou na condição: ", typeof(ticketReservado))
+        } else {
+            posicao.textContent = ""
         }
     } catch (error) {
         console.error('Erro na atualização dos botões de reserva:', error);
@@ -221,17 +242,20 @@ loadingIcon.classList.add('fas', 'fa-spinner', 'fa-spin', 'loading-icon');
 iconContainer.appendChild(loadingIcon)
 iconContainer.appendChild(frase)
 
-// pegando container da tela
 var container = document.querySelector(".container");
-container.innerHTML = '';
+// container.innerHTML = '';
+
 
 // listando rotas na tela
 async function montarElementosDaTela() {
     // armazenando rotas do dia
-    const rotas = await ListarRotasDoDIa();
+    const rotas = await ListarRotasDoDIa()
+    
+    container.innerHTML = '';
 
     iconContainer.removeChild(loadingIcon);
     iconContainer.removeChild(frase)
+
 
     // Mapeando e adicionando os itens ao container
     for (const item of rotas) {
@@ -280,7 +304,9 @@ async function montarElementosDaTela() {
         var paragrafoPosicao = document.createElement('p');
         paragrafoPosicao.textContent = item.posicao;
         paragrafoPosicao.classList.add('Posicao');
-        paragrafoPosicao.textContent = "Posição 11/58"
+        // paragrafoPosicao.textContent = "Posição 11/58"
+        await atualizarPosicaoFIla(item.id, paragrafoPosicao)
+
         
         // Adicionando elementos filhos à div .caixa
         caixa.appendChild(paragrafoDia);
@@ -441,15 +467,16 @@ async function montarElementosDaTela() {
                 // Ocultar ícone de carregamento após a requisição
                 loadingIcon.style.display = "none";
 
-                if (bo_conteudo === "+") {
-                    Botao.textContent = "-";
-                } else if (bo_conteudo === "-") {
-                    Botao.textContent = "+";
+                if (data) {
+                    if (bo_conteudo === "+") {
+                        Botao.textContent = "-";
+                    } else if (bo_conteudo === "-") {
+                        Botao.textContent = "+";
+                    }
+                    const posicao_fila_objeto = data.posicao_fila
+                    Posicao.textContent =  (posicao_fila_objeto !== undefined) ? `Posição ${posicao_fila_objeto}/58` : ""
                 }
 
-                Posicao.textContent = "11/58"
-
-                // window.location.reload()
     
             } catch (error) {
                 console.error('Erro ao reservar/cancelar ticket:', error.message);
@@ -563,8 +590,8 @@ logout_elemenst.forEach(function(element) {
 
 /* 
     Eu preciso de algum dado do ticket/rota do aluno para verificar 
-o estado do botão de reserva para que ao carregar a página o estado 
-não seja perdido e o estilo do botão seja preservado.
+o estado do elemento de PosicaoFila, para que ao carregar a página o estado 
+não seja perdido e o estilo do elemento seja mantido.
 
 */
 
