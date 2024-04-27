@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guarita</title>
+    <script src="https://kit.fontawesome.com/a772aefe7b.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../styles/cadastrarRotas.css">
+    <link rel="icon" href="../images/logoOnibus.png"/>
+</head>
+
+<body background="../images/backgroundCortex.jpg">
+    <!--Imagem do ônibus-->
+    <figure class="logo">
+        <img src="../images/logoOnibus.png" alt="imagem do ônibus" width="200px" height="200px">
+    </figure>
+
+    <div class="container">
+        <h1>Criar uma nova Rota</h1>
+        <form class="formulario" id="formulario" method="POST">
+            <div>
+                <label for="obs">detalhes:</label><br>
+                <textarea id="obs" name="obs" placeholder="Informe os detalhes" required></textarea>
+            </div>
+
+            <div>
+                <label for="data">data:</label><br>
+                <input type="date" id="data" name="data" placeholder="Informe a data" required>
+            </div>
+
+            <div>
+                <label for="status">status:</label><br>
+                <select id="status" name="status" required >
+                    <option value="" selected disabled>Informe o status</option>
+                    <option value="espera">espera</option>
+                    <option value="cancelada">cancelada</option>
+                    <option value="executada">executada</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="horario">horário:</label><br>
+                <input type="time" id="horario" name="horario" placeholder="Informe o horário" required/>
+            </div>
+            <button type="submit" id="botao">Cadastrar rota</button>
+        </form>
+
+    </div>
+
+<script src="../scripts/cadastrarRotas.js"></script>
+</body>
+
+</html>
