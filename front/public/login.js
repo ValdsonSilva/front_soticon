@@ -98,7 +98,7 @@ function getToken(cpf, password) {
 }
 
 // função que já passa o usuário para a próxima tela se ele estiver logado
-function veficarTokens() {
+function veficarUsuarioLogado() {
     const token = localStorage.getItem('token');
     const refreshToken = localStorage.getItem('refreshToken')
 
@@ -114,7 +114,7 @@ function veficarTokens() {
     }
 }
 // chamando função
-veficarTokens();
+veficarUsuarioLogado();
 
 // função para redirecionar o user para a proxima tela
 function redirecionarParaProximaTela() {

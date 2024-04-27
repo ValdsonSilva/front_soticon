@@ -541,9 +541,12 @@ function formatDate(dateString) {
 
 // horário da rota formatado
 function formatHorario(horarioString) {
-    const horario = new Date(horarioString);
-    const hours = horario.getHours();
-    const minutes = horario.getMinutes();
+    // Divida a string do horário usando ':' como delimitador
+    const parts = horarioString.split(":");
+
+    const hours = parseInt(parts[0]);
+    const minutes = parseInt(parts[1]);
+
     const formattedHours = String(hours).padStart(2, '0');
     const formattedMinutes = String(minutes).padStart(2, '0');
     return `Ônibus das ${formattedHours}:${formattedMinutes}h`;
