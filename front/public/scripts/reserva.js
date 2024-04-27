@@ -13,6 +13,21 @@ function decodeToken(token) {
 }
 const token_decodificado = decodeToken(token)
 
+// verificando id do usuário
+function VerifyUserPermission(token_decodificado) {
+    const id_user_tela = token_decodificado.user_id
+
+    if (id_user_tela) {
+        // significa que o tipo do usuário não permite ele acessar essa tela
+        if (id_user_tela !== 1) {
+            window.location.href = "../index.html";
+        }
+    }
+
+    console.log("Usuário da tela: ", id_user_tela)
+}
+VerifyUserPermission(token_decodificado)
+
 
 console.log("O token decodificado: ", token_decodificado)
 

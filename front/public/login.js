@@ -1,4 +1,7 @@
 const url_base = "https://web-5gnex1an3lly.up-us-nyc1-k8s-1.apps.run-on-seenode.com/";
+
+let token = localStorage.getItem('token') ? decodeToken(localStorage.getItem('token')) : ""
+
 // acessando botão do formulário
 document.getElementById("login").addEventListener("click", function() {
     // acessando valores dos inputs
@@ -80,6 +83,7 @@ function getToken(cpf, password) {
                 // Redirecionar o usuário para a próxima tela (tela de reserva)
                 redirecionarParaProximaTela();
                 loginButton.innerHTML = 'Login';
+                window.location.reload()
             }
             else {
                 throw new Error("Token não recebido na resposta");
@@ -119,8 +123,16 @@ veficarUsuarioLogado();
 // função para redirecionar o user para a proxima tela
 function redirecionarParaProximaTela() {
     // Ambos os tokens estão válidos, redirecionar o usuário para a tela de reserva
-    const url = './pages/reserva_ticket.html'
-    window.location.href = url;
+    // const url = './pages/reserva_ticket.html'
+    // window.location.href = url;
+        
+    verificarTipoUsuario(token.user_id).then((resp) => {
+        console.log("O tipo do usuário: ", resp.tipo)
+        if (resp.tipo === 1) {
+            const url = './pages/AdminOptions.html'
+            window.location.href = url;
+        }
+    })
 }
 
 // verificando tempo de expiração do token
@@ -145,3 +157,34 @@ function decodeToken(token) {
     const decodeToken = atob(payload);
     return JSON.parse(decodeToken);
 }
+console.log("Token decodificado: ", token.user_id)
+
+async function verificarTipoUsuario(id) {
+    const url = url_base + `api/gerusuarios/v1/users/${id}`;
+
+    const options = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization' : `Bearer ${localStorage.getItem('token')}`
+        }
+    }
+
+    try {
+        const response = await fetch(url, options);
+        if (!response.ok) {
+            throw new Error("Erro ao puxar os usuários" + response.status);
+        }
+        const data = await response.json();
+        console.log("Aqui estão os usuários: ", data);
+        return data;
+
+    } catch (error) {
+        console.error("Erro durante a requisição dos usuários: ", error.message);
+    }
+}
+
+    
+// verificarTipoUsuario(token.user_id).then((resp) => {
+//     console.log("O tipo do usuário: ", resp.tipo)
+// })
