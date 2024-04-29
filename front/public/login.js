@@ -97,7 +97,7 @@ function getToken(cpf, password) {
             // redireciona para a tela de login em caso de erro
             loginButton.innerHTML = 'Login';
             window.location.href = "./index.html";
-            window.alert("Tente realizar o login novamente!")
+            window.alert("CPF ou Senha inválidos! \nTente realizar o login novamente!")
         })
 }
 
@@ -121,16 +121,38 @@ function veficarUsuarioLogado() {
 veficarUsuarioLogado();
 
 // função para redirecionar o user para a proxima tela
-function redirecionarParaProximaTela() {
-    // Ambos os tokens estão válidos, redirecionar o usuário para a tela de reserva
-    // const url = './pages/reserva_ticket.html'
-    // window.location.href = url;
-        
-    verificarTipoUsuario(token.user_id).then((resp) => {
-        console.log("O tipo do usuário: ", resp.tipo)
-        if (resp.tipo === 1) {
-            const url = './pages/AdminOptions.html'
+async function redirecionarParaProximaTela() {
+    console.log("Recebendo id: ", token.user_id)
+    
+    // verificando o tipo de usuário
+    await verificarTipoUsuario(token.user_id).then((resp) => {
+
+        if (resp.nome_tipo === "admin") {
+            url = './pages/AdminOptions.html';
             window.location.href = url;
+
+        } else if (resp.nome_tipo === "aluno") {
+            url = './pages/reserva_ticket.html';
+            window.location.href = url;
+
+        } else if (resp.nome_tipo === "motorista") {
+            url = './pages/motorista.html';
+            window.location.href = url;
+
+        } else if (resp.nome_tipo === "ti") {
+            url = './pages/cadastrarRotas.html'
+            window.location.href = url
+        } else if (resp.nome_tipo === "serv.terceirizado") {
+            url = './pages/guarita.html';
+            window.location.href = url;
+
+        } else if (resp.nome_tipo === "professor" || resp.nome_tipo === "tec.administrativo") {
+            // Não tem tela para o professor no Soticon ainda
+            window.location.href = "./index.html";
+
+        } else {
+            window.alert("Usuário inexistente no sistema!");
+            window.location.href = "./index.html";
         }
     })
 }
@@ -176,7 +198,7 @@ async function verificarTipoUsuario(id) {
             throw new Error("Erro ao puxar os usuários" + response.status);
         }
         const data = await response.json();
-        console.log("Aqui estão os usuários: ", data);
+        console.log("Aqui está o usuário: ", data);
         return data;
 
     } catch (error) {
@@ -184,7 +206,27 @@ async function verificarTipoUsuario(id) {
     }
 }
 
-    
-// verificarTipoUsuario(token.user_id).then((resp) => {
-//     console.log("O tipo do usuário: ", resp.tipo)
-// })
+// verifica a estrutura do token
+function verifyTokenPattern(token) {
+    // Verificar se o token está no formato correto '{{Token valor}}'
+    return /^{{Token .+}}$/.test(token);
+}
+
+function redirecionarSeNecessario() {
+    const token = localStorage.getItem('token');
+
+    if (token) {
+        if (verifyTokenPattern(token)) {
+            // Remover token do localStorage
+            localStorage.removeItem('token');
+            localStorage.removeItem('refreshToken')
+            // Redirecionar para a página de índice
+            window.location.href = "./index.html";
+        } else {
+            // Token válido, continuar com a operação normal
+            redirecionarParaProximaTela();
+        }
+    }
+}
+// Chamada para verificar e redirecionar
+redirecionarSeNecessario();

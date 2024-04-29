@@ -12,6 +12,27 @@ function decodeToken(token) {
 }
 const token_decodificado = decodeToken(token)
 
+// verificando id do usuário
+async function VerifyUserPermission(token_decodificado) {
+    const id_user_tela = token_decodificado.user_id
+
+    if (id_user_tela) {
+        // significa que o tipo do usuário não permite ele acessar essa tela
+        const resp = await verificarTipoUsuario(token_decodificado.user_id);
+        console.log("O tipo do usuário: ", resp.nome_tipo);
+
+        if (resp.nome_tipo !== "admin" & resp.nome_tipo !== "ti") {
+            window.location.href = "../index.html";
+            
+        } else {
+            console.log("Usuário certo")
+        }
+    }
+
+    console.log("Usuário da tela: ", id_user_tela)
+}
+VerifyUserPermission(token_decodificado)
+
 
 console.log("O token decodificado: ", token_decodificado)
 
@@ -202,7 +223,7 @@ cadastrarButton.addEventListener("click", function(e) {
 })
 
 
-
+// cadastra as novas rotas
 async function cadastrarRotas(detalhes_rota, data, status, horario) {
     const url = url_base + "api/soticon/v1/rotas/";
 
@@ -239,4 +260,61 @@ async function cadastrarRotas(detalhes_rota, data, status, horario) {
 };
 
 
-// Rota da manhã
+const logout_elemenst = document.querySelectorAll(".retornar")
+logout_elemenst.forEach(function(element) {
+    element.addEventListener("click", function(){
+        for (var i = 0; i < logout_elemenst.length; i++){
+            localStorage.removeItem('token')
+            localStorage.removeItem('refreshToken')
+            window.location.href = "../index.html"
+        }   
+    })
+})
+
+// retorna varias infos do user, inclusive o tipo
+async function verificarTipoUsuario(id) {
+    const url = url_base + `api/gerusuarios/v1/users/${id}`;
+
+    const options = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization' : `Bearer ${localStorage.getItem('token')}`
+        }
+    }
+
+    try {
+        const response = await fetch(url, options);
+        if (!response.ok) {
+            throw new Error("Erro ao puxar os usuários" + response.status);
+        }
+        const data = await response.json();
+        console.log("Aqui está o usuário: ", data);
+        return data;
+
+    } catch (error) {
+        console.error("Erro durante a requisição dos usuários: ", error.message);
+    }
+}
+
+// verifica a estrutura do token
+function verifyTokenPattern(token) {
+    // Verificar se o token está no formato correto '{{Token valor}}'
+    return /^{{Token .+}}$/.test(token);
+}
+
+function redirecionarSeNecessario() {
+    const token = localStorage.getItem('token');
+
+    if (token) {
+        if (verifyTokenPattern(token)) {
+            // Remover token do localStorage
+            localStorage.removeItem('token');
+            localStorage.removeItem('refreshToken')
+            // Redirecionar para a página de índice
+            window.location.href = "./index.html";
+        }
+    }
+}
+// Chamada para verificar e redirecionar
+redirecionarSeNecessario();

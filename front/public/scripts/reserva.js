@@ -14,13 +14,19 @@ function decodeToken(token) {
 const token_decodificado = decodeToken(token)
 
 // verificando id do usuário
-function VerifyUserPermission(token_decodificado) {
+async function VerifyUserPermission(token_decodificado) {
     const id_user_tela = token_decodificado.user_id
 
     if (id_user_tela) {
         // significa que o tipo do usuário não permite ele acessar essa tela
-        if (id_user_tela !== 1) {
+        const resp = await verificarTipoUsuario(token_decodificado.user_id);
+        console.log("O tipo do usuário: ", resp.nome_tipo);
+
+        if (resp.nome_tipo !== "admin" & resp.nome_tipo !== "aluno") {
             window.location.href = "../index.html";
+            
+        } else {
+            console.log("Usuário certo")
         }
     }
 
@@ -606,10 +612,51 @@ logout_elemenst.forEach(function(element) {
 })
 
 
-/* 
-    Eu preciso de algum dado do ticket/rota do aluno para verificar 
-o estado do elemento de PosicaoFila, para que ao carregar a página o estado 
-não seja perdido e o estilo do elemento seja mantido.
+// retorna varias infos do user, inclusive o tipo
+async function verificarTipoUsuario(id) {
+    const url = url_base + `api/gerusuarios/v1/users/${id}`;
 
-*/
+    const options = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization' : `Bearer ${localStorage.getItem('token')}`
+        }
+    }
+
+    try {
+        const response = await fetch(url, options);
+        if (!response.ok) {
+            throw new Error("Erro ao puxar os usuários" + response.status);
+        }
+        const data = await response.json();
+        console.log("Aqui está o usuário: ", data);
+        return data;
+
+    } catch (error) {
+        console.error("Erro durante a requisição dos usuários: ", error.message);
+    }
+}
+
+// verifica a estrutura do token
+function verifyTokenPattern(token) {
+    // Verificar se o token está no formato correto '{{Token valor}}'
+    return /^{{Token .+}}$/.test(token);
+}
+
+function redirecionarSeNecessario() {
+    const token = localStorage.getItem('token');
+
+    if (token) {
+        if (verifyTokenPattern(token)) {
+            // Remover token do localStorage
+            localStorage.removeItem('token');
+            localStorage.removeItem('refreshToken')
+            // Redirecionar para a página de índice
+            window.location.href = "./index.html";
+        }
+    }
+}
+// Chamada para verificar e redirecionar
+redirecionarSeNecessario();
 
