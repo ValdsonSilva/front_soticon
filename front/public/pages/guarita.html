@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Guarita</title>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="../styles/guarita1.css">
     <link rel="icon" href="../styles/guarita1.css">
 </head>
@@ -21,7 +21,12 @@
         Logout
     </a>
 
-    <div class="container">
+    <div id="loader" class="loader">
+        <i class="fas fa-spinner fa-spin"></i><br><br>
+        <h1 style="color: #fff;font-size: 50px">Carregando rotas...</h1>
+    </div>
+    <div class="container"></div>
+    <!-- <div class="container">
 
         <div class="caixa">
             <p class="dia"></p>
@@ -29,13 +34,11 @@
             <p class="horario">Ônibus das xx:xxh</p>
 
             <div class="botao">
-                <a href="">Monitorar</a>
+                <button class="bo">Monitorar</button>
             </div>
 
         </div>
-    </div>
-
-    <!-- <a href="{% url 'logout' %}" class="link">Logout</a> -->
+    </div> -->
 
     <!--Esse trecho de código não estava funcionando por erro na escrita do mesmo-->
     <script src="../scripts/guarita.js"></script>

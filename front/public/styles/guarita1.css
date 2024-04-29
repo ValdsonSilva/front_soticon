@@ -28,6 +28,7 @@
     display: grid;
     place-content: center;
     margin-top: 50px;
+    gap: 50px;
 }
 
 .caixa{
@@ -59,7 +60,7 @@
     margin-top: 80px;
 }
 
-a {
+button {
     border: 3px solid #ffff;
     background-color: transparent;
     border-radius: 30px;
@@ -76,9 +77,31 @@ a {
     align-items: center;
 }
 
-a:hover {
+button:hover {
     transition: 200ms ease-in;
     border: 6px solid #ffff;
+}
+
+.bo_disable {
+    border: 3px solid #a7a4a4;
+    background-color: transparent;
+    border-radius: 30px;
+    box-shadow: 0px 4px 4px 0px #00000040;
+    width: 218px;
+    height: 68px;
+    font-size: 28px;
+    font-weight: 700;
+    color: #a7a2a2;
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.bo_disable:hover {
+    transition: none;
+    border: 2px solid #9e9999;
 }
 
 .dia{
@@ -122,6 +145,15 @@ a:hover {
     font-size: 35px;
     border: 5px solid #ffff;
     transition: font-size 0.3s ease-in-out;
+}
+
+.loader {
+    text-align: center;
+}
+
+.fa-spinner {
+    font-size: 100px;
+    color: #f1f3f5; /* cor azul */
 }
 
 @media screen and (max-width: 767px) {

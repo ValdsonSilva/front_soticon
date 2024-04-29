@@ -525,23 +525,10 @@ function DayData() {
     const mes = minhadata.getMonth() + 1;
     const ano = new Date().getUTCFullYear();
 
-    if (dia < 10){
-        return `0${ano}-${mes}-${dia}`
+    const diaStr = dia < 10 ? `0${dia}` : `${dia}`;
+    const mesStr = mes < 10 ? `0${mes}` : `${mes}`;
 
-        if (mes < 10){
-            return `0${ano}-0${mes}-${dia}`
-        }
-    }
-
-    else if (mes < 10){
-        return `${ano}-0${mes}-${dia}`
-
-        if (dia < 10){
-            return `0${ano}-0${mes}-${dia}`
-        }
-    } else {
-        return `${ano}-${mes}-${dia}`
-    }
+    return `${ano}-${mes}-${dia}`;
 }
 
 // Função para mostrar o dia da semana
