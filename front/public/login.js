@@ -126,35 +126,36 @@ async function redirecionarParaProximaTela() {
     
     // verificando o tipo de usuário
     await verificarTipoUsuario(token.user_id).then((resp) => {
-
-        if (resp.nome_tipo === "admin") {
-            url = './pages/AdminOptions.html';
-            window.location.href = url;
-
-        } else if (resp.nome_tipo === "aluno") {
-            url = './pages/reserva_ticket.html';
-            window.location.href = url;
-
-        } else if (resp.nome_tipo === "motorista") {
-            url = './pages/motorista.html';
-            window.location.href = url;
-
-        } else if (resp.nome_tipo === "ti") {
-            url = './pages/cadastrarRotas.html'
-            window.location.href = url
-        } else if (resp.nome_tipo === "serv.terceirizado") {
-            url = './pages/guarita.html';
-            window.location.href = url;
-
-        } else if (resp.nome_tipo === "professor" || resp.nome_tipo === "tec.administrativo") {
-            // Não tem tela para o professor no Soticon ainda
-            window.location.href = "./index.html";
-
-        } else {
-            window.alert("Usuário inexistente no sistema!");
-            window.location.href = "./index.html";
+        let url;
+    
+        switch (resp.nome_tipo) {
+            case "admin":
+                url = './pages/AdminOptions.html';
+                break;
+            case "aluno":
+                url = './pages/reserva_ticket.html';
+                break;
+            case "motorista":
+                url = './pages/motorista.html';
+                break;
+            case "ti":
+                url = './pages/cadastrarRotas.html';
+                break;
+            case "serv.terceirizado":
+                url = './pages/guarita.html';
+                break;
+            case "professor":
+            case "tec.administrativo":
+                // Não tem tela para o professor no Soticon ainda
+                url = "./index.html";
+                break;
+            default:
+                window.alert("Usuário inexistente no sistema!");
+                url = "./index.html";
         }
-    })
+    
+        window.location.href = url;
+    });
 }
 
 // verificando tempo de expiração do token
