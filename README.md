@@ -1,4 +1,4 @@
-#Front-end da aplicação Soticon do IFPI campus Floriano#
+Front-end da aplicação Soticon do IFPI campus Floriano
 
 O Soticon atualmente utiliza as tecnologias básicas 
 de front-end como, HTML, CSS e JavaScript.
