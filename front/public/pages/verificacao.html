@@ -8,6 +8,8 @@
     <link rel="icon" href="../images/logoOnibus.png" type="image/x-icon">
     <link rel="stylesheet" href="../styles/verificacao.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/imask/6.0.7/imask.min.js"></script>
 </head>
 
 <body background="../images/backgroundCortex.jpg">
@@ -22,14 +24,18 @@
 
     <div class="caixaUm">
         <div class="containerUm">
-            <form>
-                <span for="caixa" class="cpf">CPF</span><br>
-                <input type="text" class="input" name="idUsuario" id="idUsuario" placeholder="Digite algo">
+            <form id="formulario">
+                <div class="input-container">
+                    <span for="caixa" class="cpf">CPF</span><br>
+                    <input type="text" class="input" maxlength="14" id="idUsuario" placeholder="Digite o CPF">
+                </div>
 
                 <button type="submit" name="Proximo" class="proximo">
-                    <img src="../images/seta.png" alt="" class="seta">
+                    <img src="../images/seta.png" alt="Verificando ticket" class="seta">
+                    <!-- <i id="iconeCarregamento" class="fa fa-spinner fa-spin escondido"></i> -->
                 </button>
             </form>
+            <!-- <button class="finalizar">Finalizar rota</button> -->
         </div>
     </div>
 
@@ -38,9 +44,9 @@
     </div>
 
     <div class="cont_container3">
-        <div class="container3">
+        <!-- <div class="container3">
             <figure class="fotocaixa">
-                <!-- Substitua a URL da imagem do aluno -->
+                Substitua a URL da imagem do aluno
                 <img src="#" alt="Foto do aluno">
             </figure>
 
@@ -52,12 +58,18 @@
             <div class="cont2">
                 <div class="status">Pendente</div>
             </div>
-        </div>
+        </div> -->
         <!-- <a href="{% url 'logout' %}" class="link">Logout</a> -->
     </div>
 
     <script src="../scripts/verificacao.js"></script>
-
+    <!-- Script para inicializar a máscara de CPF -->
+    <script>
+        // Cria uma máscara de CPF para o campo de entrada
+        var mascaraCPF = IMask(document.getElementById('idUsuario'), {
+            mask: '000.000.000-00'
+        });
+    </script>
 </body>
 
 </html>

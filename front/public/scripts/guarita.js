@@ -226,7 +226,7 @@ function DayData() {
 }
 
 function listarRotasDoDia() {
-    const url = url_base + `api/soticon/v1/rotas/?data=${DayData()}`;
+    const url = url_base + `api/soticon/v1/rotas/?data_valida=${DayData()}`;
 
 
     const loader = document.getElementById('loader');
@@ -235,7 +235,8 @@ function listarRotasDoDia() {
     const options = {
         method: "GET",
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization' : `Bearer ${localStorage.getItem('token')}`
         }
     }
 
@@ -262,6 +263,7 @@ function listarRotasDoDia() {
         })
 }
 
+// lista as rotas na tela
 async function exibirRotas(rotas) {
     const container = document.querySelector('.container');
 
@@ -288,7 +290,8 @@ async function exibirRotas(rotas) {
         containerButton.classList.add('botao');
 
         const btnMonitorar = document.createElement('button');
-        btnMonitorar.classList.add(rota.status === "espera" ? 'bo' + rota.id : 'bo_disable')
+        // btnMonitorar.classList.add(rota.status === "espera" ? 'bo' + rota.id : 'bo_disable')
+        btnMonitorar.classList.add('bo' + rota.id)
         // btnMonitorar.classList.add('bo_disable');
         btnMonitorar.textContent = 'Monitorar';
 

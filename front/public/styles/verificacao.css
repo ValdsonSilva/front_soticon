@@ -55,28 +55,58 @@
 
 .containerUm {
     width: 100%;
-    height: 170px;
+    height: 250px;
     /* padding-left: 200px; */
     /* background-color: blueviolet; */
     display: flex;
     justify-content: center;
+    flex-direction: column;
+    align-items: center;
 }
 
 
 .containerUm form {
     /* background-color: rgb(255, 171, 15); */
-    width: 90%;
+    width: 100%;
+    height: 200px;
     margin-inline: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.input-container {
+    /* background-color: rgba(14, 251, 93, 0.951); */
+    width: auto;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items:flex-start;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+
+.finalizar {
+    width: 200px;
+    height: 60px;
+    border-radius: 25px;
+    font-size: 20px;
+    font-weight: 600;
+    border: none;
+    box-shadow: 2px 1px 0px 1px #000;
+}
+
+.finalizar:hover, .finalizar:active {
+    font-size: 25px;
+    /* padding-left: 2px; */
 }
 
 
 .cpf {
-    margin-top: 131px;
-    margin-left: 26px;
     font-size: 25px;
     font-style: normal;
     font-weight: 700;
-    line-height: 34px;
     letter-spacing: 0em;
     text-align: left;
 
@@ -89,9 +119,9 @@
     border-radius: 46.0069px;
     height: 60px;
     width: 600px;
-    margin-top: 10px;
-    margin-left: 0px;
-    bottom: 0%;
+    /* margin-top: 10px; */
+    /* margin-left: 0px; */
+    /* bottom: 0%; */
     background: transparent;
     cursor: pointer;
     outline-style: none;
@@ -147,13 +177,13 @@
 }
 
 .proximo {
-    position: absolute;
+    /* position: absolute; */
     width: 150px;
     height: 60px;
     cursor: pointer;
     color: #ffff;
-    margin-top: 13px;
-    margin-left: 30px;
+    /* margin-top: 13px;
+    margin-left: 30px; */
 
     border: 3px solid #FFFFFF;
     background-color: transparent;
@@ -163,12 +193,6 @@
 .proximo:hover {
     border: 4px solid #FFFFFF;
 }
-
- /*On click
-    Navigate to: "guarita";
-    Animate: Instant;
-    animation-duration: 0ms;
-    pós hover: border: 4px*/
 
 .container2 {
     display: flex;
@@ -192,7 +216,9 @@
 .cont_container3 {
     display: flex;
     justify-content: center;
-    margin-bottom: 15px;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
 }
 
 .container3 {
@@ -214,7 +240,11 @@
 
 /* dentro do container 3*/
 .cont1 {
-    margin-top: 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
 }
 
 h3 {
@@ -258,6 +288,10 @@ p {
     border-radius: 10px;
 }
 
+.escondido {
+    display: none;
+}
+
 @media screen and (max-width: 767px) {
     .logo {
         display: flex;
@@ -267,66 +301,25 @@ p {
     .containerUm {
         display: flex;
         justify-content: center;
-        height: 150px;
     }
 
-    .containerUm > form {
-        margin-right: 400px;
+    .input-container {
+        margin-bottom: 40px;
     }
 
-    .cpf {
-        margin-top: 131px;
-        margin-left: 26px;
-        font-size: 20px;
-        font-style: normal;
-        font-weight: 700;
-        line-height: 34px;
-        letter-spacing: 0em;
-        text-align: left;
-    
-        color: #ffff;
-    
+    .finalizar {
+        width: 200px;
+        height: 50px;
+        border-radius: 25px;
+        font-size: 15px;
+        font-weight: 600;
+        border: none;
+        box-shadow: 2px 1px 0px 1px #000;
     }
 
     .input {
-        box-sizing: border-box;
-        border: 1.84028px solid #FFFFFF;
-        border-radius: 46.0069px;
         height: 50px;
         width: 300px;
-        margin-top: 10px;
-        margin-left: 20px;
-        bottom: 0%;
-        background: transparent;
-        cursor: pointer;
-        outline-style: none;
-        color: #FFFFFF;
-    
-        font-size: 25px;
-        font-weight: 700;
-        line-height: 31px;
-        letter-spacing: 0em;
-        text-indent: 35px;
-       
-    }
-
-    .botao1 {
-        height: 50px;
-        width: 120px;
-        margin-left: 15px;
-        margin-top: 0px;
-        background-color: transparent;
-        cursor: pointer;
-        color: #ffff;
-    
-        border: 3px solid #FFFFFF;
-        border-radius: 40px;
-    
-        font-size: 20px;
-        font-weight: 700;
-        line-height: 31px;
-        letter-spacing: 0em;
-        text-align: center;
     }
 
     .fundo {
@@ -446,18 +439,14 @@ p {
         justify-content: center;
     }
 
-    .containerUm > form {
-        margin-right: 400px;
-    }
-
-
     .cpf {
         font-size: 25px;
     }
 
     .input {
         height: 54px;
-        width: 435px;
+        width: 400px;
+        font-size: 25px;
     }
 
     .botao1 {
