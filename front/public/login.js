@@ -1,18 +1,22 @@
 const url_base = "https://web-5gnex1an3lly.up-us-nyc1-k8s-1.apps.run-on-seenode.com/";
 
-let token = localStorage.getItem('token') ? decodeToken(localStorage.getItem('token')) : ""
+let accessToken = localStorage.getItem('token') ? decodeToken(localStorage.getItem('token')) : ""
 
 // acessando botão do formulário
 document.getElementById("login").addEventListener("click", function() {
     // acessando valores dos inputs
     const cpf = document.getElementById("cpf").value;
     const password = document.getElementById("senha").value;
-
-    if (cpf !== "" && password !== "") {
-        // gerar token
-        getToken(cpf, password)
-    } else {
-        console.log("Preencha os campos do formulário")
+    
+    try {
+        if (cpf !== "" && password !== "") {
+            // gerar token
+            getToken(cpf, password)
+        } else {
+            console.log("Preencha os campos do formulário")
+        }
+    } catch (error) {
+        console.log("Erro")
     }
 })
 
@@ -81,9 +85,7 @@ function getToken(cpf, password) {
                 console.log("refresh ", data.refresh)
 
                 // Redirecionar o usuário para a próxima tela (tela de reserva)
-                redirecionarParaProximaTela();
-                loginButton.innerHTML = 'Login';
-                window.location.reload()
+                return redirecionarParaProximaTela(data.access);
             }
             else {
                 throw new Error("Token não recebido na resposta");
@@ -98,6 +100,10 @@ function getToken(cpf, password) {
             loginButton.innerHTML = 'Login';
             window.location.href = "./index.html";
             window.alert("CPF ou Senha inválidos! \nTente realizar o login novamente!")
+        })
+        .finally(() => {
+            // window.location.reload()
+            loginButton.innerHTML = 'processando...';
         })
 }
 
@@ -121,11 +127,13 @@ function veficarUsuarioLogado() {
 veficarUsuarioLogado();
 
 // função para redirecionar o user para a proxima tela
-async function redirecionarParaProximaTela() {
-    console.log("Recebendo id: ", token.user_id)
+async function redirecionarParaProximaTela(accessToken) {
+    try {
+        const userId = parseJwt(accessToken).user_id
+        console.log("Recebendo id: ", userId)
     
-    // verificando o tipo de usuário
-    await verificarTipoUsuario(token.user_id).then((resp) => {
+        // verificando o tipo de usuário
+        const resp = await verificarTipoUsuario(userId)
         let url;
     
         switch (resp.nome_tipo) {
@@ -153,9 +161,14 @@ async function redirecionarParaProximaTela() {
                 window.alert("Usuário inexistente no sistema!");
                 url = "./index.html";
         }
-    
-        window.location.href = url;
-    });
+        
+            window.location.href = url;
+
+    } catch (error) {
+        console.log("Erro ao redirecionar para a próxima tela: ", error.message);
+        // window.alert("Erro ao redirecionar para a próxima tela!");
+        window.location.href = "./index.html";
+    }
 }
 
 // verificando tempo de expiração do token
@@ -174,13 +187,24 @@ function verificarTokenExpirado(tokenKey) {
     return false; // indica que o token ainda é válido
 }
 
+// Função para extrair o payload do JWT
+function parseJwt(token) {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    return JSON.parse(jsonPayload);
+}
+
 // decodificando o token
 function decodeToken(token) {
     const payload = token.split('.')[1]
     const decodeToken = atob(payload);
     return JSON.parse(decodeToken);
 }
-console.log("Token decodificado: ", token.user_id)
+console.log("Token decodificado: ", accessToken.user_id)
 
 async function verificarTipoUsuario(id) {
     const url = url_base + `api/gerusuarios/v1/users/${id}`;
