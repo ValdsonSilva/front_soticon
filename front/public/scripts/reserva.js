@@ -226,7 +226,7 @@ let rotasDoDia;
 
 async function ListarRotasDoDIa() {
     // url da requisição
-    const url = url_base + `api/soticon/v1/rotas/?data_valida=${data_rota}`;
+    const url = url_base + `api/soticon/v1/rotas/?data_valida=${data_rota}&status=${'espera'}`;
 
     const options = {
         method: 'GET',

@@ -215,18 +215,19 @@ redirecionarSeNecessario();
 // retorna a data no formato "yyyy-mm-dd"
 function DayData() {
     const minhadata = new Date();
-    const dia = minhadata.getDate();
+    const dia = minhadata.getDate() + 1;
     const mes = minhadata.getMonth() + 1;
     const ano = minhadata.getFullYear();
 
     const diaStr = dia < 10 ? `0${dia}` : `${dia}`;
     const mesStr = mes < 10 ? `0${mes}` : `${mes}`;
 
-    return `${ano}-${mesStr}-${dia}`;
+    // return `${ano}-${mesStr}-${diaStr}`;
+    return `${diaStr}-${mesStr}-${ano}`;
 }
 
 function listarRotasDoDia() {
-    const url = url_base + `api/soticon/v1/rotas/?data_valida=${DayData()}`;
+    const url = url_base + `api/soticon/v1/rotas/?data_valida=${DayData()}&status=${'espera'}`;
 
 
     const loader = document.getElementById('loader');

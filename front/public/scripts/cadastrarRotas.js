@@ -169,7 +169,7 @@ cadastrarButton.addEventListener("click", function(e) {
     const dataSelecionada = new Date(data);
     const ano = dataSelecionada.getFullYear();
     let mes = dataSelecionada.getMonth() + 1;
-    let dia = dataSelecionada.getDate()
+    let dia = dataSelecionada.getDate() + 1;
 
     // Adiciona um zero à esquerda se o mês ou o dia for menor que 10
     mes = mes < 10 ? "0" + mes : mes;
@@ -229,6 +229,7 @@ async function cadastrarRotas(detalhes_rota, data, status, horario) {
 
     // Obtém os dados do formulário
     const formData = {
+        is_ativo : true,
         obs: detalhes_rota,
         data: data,
         status: status,
@@ -318,3 +319,32 @@ function redirecionarSeNecessario() {
 }
 // Chamada para verificar e redirecionar
 redirecionarSeNecessario();
+
+const carregar_rotas = async () => {
+    const url = url_base + "api/soticon/v1/rotas/";
+
+    // Configurando a solicitação
+    const options = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+    };
+
+    try {
+        const response = await fetch(url, options);
+        if (!response.ok) {
+            throw new Error("Erro ao enviar dados do formulário");
+        }
+        const data = await response.json();
+        console.log("Rotas armazenadas:", data.results);
+        return data.results
+        // Processa a resposta do servidor, se necessário
+    } catch (error) {
+        console.error("Erro durante a requisição:", error);
+        throw error; // Propagar o erro para o chamador, se necessário
+    }
+}
+
+carregar_rotas()

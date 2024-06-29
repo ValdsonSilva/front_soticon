@@ -129,7 +129,8 @@ veficarUsuarioLogado();
 // função para redirecionar o user para a proxima tela
 async function redirecionarParaProximaTela(accessToken) {
     try {
-        const userId = parseJwt(accessToken).user_id
+        // const userId = parseJwt(accessToken).user_id
+        const userId = decodeToken(accessToken).user_id
         console.log("Recebendo id: ", userId)
     
         // verificando o tipo de usuário
@@ -169,33 +170,6 @@ async function redirecionarParaProximaTela(accessToken) {
         // window.alert("Erro ao redirecionar para a próxima tela!");
         window.location.href = "./index.html";
     }
-}
-
-// verificando tempo de expiração do token
-function verificarTokenExpirado(tokenKey) {
-    const tokenData = decodeToken(tokenKey);
-    const expirationTime = tokenData.exp * 1000 // Expiração em segundos, converter para milissegundos
-    const currentTime = Date.now();
-
-    // comparar a data de expiração com a data atual
-    if (expirationTime < currentTime) {
-        localStorage.removeItem('token');
-        localStorage.removeItem('refreshToken');
-        return true; // indica que o token expirou
-    }
-
-    return false; // indica que o token ainda é válido
-}
-
-// Função para extrair o payload do JWT
-function parseJwt(token) {
-    const base64Url = token.split('.')[1];
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-    }).join(''));
-
-    return JSON.parse(jsonPayload);
 }
 
 // decodificando o token
