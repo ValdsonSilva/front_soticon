@@ -233,7 +233,8 @@ async function listarTicketsNaPagina(id_rota) {
             const status = document.createElement('div');
             status.classList.add('status');
             status.textContent = ticket.usado & ticket.reservado ? "Usado" : "Pendente"; // Supondo que o objeto ticket tenha uma propriedade 'status'
-    
+            status.style.backgroundColor = ticket.usado & ticket.reservado ? "green" : "#394538";
+
             // Adiciona os elementos filhos aos elementos pais
             fotoCaixa.appendChild(fotoAluno);
             cont1.appendChild(nomeAluno);
