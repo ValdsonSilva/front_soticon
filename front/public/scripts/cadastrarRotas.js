@@ -167,9 +167,10 @@ cadastrarButton.addEventListener("click", function(e) {
 
 
     const dataSelecionada = new Date(data);
-    const ano = dataSelecionada.getFullYear();
-    let mes = dataSelecionada.getMonth() + 1;
-    let dia = dataSelecionada.getDate() + 1;
+
+    const ano = dataSelecionada.getUTCFullYear();
+    let mes = dataSelecionada.getUTCMonth() + 1;
+    let dia = dataSelecionada.getUTCDate();
 
     // Adiciona um zero à esquerda se o mês ou o dia for menor que 10
     mes = mes < 10 ? "0" + mes : mes;

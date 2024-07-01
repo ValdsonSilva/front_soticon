@@ -274,9 +274,6 @@ async function montarElementosDaTela() {
     
     container.innerHTML = '';
 
-    iconContainer.removeChild(loadingIcon);
-    iconContainer.removeChild(frase)
-
 
     // Mapeando e adicionando os itens ao container
     for (const item of rotas) {
@@ -341,91 +338,8 @@ async function montarElementosDaTela() {
         container.appendChild(caixa);
     }
 
-    // ListarRotasDoDIa().then(rotas => {
-
-    //     // Remover ícone de carregamento após o conteúdo ser carregado
-    //     iconContainer.removeChild(loadingIcon);
-    //     iconContainer.removeChild(frase)
-
-    //     // pegando container da tela
-    //     var container = document.querySelector(".container");
-    //     container.innerHTML = '';
-
-    //     // mapeando e adicionando os itens ao container
-    //     rotas.forEach(function(item) {
-    //         var caixa = document.createElement('div');
-    //         caixa.classList.add('caixa');
-
-    //         // nomo do dia da semana
-    //         var paragrafoDIa = document.createElement('p');
-    //         paragrafoDIa.classList.add('dia');
-    //         paragrafoDIa.textContent = Dayweek(item.data);
-
-    //         // data no formato "dd/mm/yyyy"
-    //         var spanData = document.createElement('span');
-    //         spanData.classList.add('data');
-    //         spanData.textContent = formatDate(item.data)
-
-    //         // hora da rota
-    //         var paragrafoHora = document.createElement('p');
-    //         paragrafoHora.classList.add('hora');
-    //         paragrafoHora.textContent = formatHorario(item.horario)
-
-    //         var divBotaoContainer = document.createElement('div');
-    //         divBotaoContainer.classList.add('botao_container');
-
-    //         var botao = document.createElement('button');
-    //         botao.setAttribute('type', 'submit');
-    //         botao.setAttribute('id', 'bo' + item.id); // Adicionando um ID único para cada botão
-    //         // botao.textContent = "+"
-    //         atualizarBotoesReservaVerify(item.id, botao)
-
-    //         let user_soticon;
-
-    //         // adicionando ouvinte do evento de clique no botão
-    //         botao.addEventListener("click", function() {
-    //             // passando o user_soticon
-    //             GetUserSoticon(token_decodificado.user_id).then(resp => {
-    //                 user_soticon = resp.id
-    //                 // Aqui você pode usar o valor de user_soticon
-    //                 console.log("O id user_soticon: ", user_soticon);
-    //                 // chamando função de reservar ticket
-    //                 reservarTicket(item.id, user_soticon)
-    //             });
-    //         })
-
-    //         var paragrafoPosicao = document.createElement('p');
-    //         paragrafoPosicao.textContent = item.posicao;
-    //         paragrafoPosicao.classList.add('Posicao');
-            
-    //         // Adicionando elementos filhos à div .caixa
-    //         caixa.appendChild(paragrafoDIa);
-    //         caixa.appendChild(spanData);
-    //         caixa.appendChild(paragrafoHora);
-    //         caixa.appendChild(divBotaoContainer);
-    //         divBotaoContainer.appendChild(botao);
-    //         divBotaoContainer.appendChild(paragrafoPosicao);
-            
-    //         // Adicionando a div .caixa ao container principal
-    //         container.appendChild(caixa);
-    //     })
-    // })
-
-    // async function atualizarBotoesReservaVerify(id_rota, botao) {
-    //     try {
-    //         // Verificar se há tickets reservados associados à rota do botão
-    //         const resp = await GetUserSoticon(token_decodificado.user_id);
-    //         if (resp && resp.tickets_reservados && resp.tickets_reservados.length > 0) {
-    //             const ticketReservado = resp.tickets_reservados.find(ticket => {
-    //                 return ticket.rota.id === id_rota && ticket.num_ticket === 1;
-    //             });
-    //             // Definir o conteúdo do botão com base na presença de tickets reservados
-    //             botao.textContent = ticketReservado ? "-" : "+";
-    //         } 
-    //     } catch (error) {
-    //         console.error('Erro na atualização dos botões de reserva:', error);
-    //     }
-    // }
+    iconContainer.removeChild(loadingIcon);
+    iconContainer.removeChild(frase)
 
     // OBS: lembrar de se basear por o estado do tícket
     function reservarTicket(id_rota, id_user_soticon) {
@@ -516,6 +430,65 @@ async function montarElementosDaTela() {
 montarElementosDaTela().catch(error => {
     console.error("Erro ao carregar os elementos da tela: ", error)
 })
+
+async function criarElementoRota() {
+    var caixa = document.createElement('div');
+    caixa.classList.add('caixa');
+
+    // Nome do dia da semana
+    var paragrafoDia = document.createElement('p');
+    paragrafoDia.classList.add('dia');
+    paragrafoDia.textContent = Dayweek(item.data);
+
+    // Data no formato "dd/mm/yyyy"
+    var spanData = document.createElement('span');
+    spanData.classList.add('data');
+    spanData.textContent = formatDate(item.data);
+
+    // Hora da rota
+    var paragrafoHora = document.createElement('p');
+    paragrafoHora.classList.add('hora');
+    paragrafoHora.textContent = formatHorario(item.horario);
+
+    var divBotaoContainer = document.createElement('div');
+    divBotaoContainer.classList.add('botao_container');
+
+    var botao = document.createElement('button');
+    botao.setAttribute('type', 'submit');
+    botao.setAttribute('id', 'bo' + item.id); // Adicionando um ID único para cada botão
+    // Chamando a função para atualizar o texto do botão
+    await atualizarBotoesReservaVerify(item.id, botao);
+
+    let user_soticon;
+
+    // Adicionando ouvinte do evento de clique no botão
+    botao.addEventListener("click", function() {
+        // Passando o user_soticon
+        GetUserSoticon(token_decodificado.user_id).then(resp => {
+            user_soticon = resp.id;
+            // Aqui você pode usar o valor de user_soticon
+            console.log("O id user_soticon: ", user_soticon);
+            // Chamando função de reservar ticket
+            reservarTicket(item.id, user_soticon);
+        });
+    });
+
+    var paragrafoPosicao = document.createElement('p');
+    paragrafoPosicao.textContent = item.posicao;
+    paragrafoPosicao.classList.add('Posicao');
+    // paragrafoPosicao.textContent = "Posição 11/58"
+    await atualizarPosicaoFIla(item.id, paragrafoPosicao);
+
+    // Adicionando elementos filhos à div .caixa
+    caixa.appendChild(paragrafoDia);
+    caixa.appendChild(spanData);
+    caixa.appendChild(paragrafoHora);
+    caixa.appendChild(divBotaoContainer);
+    divBotaoContainer.appendChild(botao);
+    divBotaoContainer.appendChild(paragrafoPosicao);
+
+    return caixa;
+}
 
 // função para pegar a data do dia no formato 'yyyy-mm-dd'
 function DayData() {

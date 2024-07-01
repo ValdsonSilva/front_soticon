@@ -108,23 +108,23 @@ function getToken(cpf, password) {
 }
 
 // função que já passa o usuário para a próxima tela se ele estiver logado
-function veficarUsuarioLogado() {
-    const token = localStorage.getItem('token');
-    const refreshToken = localStorage.getItem('refreshToken')
+// function veficarUsuarioLogado() {
+//     const token = localStorage.getItem('token');
+//     const refreshToken = localStorage.getItem('refreshToken')
 
-    // verificar se ambos os tokens estão presentes
-    if (token && refreshToken) {
-        if (!verificarTokenExpirado(token)) {
-            // redireciona para a próxima tela
-            redirecionarParaProximaTela()
+//     // verificar se ambos os tokens estão presentes
+//     if (token && refreshToken) {
+//         if (!verificarTokenExpirado(token)) {
+//             // redireciona para a próxima tela
+//             redirecionarParaProximaTela()
 
-        } else {
-            window.location.href = "./index.html";
-        }
-    }
-}
-// chamando função
-veficarUsuarioLogado();
+//         } else {
+//             window.location.href = "./index.html";
+//         }
+//     }
+// }
+// // chamando função
+// veficarUsuarioLogado();
 
 // função para redirecionar o user para a proxima tela
 async function redirecionarParaProximaTela(accessToken) {
@@ -211,10 +211,13 @@ function verifyTokenPattern(token) {
     return /^{{Token .+}}$/.test(token);
 }
 
-function redirecionarSeNecessario() {
+async function redirecionarSeNecessario() {
     const token = localStorage.getItem('token');
+    const refresh = localStorage.getItem('refreshToken')
 
-    if (token) {
+    console.log("Tokens: ", {token, refresh})
+
+    if (token && refresh) {
         if (verifyTokenPattern(token)) {
             // Remover token do localStorage
             localStorage.removeItem('token');
@@ -223,7 +226,7 @@ function redirecionarSeNecessario() {
             window.location.href = "./index.html";
         } else {
             // Token válido, continuar com a operação normal
-            redirecionarParaProximaTela();
+            redirecionarParaProximaTela(token);
         }
     }
 }
