@@ -5,13 +5,16 @@ let accessToken = localStorage.getItem('token') ? decodeToken(localStorage.getIt
 // acessando botão do formulário
 document.getElementById("login").addEventListener("click", function() {
     // acessando valores dos inputs
-    const cpf = document.getElementById("cpf").value;
+    var cpf = document.getElementById("cpf").value;
     const password = document.getElementById("senha").value;
+
+    const cpf_formatado = limparCPF(cpf)
+    console.log("Cpf formatado: ", cpf_formatado)
     
     try {
-        if (cpf !== "" && password !== "") {
+        if (cpf_formatado !== "" && password !== "") {
             // gerar token
-            getToken(cpf, password)
+            getToken(cpf_formatado, password)
         } else {
             console.log("Preencha os campos do formulário")
         }
@@ -106,25 +109,6 @@ function getToken(cpf, password) {
             loginButton.innerHTML = 'processando...';
         })
 }
-
-// função que já passa o usuário para a próxima tela se ele estiver logado
-// function veficarUsuarioLogado() {
-//     const token = localStorage.getItem('token');
-//     const refreshToken = localStorage.getItem('refreshToken')
-
-//     // verificar se ambos os tokens estão presentes
-//     if (token && refreshToken) {
-//         if (!verificarTokenExpirado(token)) {
-//             // redireciona para a próxima tela
-//             redirecionarParaProximaTela()
-
-//         } else {
-//             window.location.href = "./index.html";
-//         }
-//     }
-// }
-// // chamando função
-// veficarUsuarioLogado();
 
 // função para redirecionar o user para a proxima tela
 async function redirecionarParaProximaTela(accessToken) {
@@ -232,3 +216,9 @@ async function redirecionarSeNecessario() {
 }
 // Chamada para verificar e redirecionar
 redirecionarSeNecessario();
+
+// "xxxxxxxxxxx"
+function limparCPF(cpf) {
+    // Remove todos os caracteres que não são dígitos
+    return cpf.replace(/\D/g, '');
+}

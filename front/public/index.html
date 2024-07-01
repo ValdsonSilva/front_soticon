@@ -7,6 +7,7 @@
   <script src="https://kit.fontawesome.com/a772aefe7b.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="./styles/login.css">
   <link rel="icon" href="./images/logoOnibus.png">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/imask/6.0.7/imask.min.js"></script>
   <title>CORTEX - IFPI/LOGIN</title>
 </head>
 <body background="./images/backgroundCortex.jpg">
@@ -38,4 +39,10 @@
   </div>
 </body>
   <script src="./login.js"></script>
+  <script>
+        // Cria uma máscara de CPF para o campo de entrada
+        var mascaraCPF = IMask(document.getElementById('cpf'), {
+            mask: '000.000.000-00'
+        });
+  </script>
 </html>

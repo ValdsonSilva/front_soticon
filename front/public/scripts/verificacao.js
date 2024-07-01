@@ -348,7 +348,7 @@ document.getElementById("formulario").addEventListener("submit", function(event)
         })
         .catch((error) => {
             console.error("Erro ao associar CPF ao ticket:", error);
-            window.alert("Nenhum ticket associado encontrado para o CPF fornecido.")
+            window.alert("Ticket não encontrado nas pendências!")
         })
         .finally(() => {
             document.getElementById("idUsuario").value = "";
