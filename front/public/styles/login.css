@@ -51,7 +51,7 @@ label{
     padding: 10px;
     margin: 0px 0px 12px -5px;
     transition:ease-in 100ms;
-    
+    outline: none;
 }
 
 .input:hover{
@@ -72,8 +72,18 @@ input{
 
 input::placeholder {
     color: rgb(255, 255, 255);
-  }
+}
 
+input:-webkit-autofill,
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+    box-shadow: 0 0 0 30px white inset !important;
+    -webkit-text-fill-color: #000 !important;
+    border: 1px solid #ccc; /* Adicione isso se desejar redefinir a borda */
+}
 i{
     color: #fff;
 }
@@ -115,4 +125,114 @@ button:hover{
 a#recSenha:hover {
     font-size: 13px;
     font-weight: 600;
+}
+
+/* mobile UI */
+@media only screen and (max-width: 320px) {
+    body {
+        /* display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column; */
+        padding-top: 10px;
+    }
+
+    h2{
+        text-align: center;
+        margin-top: 0px;
+    }
+
+
+    #form {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        /* background-color: rgb(145, 21, 147); */
+        padding: 10px;
+        /* width: 100%; */
+        height: 500px;
+        gap: 0;
+        padding-top: 0px;
+        padding-bottom: 0px;
+        margin-bottom: 20px;
+    }
+
+    #form form div {
+        width: 90%;
+        height: 30px;
+        /* margin: 0px; */
+        /* background-color: yellow; */
+    }
+
+    #form label {
+        font-size: 15px;
+    }
+
+    #form .botao {
+        width: 100%;
+        /* background-color: greenyellow; */
+        margin-bottom: 0;
+    }
+
+    button {
+        margin: 0;
+        font-size: 15px;
+        margin-top: 8px;
+    }
+
+    #form a {
+        top: 0;
+        margin-top: 30px;
+    }
+}
+
+/* Estilos para dispositivos com largura de tela entre 481px e 767px */
+@media only screen and (min-width: 375px) and (max-width: 574px) {
+
+    h2{
+        text-align: center;
+        margin-top: 0px;
+    }
+
+
+    #form {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        /* background-color: rgb(145, 21, 147); */
+        height: 500px;
+        width: 65%;
+        gap: 0;
+        padding-top: 0px;
+        padding-bottom: 0pc;
+        margin-bottom: 10px;
+    }
+
+    #form form div {
+        width: 90%;
+        height: 30px;
+        /* margin: 0px; */
+        /* background-color: yellow; */
+    }
+
+    #form label {
+        font-size: 15px;
+    }
+
+    #form .botao {
+        width: 100%;
+        /* background-color: greenyellow; */
+        margin-bottom: 0;
+    }
+
+    button {
+        margin: 0;
+        font-size: 15px;
+        margin-top: 8px;
+    }
+
+    #form a {
+        top: 0;
+        margin-top: 30px;
+    }
 }
