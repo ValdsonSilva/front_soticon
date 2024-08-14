@@ -10,7 +10,6 @@ var id_rota_path = path.get('id');
 
 console.log(id_rota_path)
 
-
 // console.log(token)
 console.log(localStorage.getItem('token'))
 console.log(localStorage.getItem('refreshToken'))
@@ -201,6 +200,7 @@ async function listarTicketsNaPagina(id_rota) {
     containerPai.appendChild(loadingIcon);
 
     try {
+        // o objeto dos tíckets
         const tickets = await getTicketsRota(id_rota);
 
         // Limpa o conteúdo existente
@@ -323,7 +323,6 @@ document.getElementById("formulario").addEventListener("submit", function(event)
         botao.setAttribute('data-original-content', botao.innerHTML);
     }
 
-
     botao.innerHTML = '';
 
     const loadingIcon = document.createElement('i');
@@ -356,7 +355,57 @@ document.getElementById("formulario").addEventListener("submit", function(event)
             const originalContent = botao.getAttribute('data-original-content');
             botao.innerHTML = originalContent;
         })
+})
 
+var botao_finalizar_rota = document.querySelector(".finalizar")
+
+botao_finalizar_rota.addEventListener("click", async function() {
+    const url = url_base + `api/soticon/v1/finalizar_rota/${id_rota_path}`
+    // const conteudo_botao = botao_finalizar_rota.textContent
+
+    const data = {
+        status : "executada",
+        obs: "Rota finalizada"
+    }
+
+    const options = {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization' : `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify(data)
+    };
+
+    // Armazenar o conteúdo original do botão no atributo data-original-content
+    if (!botao_finalizar_rota.hasAttribute('data-original-content')) {
+            botao_finalizar_rota.setAttribute('data-original-content', botao_finalizar_rota.innerHTML);
+    }
+
+    botao_finalizar_rota.innerHTML = "";
+
+    const loadingIcon = document.createElement('i');
+    loadingIcon.classList.add('fas', 'fa-spinner', 'fa-spin', 'loading-icon');
+    loadingIcon.style.fontSize = "2em";
+    loadingIcon.style.color = 'black';
+    botao_finalizar_rota.appendChild(loadingIcon)
+
+    try {
+        const response = await fetch(url, options)
+        if (!response.ok) {
+            throw new Error(`Erro ao finalizar rota: ${response.status}`);
+        }
+        const data = await response.json()
+        window.alert("Rota finalizada!");
+        return data
+    } catch (error) {
+        console.error("Erro ao finalizar rota: ", error)
+        window.alert("Erro ao finalizar rota!")
+    } finally {
+        console.log("foi")
+        const originalContent = botao_finalizar_rota.getAttribute('data-original-content');
+        botao_finalizar_rota.innerHTML = originalContent;
+    }
 })
 
 // Função para associar o CPF informado com o CPF de algum aluno que reservou o ticket
@@ -383,7 +432,6 @@ async function verificaTicket(user_soticon, id_rota) {
     console.log("Rota: ", id_rota, "user_soticon", user_soticon)
 
     const url = url_base + `api/soticon/v1/verificar_tickets/`;
-    // const url = 'http://127.0.0.1:8000/api/soticon/v1/verificar_tickets/'
 
     const dados = {
         user_soticon : user_soticon,
@@ -424,66 +472,6 @@ async function verificaTicket(user_soticon, id_rota) {
         window.location.reload();
     }
 }
-
-
-// const botao = document.querySelector(".finalizar")
-// botao.addEventListener("click", function() {
-
-//     // funçãqo de finalizar rota
-//     async function finalizarRota(rota, status, obs = null) {
-//         try {
-//             // Verifica se os parâmetros necessários estão presentes
-//             if (!rota || !status) {
-//                 throw new Error('Parâmetros rota e status são obrigatórios.');
-//             }
-    
-//             // Verifica se o status é válido
-//             if (status !== 'sucesso' && status !== 'cancelada') {
-//                 throw new Error('O status deve ser "sucesso" ou "cancelada".');
-//             }
-    
-//             // Se o status for "cancelada", verifica se o parâmetro "obs" está presente
-//             if (status === 'cancelada' && !obs) {
-//                 throw new Error('O parâmetro "obs" é obrigatório para status "cancelada".');
-//             }
-    
-//             // Corpo da requisição
-//             const requestBody = {
-//                 rota,
-//                 status
-//             };
-    
-//             // Adiciona o parâmetro "obs" se estiver presente
-//             if (obs) {
-//                 requestBody.obs = obs;
-//             }
-    
-//             // Realiza a requisição PUT para finalizar a rota
-//             const response = await fetch('https://sua-url-finalizar-rota', {
-//                 method: 'PUT',
-//                 headers: {
-//                     'Content-Type': 'application/json'
-//                 },
-//                 body: JSON.stringify(requestBody)
-//             });
-    
-//             // Verifica se a requisição foi bem-sucedida
-//             if (!response.ok) {
-//                 throw new Error(`Erro ao finalizar a rota: ${response.status}`);
-//             }
-    
-//             // Retorna os dados da resposta, se necessário
-//             return await response.json();
-//         } catch (error) {
-//             // Trata erros
-//             console.error('Erro ao finalizar a rota:', error.message);
-//             throw error;
-//         }
-//     }
-
-//     finalizarRota(id_rota_path)
-// })
-
 
 // "xxxxxxxxxxx"
 function limparCPF(cpf) {

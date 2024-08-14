@@ -1,6 +1,5 @@
 const url_base = "https://web-5gnex1an3lly.up-us-nyc1-k8s-1.apps.run-on-seenode.com/";
 
-
 // obter o token do localstorage senão retorna o usuário para tela de login
 const token = localStorage.getItem('token') ? localStorage.getItem('token') : window.location.href = "../index.html";
 const refresh = localStorage.getItem('refreshToken') ? localStorage.getItem('refreshToken') : window.location.href = "../index.html";
@@ -33,7 +32,6 @@ async function VerifyUserPermission(token_decodificado) {
     console.log("Usuário da tela: ", id_user_tela)
 }
 VerifyUserPermission(token_decodificado)
-
 
 console.log("O token decodificado: ", token_decodificado)
 
@@ -179,12 +177,15 @@ async function GetUserSoticon(user_id) {
     }
 }
 
+/* --------------CORRIGIR ESSA VERIFICAÇÃO/CONDIÇÃO------------------------ */
 // função responsável por manter o estilo do botão de reserva
 async function atualizarBotoesReservaVerify(id_rota, botao) {
+    console.log("Entro na função!")
     try {
         // Verificar se há tickets reservados associados à rota do botão
         const resp = await GetUserSoticon(token_decodificado.user_id);
         console.log("A droga do resp: ", resp)
+        // id rota e user_soticon
         if (resp && resp.tickets_reservados && resp.tickets_reservados.length > 0) {
             const ticketReservado = resp.tickets_reservados.find(ticket => {
                 return ticket.rota && ticket.rota[0].id === id_rota;
@@ -199,6 +200,7 @@ async function atualizarBotoesReservaVerify(id_rota, botao) {
         console.error('Erro na atualização dos botões de reserva:', error);
     }
 }
+/*-------------------------------------------------------------------------------- */
 
 async function atualizarPosicaoFIla(id_rota, posicao) {
     try {
@@ -314,7 +316,7 @@ async function montarElementosDaTela() {
                 user_soticon = resp.id
                 // Aqui você pode usar o valor de user_soticon
                 console.log("O id user_soticon: ", user_soticon);
-                // chamando função de reservar ticket
+                // chamando função de reservar ticket(id_rota, id_user_soticon)
                 reservarTicket(item.id, user_soticon)
             });
         })
@@ -424,6 +426,10 @@ async function montarElementosDaTela() {
 
         // Chamando a função interna com os parâmetros corretos
         reservarOuCancelarTicket(id_rota, id_user_soticon);
+    }
+
+    if (!rotas) {
+        iconContainer.appendChild("Não há rotas cadastradas no sistema!")
     }
 }
 // Chamando a função para montar os elementos da tela

@@ -120,39 +120,41 @@ async function redirecionarParaProximaTela(accessToken) {
         // verificando o tipo de usuário
         const resp = await verificarTipoUsuario(userId)
         let url;
-    
-        switch (resp.nome_tipo) {
-            case "admin":
-                url = './pages/AdminOptions.html';
-                break;
-            case "aluno":
-                url = './pages/reserva_ticket.html';
-                break;
-            case "motorista":
-                url = './pages/motorista.html';
-                break;
-            case "ti":
-                url = './pages/cadastrarRotas.html';
-                break;
-            case "serv.terceirizado":
-                url = './pages/guarita.html';
-                break;
-            case "professor":
-            case "tec.administrativo":
-                // Não tem tela para o professor no Soticon ainda
-                url = "./index.html";
-                break;
-            default:
-                window.alert("Usuário inexistente no sistema!");
-                url = "./index.html";
-        }
-        
+
+        if (resp.nome_tipo) {
+            // posso por todo esse case em um objeto
+            switch (resp.nome_tipo) {
+                case "admin":
+                    url = './pages/AdminOptions.html';
+                    break;
+                case "aluno":
+                    url = './pages/reserva_ticket.html';
+                    break;
+                case "motorista":
+                    url = './pages/motorista.html';
+                    break;
+                case "ti":
+                    url = './pages/cadastrarRotas.html';
+                    break;
+                case "serv.terceirizado":
+                    url = './pages/guarita.html';
+                    break;
+                case "professor":
+                case "tec.administrativo":
+                    // Não tem tela para o professor no Soticon ainda
+                    url = "./index.html";
+                    break;
+                default:
+                    window.alert("Usuário inexistente no sistema!");
+                    url = "./index.html";
+            }
+        }    
             window.location.href = url;
 
     } catch (error) {
         console.log("Erro ao redirecionar para a próxima tela: ", error.message);
         // window.alert("Erro ao redirecionar para a próxima tela!");
-        window.location.href = "./index.html";
+        // window.location.href = "./index.html";
     }
 }
 
@@ -166,6 +168,7 @@ console.log("Token decodificado: ", accessToken.user_id)
 
 async function verificarTipoUsuario(id) {
     const url = url_base + `api/gerusuarios/v1/users/${id}`;
+    // const url = url_base + `api/soticon/v1/users/${id}`;
 
     const options = {
         method: 'GET',
@@ -189,12 +192,6 @@ async function verificarTipoUsuario(id) {
     }
 }
 
-// verifica a estrutura do token
-function verifyTokenPattern(token) {
-    // Verificar se o token está no formato correto '{{Token valor}}'
-    return /^{{Token .+}}$/.test(token);
-}
-
 async function redirecionarSeNecessario() {
     const token = localStorage.getItem('token');
     const refresh = localStorage.getItem('refreshToken')
@@ -209,6 +206,7 @@ async function redirecionarSeNecessario() {
             // Redirecionar para a página de índice
             window.location.href = "./index.html";
         } else {
+            window.alert("Sessão mantida!")
             // Token válido, continuar com a operação normal
             redirecionarParaProximaTela(token);
         }
@@ -216,6 +214,12 @@ async function redirecionarSeNecessario() {
 }
 // Chamada para verificar e redirecionar
 redirecionarSeNecessario();
+
+// verifica a estrutura do token
+function verifyTokenPattern(token) {
+    // Verificar se o token está no formato correto '{{Token valor}}'
+    return /^{{Token .+}}$/.test(token);
+}
 
 // "xxxxxxxxxxx"
 function limparCPF(cpf) {
