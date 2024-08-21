@@ -178,6 +178,7 @@ async function GetUserSoticon(user_id) {
 }
 
 /* --------------CORRIGIR ESSA VERIFICAÇÃO/CONDIÇÃO------------------------ */
+
 // função responsável por manter o estilo do botão de reserva
 async function atualizarBotoesReservaVerify(id_rota, botao) {
     console.log("Entro na função!")
@@ -187,7 +188,7 @@ async function atualizarBotoesReservaVerify(id_rota, botao) {
         console.log("A droga do resp: ", resp)
         // id rota e user_soticon
         if (resp && resp.tickets_reservados && resp.tickets_reservados.length > 0) {
-            const ticketReservado = resp.tickets_reservados.find(ticket => {
+            const ticketReservado = resp.tickets_reservados.filter(ticket => {
                 return ticket.rota && ticket.rota[0].id === id_rota;
             });
             // Definir o conteúdo do botão com base na presença de tickets reservados
@@ -208,7 +209,7 @@ async function atualizarPosicaoFIla(id_rota, posicao) {
         const resp = await GetUserSoticon(token_decodificado.user_id);
         console.log("A droga do resp: ", resp)
         if (resp && resp.tickets_reservados && resp.tickets_reservados.length > 0) {
-            const ticketReservado = resp.tickets_reservados.find(ticket => {
+            const ticketReservado = resp.tickets_reservados.filter(ticket => {
                 return ticket.rota && ticket.rota[0].id === id_rota;
             });
             // Definir o conteúdo do botão com base na presença de tickets reservados
