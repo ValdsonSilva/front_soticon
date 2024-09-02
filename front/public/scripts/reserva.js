@@ -188,12 +188,14 @@ async function atualizarBotoesReservaVerify(id_rota, botao) {
         console.log("A droga do resp: ", resp)
         // id rota e user_soticon
         if (resp && resp.tickets_reservados && resp.tickets_reservados.length > 0) {
-            const ticketReservado = resp.tickets_reservados.filter(ticket => {
-                return ticket.rota && ticket.rota[0].id === id_rota;
+            const ticketReservado = resp.tickets_reservados.find(ticket => {
+                // return ticket.rota && ticket.rota[0].id === id_rota;
+                return ticket.rota && ticket.rota.some(rota => rota.id === id_rota && rota.status === 'espera');
+
             });
             // Definir o conteúdo do botão com base na presença de tickets reservados
             botao.textContent = ticketReservado ? "-" : "+";
-            console.log("Passou na condição: ", typeof(ticketReservado))
+            console.log("Rota estado botão: ", ticketReservado)
         } else {
             botao.textContent = "+"
         }
@@ -209,12 +211,13 @@ async function atualizarPosicaoFIla(id_rota, posicao) {
         const resp = await GetUserSoticon(token_decodificado.user_id);
         console.log("A droga do resp: ", resp)
         if (resp && resp.tickets_reservados && resp.tickets_reservados.length > 0) {
-            const ticketReservado = resp.tickets_reservados.filter(ticket => {
-                return ticket.rota && ticket.rota[0].id === id_rota;
+            const ticketReservado = resp.tickets_reservados.find(ticket => {
+                // return ticket.rota && ticket.rota[0].id === id_rota;
+                return ticket.rota && ticket.rota.some(rota => rota.id === id_rota && rota.status === 'espera');
             });
             // Definir o conteúdo do botão com base na presença de tickets reservados
             posicao.textContent = ticketReservado ? `Posição ${resp.tickets_reservados[0].num_ticket}/58` : "";
-            console.log("Passou na condição: ", typeof(ticketReservado))
+            console.log("Passou na condição: ", ticketReservado)
         } else {
             posicao.textContent = ""
         }
