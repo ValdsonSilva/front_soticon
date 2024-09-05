@@ -9,17 +9,17 @@ document.getElementById("login").addEventListener("click", function() {
     const password = document.getElementById("senha").value;
 
     const cpf_formatado = limparCPF(cpf)
-    console.log("Cpf formatado: ", cpf_formatado)
+//      console.log("Cpf formatado: ", cpf_formatado)
     
     try {
         if (cpf_formatado !== "" && password !== "") {
             // gerar token
             getToken(cpf_formatado, password)
         } else {
-            console.log("Preencha os campos do formulário")
+//              console.log("Preencha os campos do formulário")
         }
     } catch (error) {
-        console.log("Erro")
+//          console.log("Erro")
     }
 })
 
@@ -32,9 +32,9 @@ function handleFormSubmit(event) {
     const passwordInput = document.getElementById("senha").value;
 
     // Exibir os dados no console
-    console.log("Dados do formulário de login:");
-    console.log("Nome de usuário:", userInput);
-    console.log("Senha:", passwordInput);
+//  //      console.log("Dados do formulário de login:");
+//  //      console.log("Nome de usuário:", userInput);
+//  //      console.log("Senha:", passwordInput);
 }
 
 // Função para fazer a solicitação POST para o endpoint /api/token
@@ -84,8 +84,8 @@ function getToken(cpf, password) {
                 localStorage.setItem('token', data.access)
                 localStorage.setItem('refreshToken', data.refresh)
 
-                console.log("token ", data.access);
-                console.log("refresh ", data.refresh)
+//  //                  console.log("token ", data.access);
+//                  console.log("refresh ", data.refresh)
 
                 // Redirecionar o usuário para a próxima tela (tela de reserva)
                 return redirecionarParaProximaTela(data.access);
@@ -96,8 +96,8 @@ function getToken(cpf, password) {
         })
         .catch(error => {
             console.error("Ocorreu um erro: ", error.message)
-            console.log("token ", data.access);
-            console.log("refresh ", data.refresh)
+//  //              console.log("token ", data.access);
+//              console.log("refresh ", data.refresh)
             
             // redireciona para a tela de login em caso de erro
             loginButton.innerHTML = 'Login';
@@ -110,49 +110,60 @@ function getToken(cpf, password) {
         })
 }
 
+// objeto com tipos de usuários
+const tipo_users = [
+    {
+        user : "admin",
+        url : './pages/AdminOptions.html',
+    },
+    {
+        user : "aluno",
+        url : './pages/reserva_ticket.html',
+    },
+    {
+        user : "motorista",
+        url : './pages/motorista.html',
+    },
+    {
+        user : "ti",
+        url : './pages/cadastrarRotas.html',
+    },
+    {
+        user : "terceirizado",
+        url : './pages/guarita.html',
+    },
+    {
+        user : "professor",
+        url : "./index.html",
+    },
+    {
+        user : "tec.administrativo",
+        url : "./index.html",
+    },
+]
+
 // função para redirecionar o user para a proxima tela
 async function redirecionarParaProximaTela(accessToken) {
     try {
         // const userId = parseJwt(accessToken).user_id
         const userId = decodeToken(accessToken).user_id
-        console.log("Recebendo id: ", userId)
+//          console.log("Recebendo id: ", userId)
     
         // verificando o tipo de usuário
         const resp = await verificarTipoUsuario(userId)
         let url;
 
         if (resp.nome_tipo) {
-            // posso por todo esse case em um objeto
-            switch (resp.nome_tipo) {
-                case "admin":
-                    url = './pages/AdminOptions.html';
-                    break;
-                case "aluno":
-                    url = './pages/reserva_ticket.html';
-                    break;
-                case "motorista":
-                    url = './pages/motorista.html';
-                    break;
-                case "ti":
-                    url = './pages/cadastrarRotas.html';
-                    break;
-                case "serv.terceirizado":
-                    url = './pages/guarita.html';
-                    break;
-                case "professor":
-                case "tec.administrativo":
-                    // Não tem tela para o professor no Soticon ainda
-                    url = "./index.html";
-                    break;
-                default:
-                    window.alert("Usuário inexistente no sistema!");
-                    url = "./index.html";
+            const router = tipo_users.find((tipo) => resp.nome_tipo === tipo.user)
+            if (router) {
+                window.location.href = router.url
+            } else {
+                window.alert("Usuário não encontrado no sistema!")
             }
-        }    
-            window.location.href = url;
+        }
 
     } catch (error) {
-        console.log("Erro ao redirecionar para a próxima tela: ", error.message);
+//  //          console.log("Erro ao redirecionar para a próxima tela: ", error.message);
         // window.alert("Erro ao redirecionar para a próxima tela!");
         // window.location.href = "./index.html";
     }
@@ -164,7 +175,7 @@ function decodeToken(token) {
     const decodeToken = atob(payload);
     return JSON.parse(decodeToken);
 }
-console.log("Token decodificado: ", accessToken.user_id)
+//  console.log("Token decodificado: ", accessToken.user_id)
 
 async function verificarTipoUsuario(id) {
     const url = url_base + `api/gerusuarios/v1/users/${id}`;
@@ -184,7 +195,7 @@ async function verificarTipoUsuario(id) {
             throw new Error("Erro ao puxar os usuários" + response.status);
         }
         const data = await response.json();
-        console.log("Aqui está o usuário: ", data);
+//  //          console.log("Aqui está o usuário: ", data);
         return data;
 
     } catch (error) {
@@ -196,7 +207,7 @@ async function redirecionarSeNecessario() {
     const token = localStorage.getItem('token');
     const refresh = localStorage.getItem('refreshToken')
 
-    console.log("Tokens: ", {token, refresh})
+//      console.log("Tokens: ", {token, refresh})
 
     if (token && refresh) {
         if (verifyTokenPattern(token)) {

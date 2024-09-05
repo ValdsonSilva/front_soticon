@@ -8,11 +8,11 @@ var path = new URLSearchParams(window.location.search);
 // Obter o valor do parâmetro 'id'
 var id_rota_path = path.get('id');
 
-console.log(id_rota_path)
+//  console.log(id_rota_path)
 
-// console.log(token)
-console.log(localStorage.getItem('token'))
-console.log(localStorage.getItem('refreshToken'))
+//  // console.log(token)
+//  console.log(localStorage.getItem('token'))
+//  console.log(localStorage.getItem('refreshToken'))
 
 function decodeToken(token) {
     const payload = token.split('.')[1]
@@ -46,7 +46,7 @@ function VerificarToken(token, refresh) {
                 throw new Error("Erro ao verificar o token: " + response.status);
             }
             // deu tudo certo e o user pode continuar nessa tela
-            console.log("O token foi aceito")
+//              console.log("O token foi aceito")
         })
         .catch(error => {
             // Lidar com erros
@@ -64,7 +64,7 @@ function VerificarToken(token, refresh) {
 VerificarToken(token, refresh)
 
 const token_decodificado = decodeToken(token)
-console.log("O token decodificado: ", token_decodificado)
+//  console.log("O token decodificado: ", token_decodificado)
 
 
 let novoTokenDeAcesso;
@@ -108,8 +108,8 @@ function ConsumirRefreshToken(refresh) {
                 // armazena o novo token criado no localstorage
                 localStorage.setItem('token', novoTokenDeAcesso)
 
-                console.log('Novo token de acesso: ', novoTokenDeAcesso)
-                // console.log('Novo refresh: ', novoRefresh)
+//                  console.log('Novo token de acesso: ', novoTokenDeAcesso)
+//                  // console.log('Novo refresh: ', novoRefresh)
 
                 // recarrega a tela
                 window.location.reload()
@@ -144,23 +144,23 @@ async function VerifyUserPermission(token_decodificado) {
     if (id_user_tela) {
         // significa que o tipo do usuário não permite ele acessar essa tela
         const resp = await verificarTipoUsuario(token_decodificado.user_id);
-        console.log("O tipo do usuário: ", resp.nome_tipo);
+//  //          console.log("O tipo do usuário: ", resp.nome_tipo);
 
         if (resp.nome_tipo !== "admin" & resp.nome_tipo !== "serv.terceirizado") {
             window.location.href = "../index.html";
             
         } else {
-            console.log("Usuário certo")
+//              console.log("Usuário certo")
         }
     }
 
-    console.log("Usuário da tela: ", id_user_tela)
+//      console.log("Usuário da tela: ", id_user_tela)
 }
 VerifyUserPermission(token_decodificado)
 
 // tickets reservados para essa rota
 async function getTicketsRota(id_rota) {
-    console.log("Rota: ", id_rota)
+//      console.log("Rota: ", id_rota)
     const url = url_base + `api/soticon/v1/tickets/?rota_valida=${id_rota}`;
 
     const options = {
@@ -177,7 +177,7 @@ async function getTicketsRota(id_rota) {
             throw new Error("Erro ao puxar os tickets da rota" + erro.status);
         }
         const data = await response.json();
-        console.log(`Aqui estão os tickets da rota ${id_rota}: `, data.results);
+//  //          console.log(`Aqui estão os tickets da rota ${id_rota}: `, data.results);
         return data.results;
 
     } catch (error) {
@@ -274,7 +274,7 @@ async function verificarTipoUsuario(id) {
             throw new Error("Erro ao puxar os usuários" + response.status);
         }
         const data = await response.json();
-        console.log("Aqui está o usuário: ", data);
+//  //          console.log("Aqui está o usuário: ", data);
         return data;
 
     } catch (error) {
@@ -336,7 +336,7 @@ document.getElementById("formulario").addEventListener("submit", function(event)
     associarCPFaoTicket(id_rota_path, cpf_formatado)
         .then((ticket) => {
             if (ticket) {
-                console.log("Ticket associado encontrado:", ticket);
+//  //                  console.log("Ticket associado encontrado:", ticket);
 
                 // Se um ticket associado for encontrado, reservar o ticket
                 verificaTicket(ticket.user_soticon, id_rota_path)
@@ -402,7 +402,7 @@ botao_finalizar_rota.addEventListener("click", async function() {
         console.error("Erro ao finalizar rota: ", error)
         window.alert("Erro ao finalizar rota!")
     } finally {
-        console.log("foi")
+//          console.log("foi")
         const originalContent = botao_finalizar_rota.getAttribute('data-original-content');
         botao_finalizar_rota.innerHTML = originalContent;
     }
@@ -429,7 +429,7 @@ async function associarCPFaoTicket(id_rota_path, cpf) {
 
 // função que verifica os tickets
 async function verificaTicket(user_soticon, id_rota) {
-    console.log("Rota: ", id_rota, "user_soticon", user_soticon)
+//      console.log("Rota: ", id_rota, "user_soticon", user_soticon)
 
     const url = url_base + `api/soticon/v1/verificar_tickets/`;
 
@@ -453,7 +453,7 @@ async function verificaTicket(user_soticon, id_rota) {
             throw new Error(`Erro ao verificar o ticket: ${response.status}`);
         }
         const data = await response.json();
-        console.log(`ticket da rota ${id_rota} e user_soticon ${user_soticon} verificado `, data);
+//  //          console.log(`ticket da rota ${id_rota} e user_soticon ${user_soticon} verificado `, data);
         
         // Alerta exibido apenas se a solicitação for bem-sucedida
         window.alert("Ticket verificado com sucesso!");

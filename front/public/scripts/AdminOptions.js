@@ -21,22 +21,22 @@ async function VerifyUserPermission(token_decodificado) {
     if (id_user_tela) {
         // significa que o tipo do usuário não permite ele acessar essa tela
         const resp = await verificarTipoUsuario(token_decodificado.user_id);
-        console.log("O tipo do usuário: ", resp.nome_tipo);
+//  //          console.log("O tipo do usuário: ", resp.nome_tipo);
 
         if (resp.nome_tipo !== "admin") {
             window.location.href = "../index.html";
             
         } else {
-            console.log("Usuário certo")
+//              console.log("Usuário certo")
         }
     }
 
-    console.log("Usuário da tela: ", id_user_tela)
+//      console.log("Usuário da tela: ", id_user_tela)
 }
 VerifyUserPermission(token_decodificado)
 
 
-console.log("O token decodificado: ", token_decodificado)
+//  console.log("O token decodificado: ", token_decodificado)
 
 // verificando o token que chegou
 function VerificarToken(token, refresh) {
@@ -65,7 +65,7 @@ function VerificarToken(token, refresh) {
                 throw new Error("Erro ao verificar o token: " + response.status);
             }
             // deu tudo certo e o user pode continuar nessa tela
-            console.log("O token foi aceito")
+//              console.log("O token foi aceito")
         })
         .catch(error => {
             // Lidar com erros
@@ -125,8 +125,8 @@ function ConsumirRefreshToken(refresh) {
                 // armazena o novo token criado no localstorage
                 localStorage.setItem('token', novoTokenDeAcesso)
 
-                console.log('Novo token de acesso: ', novoTokenDeAcesso)
-                // console.log('Novo refresh: ', novoRefresh)
+//                  console.log('Novo token de acesso: ', novoTokenDeAcesso)
+//                  // console.log('Novo refresh: ', novoRefresh)
 
                 // recarrega a tela
                 window.location.reload()
@@ -184,7 +184,7 @@ async function verificarTipoUsuario(id) {
             throw new Error("Erro ao puxar os usuários" + response.status);
         }
         const data = await response.json();
-        console.log("Aqui está o usuário: ", data);
+//  //          console.log("Aqui está o usuário: ", data);
         return data;
 
     } catch (error) {

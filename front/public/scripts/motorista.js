@@ -18,17 +18,17 @@ async function VerifyUserPermission(token_decodificado) {
     if (id_user_tela) {
         // significa que o tipo do usuário não permite ele acessar essa tela
         const resp = await verificarTipoUsuario(token_decodificado.user_id);
-        console.log("O tipo do usuário: ", resp.nome_tipo);
+//  //          console.log("O tipo do usuário: ", resp.nome_tipo);
 
         if (resp.nome_tipo !== "admin" & resp.nome_tipo !== "motorista") {
             window.location.href = "../index.html";
             
         } else {
-            console.log("Usuário certo")
+//              console.log("Usuário certo")
         }
     }
 
-    console.log("Usuário da tela: ", id_user_tela)
+//      console.log("Usuário da tela: ", id_user_tela)
 }
 VerifyUserPermission(token_decodificado)
 
@@ -65,7 +65,7 @@ async function verificarTipoUsuario(id) {
             throw new Error("Erro ao puxar os usuários" + response.status);
         }
         const data = await response.json();
-        console.log("Aqui está o usuário: ", data);
+//  //          console.log("Aqui está o usuário: ", data);
         return data;
 
     } catch (error) {

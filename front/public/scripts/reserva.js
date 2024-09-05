@@ -19,21 +19,21 @@ async function VerifyUserPermission(token_decodificado) {
     if (id_user_tela) {
         // significa que o tipo do usuário não permite ele acessar essa tela
         const resp = await verificarTipoUsuario(token_decodificado.user_id);
-        console.log("O tipo do usuário: ", resp.nome_tipo);
+//  //          console.log("O tipo do usuário: ", resp.nome_tipo);
 
         if (resp.nome_tipo !== "admin" & resp.nome_tipo !== "aluno") {
             window.location.href = "../index.html";
             
         } else {
-            console.log("Usuário certo")
+//              console.log("Usuário certo")
         }
     }
 
-    console.log("Usuário da tela: ", id_user_tela)
+//      console.log("Usuário da tela: ", id_user_tela)
 }
 VerifyUserPermission(token_decodificado)
 
-console.log("O token decodificado: ", token_decodificado)
+//  console.log("O token decodificado: ", token_decodificado)
 
 // verificando o token que chegou
 function VerificarToken(token, refresh) {
@@ -62,7 +62,7 @@ function VerificarToken(token, refresh) {
                 throw new Error("Erro ao verificar o token: " + response.status);
             }
             // deu tudo certo e o user pode continuar nessa tela
-            console.log("O token foi aceito")
+//              console.log("O token foi aceito")
         })
         .catch(error => {
             // Lidar com erros
@@ -122,8 +122,8 @@ function ConsumirRefreshToken(refresh) {
                 // armazena o novo token criado no localstorage
                 localStorage.setItem('token', novoTokenDeAcesso)
 
-                console.log('Novo token de acesso: ', novoTokenDeAcesso)
-                // console.log('Novo refresh: ', novoRefresh)
+//                  console.log('Novo token de acesso: ', novoTokenDeAcesso)
+//                  // console.log('Novo refresh: ', novoRefresh)
 
                 // recarrega a tela
                 window.location.reload()
@@ -169,7 +169,7 @@ async function GetUserSoticon(user_id) {
             throw new Error("Erro ao pegar user_soticon" + response.status);
         }
         const data = await response.json();
-        console.log("Aqui está o user_soticon: ", data);
+//  //          console.log("Aqui está o user_soticon: ", data);
         return data
 
     } catch (error) {
@@ -181,11 +181,11 @@ async function GetUserSoticon(user_id) {
 
 // função responsável por manter o estilo do botão de reserva
 async function atualizarBotoesReservaVerify(id_rota, botao) {
-    console.log("Entro na função!")
+//      console.log("Entro na função!")
     try {
         // Verificar se há tickets reservados associados à rota do botão
         const resp = await GetUserSoticon(token_decodificado.user_id);
-        console.log("A droga do resp: ", resp)
+//          console.log("A droga do resp: ", resp)
         // id rota e user_soticon
         if (resp && resp.tickets_reservados && resp.tickets_reservados.length > 0) {
             const ticketReservado = resp.tickets_reservados.find(ticket => {
@@ -195,7 +195,7 @@ async function atualizarBotoesReservaVerify(id_rota, botao) {
             });
             // Definir o conteúdo do botão com base na presença de tickets reservados
             botao.textContent = ticketReservado ? "-" : "+";
-            console.log("Rota estado botão: ", ticketReservado)
+//              console.log("Rota estado botão: ", ticketReservado)
         } else {
             botao.textContent = "+"
         }
@@ -209,7 +209,7 @@ async function atualizarPosicaoFIla(id_rota, posicao) {
     try {
         // Verificar se há tickets reservados associados à rota do botão
         const resp = await GetUserSoticon(token_decodificado.user_id);
-        console.log("A droga do resp: ", resp)
+//          console.log("A droga do resp: ", resp)
         if (resp && resp.tickets_reservados && resp.tickets_reservados.length > 0) {
             const ticketReservado = resp.tickets_reservados.find(ticket => {
                 // return ticket.rota && ticket.rota[0].id === id_rota;
@@ -217,7 +217,7 @@ async function atualizarPosicaoFIla(id_rota, posicao) {
             });
             // Definir o conteúdo do botão com base na presença de tickets reservados
             posicao.textContent = ticketReservado ? `Posição ${resp.tickets_reservados[0].num_ticket}/58` : "";
-            console.log("Passou na condição: ", ticketReservado)
+//              console.log("Passou na condição: ", ticketReservado)
         } else {
             posicao.textContent = ""
         }
@@ -227,7 +227,7 @@ async function atualizarPosicaoFIla(id_rota, posicao) {
 }
 
 let data_rota = DayData();
-console.log(data_rota.toUpperCase())
+//  console.log(data_rota.toUpperCase())
 let rotasDoDia;
 
 async function ListarRotasDoDIa() {
@@ -249,7 +249,7 @@ async function ListarRotasDoDIa() {
             throw new Error("Erro ao puxar as rotas do dia!");
         }
         const data = await response.json();
-        console.log("Rotas do dia: ", data.results);
+//  //          console.log("Rotas do dia: ", data.results);
         rotasDoDia = data.results;
         return data.results;
 
@@ -319,7 +319,7 @@ async function montarElementosDaTela() {
             GetUserSoticon(token_decodificado.user_id).then(resp => {
                 user_soticon = resp.id
                 // Aqui você pode usar o valor de user_soticon
-                console.log("O id user_soticon: ", user_soticon);
+//  //                  console.log("O id user_soticon: ", user_soticon);
                 // chamando função de reservar ticket(id_rota, id_user_soticon)
                 reservarTicket(item.id, user_soticon)
             });
@@ -349,7 +349,7 @@ async function montarElementosDaTela() {
 
     // OBS: lembrar de se basear por o estado do tícket
     function reservarTicket(id_rota, id_user_soticon) {
-        console.log("Ticket reservado para a rota de id: ", id_rota);
+//  //          console.log("Ticket reservado para a rota de id: ", id_rota);
 
         const Botao = document.getElementById("bo" + id_rota);
         const bo_conteudo = Botao.textContent
@@ -403,7 +403,7 @@ async function montarElementosDaTela() {
     
                 const data = await response.json();
 
-                console.log('Reserva de ticket processada com sucesso:', data);
+//  //                  console.log('Reserva de ticket processada com sucesso:', data);
 
                 // Ocultar ícone de carregamento após a requisição
                 loadingIcon.style.display = "none";
@@ -477,7 +477,7 @@ async function criarElementoRota() {
         GetUserSoticon(token_decodificado.user_id).then(resp => {
             user_soticon = resp.id;
             // Aqui você pode usar o valor de user_soticon
-            console.log("O id user_soticon: ", user_soticon);
+//  //              console.log("O id user_soticon: ", user_soticon);
             // Chamando função de reservar ticket
             reservarTicket(item.id, user_soticon);
         });
@@ -560,7 +560,7 @@ async function getTickets() {
             throw new Error("Erro ao puxar os tickets" + erro);
         }
         const data = await response.json();
-        console.log("Aqui estão os tickets: ", data.results);
+//  //          console.log("Aqui estão os tickets: ", data.results);
         return data.results;
 
     } catch (error) {
@@ -600,7 +600,7 @@ async function verificarTipoUsuario(id) {
             throw new Error("Erro ao puxar os usuários" + response.status);
         }
         const data = await response.json();
-        console.log("Aqui está o usuário: ", data);
+//  //          console.log("Aqui está o usuário: ", data);
         return data;
 
     } catch (error) {
