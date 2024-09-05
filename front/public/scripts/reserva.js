@@ -432,10 +432,20 @@ async function montarElementosDaTela() {
         reservarOuCancelarTicket(id_rota, id_user_soticon);
     }
 
-    if (!rotas) {
-        iconContainer.appendChild("Não há rotas cadastradas no sistema!")
+    if (rotas.length === 0) {
+        console.log("Não há rotas")
+
+        const mensagem = document.createElement("div");
+
+        mensagem.textContent = "Não há rotas disponíveis no sistema!";
+
+        mensagem.style.fontSize = "4vw"
+
+        // Adicionando o elemento ao container
+        iconContainer.appendChild(mensagem)
     }
 }
+
 // Chamando a função para montar os elementos da tela
 montarElementosDaTela().catch(error => {
     console.error("Erro ao carregar os elementos da tela: ", error)
