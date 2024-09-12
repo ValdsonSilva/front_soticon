@@ -61,15 +61,14 @@
         </div> -->
         <!-- <a href="{% url 'logout' %}" class="link">Logout</a> -->
     </div>
-
-    <script src="../scripts/verificacao.js"></script>
-    <!-- Script para inicializar a máscara de CPF -->
-    <script>
-        // Cria uma máscara de CPF para o campo de entrada
-        var mascaraCPF = IMask(document.getElementById('idUsuario'), {
-            mask: '000.000.000-00'
-        });
-    </script>
 </body>
-
+<script src="../env.js"></script>
+<script src="../scripts/verificacao.js"></script>
+<!-- Script para inicializar a máscara de CPF -->
+<script>
+    // Cria uma máscara de CPF para o campo de entrada
+    var mascaraCPF = IMask(document.getElementById('idUsuario'), {
+        mask: '000.000.000-00'
+    });
+</script>
 </html>

@@ -1,4 +1,4 @@
-const url_base = "https://web-5gnex1an3lly.up-us-nyc1-k8s-1.apps.run-on-seenode.com/";
+const url_base = window.env.URL_BASE 
 
 const token = localStorage.getItem('token') ? localStorage.getItem('token') : window.location.href = "../index.html";
 const refresh = localStorage.getItem('refreshToken') ? localStorage.getItem('refreshToken') : window.location.href = "../index.html";

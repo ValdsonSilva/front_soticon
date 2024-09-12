@@ -1,4 +1,5 @@
-const url_base = "https://web-5gnex1an3lly.up-us-nyc1-k8s-1.apps.run-on-seenode.com/";
+
+const url_base = window.env.URL_BASE
 
 let accessToken = localStorage.getItem('token') ? decodeToken(localStorage.getItem('token')) : ""
 
@@ -109,6 +110,7 @@ function getToken(cpf, password) {
             loginButton.innerHTML = 'processando...';
         })
 }
+
 
 // objeto com tipos de usuários
 const tipo_users = [
