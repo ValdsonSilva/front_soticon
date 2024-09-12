@@ -67,3 +67,5 @@ node_modules/
 front/.firebase/hosting.cHVibGlj.cache
 /front/.firebase
 *.cache
+
+env.js
