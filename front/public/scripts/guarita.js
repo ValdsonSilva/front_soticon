@@ -315,6 +315,17 @@ async function exibirRotas(rotas) {
 
         container.appendChild(caixa);
     });
+
+    if (rotas.length === 0) {
+        console.log("Não há rotas!")
+
+        const mensagem = document.createElement("div")
+        mensagem.textContent = "Não há rotas disponiveis no sistema!";
+        mensagem.style.fontSize = "4vw";
+        mensagem.style.color = "#fff";
+
+        container.appendChild(mensagem)
+    }
 }
 listarRotasDoDia();
 
