@@ -7,36 +7,46 @@
     <script src="https://kit.fontawesome.com/a772aefe7b.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../styles/recSenha.css">
     <title>CORTEX - IFPI/RECUPERAR SENHA</title>
+    <link rel="shortcut icon" href="../images/logoOnibus.png" type="image/x-icon">
 </head>
-<body background="{% static 'img/home/backgroundCortex6.png' %}">
+<body background="../images/backgroundCortex.jpg">
 <h1>
-    <img src="{% static 'img/home/logoifpi.png' %}" alt="Instituto federal de educação, ciência e tecnologia. PIAUÍ">
+    <img src="../images/logoifpi.png" alt="Instituto federal de educação, ciência e tecnologia. PIAUÍ">
 </h1>
 <div id="form">
-    <form method="">
-        
-        <h2>Recuperar senha</h2>
+    <form onsubmit="enviarLogin(event)">
+        <h2>
+            <i class="fas fa-key" style="margin: 10px;"></i>
+            Recuperar senha
+        </h2>
         <h3>Para recuperar o seu acesso informe a sua matricula</h3>
         
-        <label for="matricula">Matrícula</label>
+        <label for="matricula">Login do usuário</label>
         <div class="input">
             <i class="fa-solid fa-user"></i>
-            <input type="text" placeholder="Matricula" id="matricula">
+            <input type="text" placeholder="Login do usuário" id="matricula" required>
         </div>
         
         <div class="botao">
-            <button>Receber token</button>
+            <button type="submit">Receber token</button>
         </div>
     </form>
 </div>
-
 </body>
 <script src="../env.js"></script>
-<script src="../scripts/motorista.js"></script>
 <script>
-    function funcaoBesta()
-    {
-        alert('Besta!');
+    function enviarLogin(event) {
+        event.preventDefault()
+        try {
+            const login = document.getElementById("matricula").value
+            console.log("CPF:", login)
+            window.location.href = "token.html"
+
+        } catch (error) {
+            window.alert("Login incorreto!")
+        } finally {
+            document.getElementById("matricula").value = ""
+        }
     }
 </script>
 

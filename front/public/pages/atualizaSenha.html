@@ -8,15 +8,15 @@
     <script src="https://kit.fontawesome.com/a772aefe7b.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../styles/recSenha.css">
     <title>CORTEX - IFPI/NOVA SENHA</title>
+    <link rel="shortcut icon" href="../images/logoOnibus.png" type="image/x-icon">
 </head>
 
-<body background="../images/backgroundCortex.jpg"
-    style="display: flex; justify-content:space-between; flex-direction:column">
+<body background="../images/backgroundCortex.jpg" style="display: flex; justify-content:space-between; flex-direction:column">
     <h1>
         <img src="../images/logoifpi.png" alt="Instituto federal de educação, ciência e tecnologia. PIAUÍ">
     </h1>
     <div id="form">
-        <form>
+        <form onsubmit="redefinirSenha(event)">
 
             <h2>Recuperar senha</h2>
             <h3>Para recuperar o seu acesso informe a sua matricula</h3>
@@ -24,16 +24,16 @@
             <label for="Nsenha">Nova senha</label>
             <div class="input">
                 <i class="fa-solid fa-user"></i>
-                <input type="password" placeholder="Nova senha" id="Nsenha">
+                <input type="password" placeholder="Nova senha" id="Nsenha" required>
             </div>
             <label for="Rsenha">Repita a sua nova senha</label>
             <div class="input">
                 <i class="fa-solid fa-user"></i>
-                <input type="password" placeholder="Repita a sua nova senha" id="Rsenha">
+                <input type="password" placeholder="Repita a sua nova senha" id="Rsenha" required>
             </div>
 
             <div class="botao">
-                <button>Atualizar senha</button>
+                <button type="submit">Atualizar senha</button>
             </div>
         </form>
     </div>
@@ -41,8 +41,19 @@
 </body>
 <script src="../env.js"></script>
 <script>
-    function funcaoBesta() {
-        alert('Besta!');
+    function redefinirSenha(event) {
+        event.preventDefault()
+
+        const senhaFirst = document.getElementById("Nsenha").value
+        const novaSenha = document.getElementById("Rsenha").value
+
+        if (senhaFirst !== novaSenha) {
+            window.alert("Senha incorreta")
+            document.getElementById("Rsenha").value = ""
+        } else {
+            console.log("Senha: ", novaSenha)
+        }
+    
     }
 </script>
 

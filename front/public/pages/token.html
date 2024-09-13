@@ -8,6 +8,7 @@
     <script src="https://kit.fontawesome.com/a772aefe7b.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../styles/recSenha.css">
     <title>CORTEX - IFPI/RECUPERAR SENHA/TOKEN</title>
+    <link rel="shortcut icon" href="../images/logoOnibus.png" type="image/x-icon">
 </head>
 
 <body background="../images/backgroundCortex.jpg">
@@ -15,28 +16,36 @@
         <img src="../images/logoifpi.png" alt="Instituto federal de educação, ciência e tecnologia. PIAUÍ" />
     </h1>
     <div id="form">
-        <form>
+        <form onsubmit="verificarToken(event)">
             <h2>Recuperar senha</h2>
             <h3>Para recuperar o seu acesso informe o token enviado ao seu email cadastrado</h3>
 
             <label for="token">Token</label>
             <div class="input">
                 <i class="fa-solid fa-user"></i>
-                <input type="text" placeholder="Token" id="token">
+                <input type="text" placeholder="Token" id="token" required>
             </div>
 
             <div class="botao">
-                <button>Verificar token</button>
+                <button type="submit">Verificar token</button>
             </div>
         </form>
     </div>
-
 </body>
 <script src="../env.js"></script>
 <script>
-    function funcaoBesta() {
-        alert('Besta!');
+    function verificarToken(event) {
+        event.preventDefault()
+        try {
+            const token = document.getElementById("token").value
+            console.log("Token: ", token)
+            window.location.href = "./atualizaSenha.html"
+
+        } catch (error) {
+            window.alert("Token incorreto ou expirado!")
+        } finally {
+            document.getElementById("token").value = ""
+        }
     }
 </script>
-
 </html>

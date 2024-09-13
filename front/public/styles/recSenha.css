@@ -14,7 +14,7 @@ body{
 
 #form{
     position: relative;
-    top: 50%;
+    top: 40%;
     left: 50%;
     transform: translate(-50%, -75%);
     width: min-content;
