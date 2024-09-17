@@ -49,7 +49,7 @@ diaAtualElement.textContent = `${dia}/${mes}/${ano}`;
 
 // retorna varias infos do user, inclusive o tipo
 async function verificarTipoUsuario(id) {
-    const url = url_base + `api/gerusuarios/v1/users/${id}`;
+    const url = url_base + `cortex/api/gerusuarios/v1/users/${id}`;
 
     const options = {
         method: 'GET',

@@ -38,7 +38,7 @@ VerifyUserPermission(token_decodificado)
 // verificando o token que chegou
 function VerificarToken(token, refresh) {
 
-    const url = url_base + "api/token/verify/";
+    const url = url_base + "cortex/api/token/verify/";
 
     // objetos com os dados que serão passados no corpo da requsição
     const data = {
@@ -87,7 +87,7 @@ let novoRefresh;
 function ConsumirRefreshToken(refresh) {
 
     // endpoint do refresh token
-    const url = url_base + "api/token/refresh/";
+    const url = url_base + "cortex/api/token/refresh/";
 
     // obejtos com dados para serem passados no corpo da requisição
     const data = {
@@ -153,7 +153,7 @@ function ConsumirRefreshToken(refresh) {
 
 // endpoint user_soticon
 async function GetUserSoticon(user_id) {
-    const url = url_base + `api/soticon/v1/users/?usuario=${user_id}`
+    const url = url_base + `cortex/api/soticon/v1/users/?usuario=${user_id}`
 
     const options = {
         method: 'GET',
@@ -232,7 +232,7 @@ let rotasDoDia;
 
 async function ListarRotasDoDIa() {
     // url da requisição
-    const url = url_base + `api/soticon/v1/rotas/?data_valida=${data_rota}&status=${'espera'}`;
+    const url = url_base + `cortex/api/soticon/v1/rotas/?data_valida=${data_rota}&status=${'espera'}`;
 
     const options = {
         method: 'GET',
@@ -379,7 +379,7 @@ async function montarElementosDaTela() {
 
         async function reservarOuCancelarTicket(rota, user_soticon){
             try {
-                const url = url_base + 'api/soticon/v1/reservar_ticket/';
+                const url = url_base + 'cortex/api/soticon/v1/reservar_ticket/';
 
                 const datas = {
                     rota : rota,
@@ -554,7 +554,7 @@ function formatHorario(horarioString) {
 }
 
 async function getTickets() {
-    const url = url_base + "api/soticon/v1/tickets/";
+    const url = url_base + "cortex/api/soticon/v1/tickets/";
 
     const options = {
         method: 'GET',
@@ -594,7 +594,7 @@ logout_elemenst.forEach(function(element) {
 
 // retorna varias infos do user, inclusive o tipo
 async function verificarTipoUsuario(id) {
-    const url = url_base + `api/gerusuarios/v1/users/${id}`;
+    const url = url_base + `cortex/api/gerusuarios/v1/users/${id}`;
 
     const options = {
         method: 'GET',

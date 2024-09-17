@@ -22,7 +22,7 @@ function decodeToken(token) {
 
 function VerificarToken(token, refresh) {
 
-    const url = url_base + "api/token/verify/";
+    const url = url_base + "cortex/api/token/verify/";
 
     // objetos com os dados que serão passados no corpo da requsição
     const data = {
@@ -73,7 +73,7 @@ let novoRefresh;
 function ConsumirRefreshToken(refresh) {
 
     // endpoint do refresh token
-    const url = url_base + "api/token/refresh/";
+    const url = url_base + "cortex/api/token/refresh/";
 
     // obejtos com dados para serem passados no corpo da requisição
     const data = {
@@ -161,7 +161,7 @@ VerifyUserPermission(token_decodificado)
 // tickets reservados para essa rota
 async function getTicketsRota(id_rota) {
 //      console.log("Rota: ", id_rota)
-    const url = url_base + `api/soticon/v1/tickets/?rota_valida=${id_rota}`;
+    const url = url_base + `cortex/api/soticon/v1/tickets/?rota_valida=${id_rota}`;
 
     const options = {
         method: 'GET',
@@ -258,7 +258,7 @@ listarTicketsNaPagina(id_rota_path)
 
 // retorna varias infos do user, inclusive o tipo
 async function verificarTipoUsuario(id) {
-    const url = url_base + `api/gerusuarios/v1/users/${id}`;
+    const url = url_base + `cortex/api/gerusuarios/v1/users/${id}`;
 
     const options = {
         method: 'GET',
@@ -360,7 +360,7 @@ document.getElementById("formulario").addEventListener("submit", function(event)
 var botao_finalizar_rota = document.querySelector(".finalizar")
 
 botao_finalizar_rota.addEventListener("click", async function() {
-    const url = url_base + `api/soticon/v1/finalizar_rota/${id_rota_path}`
+    const url = url_base + `cortex/api/soticon/v1/finalizar_rota/${id_rota_path}`
     // const conteudo_botao = botao_finalizar_rota.textContent
 
     const data = {
@@ -431,7 +431,7 @@ async function associarCPFaoTicket(id_rota_path, cpf) {
 async function verificaTicket(user_soticon, id_rota) {
 //      console.log("Rota: ", id_rota, "user_soticon", user_soticon)
 
-    const url = url_base + `api/soticon/v1/verificar_tickets/`;
+    const url = url_base + `cortex/api/soticon/v1/verificar_tickets/`;
 
     const dados = {
         user_soticon : user_soticon,

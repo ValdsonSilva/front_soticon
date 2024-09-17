@@ -38,10 +38,10 @@ function handleFormSubmit(event) {
 //  //      console.log("Senha:", passwordInput);
 }
 
-// Função para fazer a solicitação POST para o endpoint /api/token
+// Função para fazer a solicitação POST para o endpoint /cortex/api/token
 function getToken(cpf, password) {
     // endpoint para gerar o token
-    const url = url_base + "api/token/";
+    const url = url_base + "cortex/api/token/";
 
     // obejeto com os dados a serem enviados no corpo da solicitação
     const data = {
@@ -69,7 +69,7 @@ function getToken(cpf, password) {
     loginButton.appendChild(loadingIcon);
 
 
-    // Fazendo a solicitação POST usando a API Fetch
+    // Fazendo a solicitação POST usando a cortex/api Fetch
     fetch(url, options)
         .then(response => {
             // verificar a resposta
@@ -180,8 +180,8 @@ function decodeToken(token) {
 //  console.log("Token decodificado: ", accessToken.user_id)
 
 async function verificarTipoUsuario(id) {
-    const url = url_base + `api/gerusuarios/v1/users/${id}`;
-    // const url = url_base + `api/soticon/v1/users/${id}`;
+    const url = url_base + `cortex/api/gerusuarios/v1/users/${id}`;
+    // const url = url_base + `cortex/api/soticon/v1/users/${id}`;
 
     const options = {
         method: 'GET',

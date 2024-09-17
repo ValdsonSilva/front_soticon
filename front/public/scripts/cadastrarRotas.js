@@ -39,7 +39,7 @@ VerifyUserPermission(token_decodificado)
 // verificando o token que chegou
 function VerificarToken(token, refresh) {
 
-    const url = url_base + "api/token/verify/";
+    const url = url_base + "cortex/api/token/verify/";
 
     // objetos com os dados que serão passados no corpo da requsição
     const data = {
@@ -88,7 +88,7 @@ let novoRefresh;
 function ConsumirRefreshToken(refresh) {
 
     // endpoint do refresh token
-    const url = url_base + "api/token/refresh/";
+    const url = url_base + "cortex/api/token/refresh/";
 
     // obejtos com dados para serem passados no corpo da requisição
     const data = {
@@ -226,7 +226,7 @@ cadastrarButton.addEventListener("click", function(e) {
 
 // cadastra as novas rotas
 async function cadastrarRotas(detalhes_rota, data, status, horario) {
-    const url = url_base + "api/soticon/v1/rotas/";
+    const url = url_base + "cortex/api/soticon/v1/rotas/";
 
     // Obtém os dados do formulário
     const formData = {
@@ -275,7 +275,7 @@ logout_elemenst.forEach(function(element) {
 
 // retorna varias infos do user, inclusive o tipo
 async function verificarTipoUsuario(id) {
-    const url = url_base + `api/gerusuarios/v1/users/${id}`;
+    const url = url_base + `cortex/api/gerusuarios/v1/users/${id}`;
 
     const options = {
         method: 'GET',
@@ -322,7 +322,7 @@ function redirecionarSeNecessario() {
 redirecionarSeNecessario();
 
 const carregar_rotas = async () => {
-    const url = url_base + "api/soticon/v1/rotas/";
+    const url = url_base + "cortex/api/soticon/v1/rotas/";
 
     // Configurando a solicitação
     const options = {
