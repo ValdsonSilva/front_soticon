@@ -28,20 +28,71 @@
             </div>
 
             <div class="botao">
-                <button type="submit">Verificar token</button>
+                <button type="submit" id="bo">Verificar token</button>
             </div>
         </form>
     </div>
 </body>
 <script src="../env.js"></script>
 <script>
+    const url_base = window.env.URL_BASE
+
     function verificarToken(event) {
         event.preventDefault()
-        try {
-            const token = document.getElementById("token").value
-            console.log("Token: ", token)
-            window.location.href = "./atualizaSenha.html"
+        const url = url_base + "cortex/api/gerusuarios/v1/password/reset/code"
 
+        const codeUser = document.getElementById("token").value
+        console.log("Token: ", codeUser)
+
+        const data = {
+            cpf : localStorage.getItem("cpf"), 
+            code : codeUser
+        }
+
+        const options = {
+            method : "POST",
+            headers : {
+                'Content-Type': 'application/json'
+            },
+            body : JSON.stringify(data)
+        }
+
+        try {
+            
+            fetch(url, options)
+                .then(response => {
+                    // verificar a resposta
+                    if (!response.ok) {
+                        throw new Error("Erro ao fazer solicitação: " + response.status);
+                    }
+                    // convertando resposta para Json
+                    return response.json();
+                })
+                .then(data => {
+                    if (data) {  
+                        window.alert(`Código válido!`)
+                        window.location.href = "./atualizaSenha.html"
+                    }
+
+                })
+                .catch(error => {
+                    console.error("Ocorreu um erro: ", error.message)
+                    
+                     // Tratamento de erros
+                    if (error.message.includes("403")) {
+                        window.alert(`Código expirado!`);
+
+                    } else if (error.message.includes("404")) {
+                        window.alert(`Usuário não encontrado!`);
+                        
+                    } else if (error.message.includes("500")) {
+                        window.alert(`Erro interno!\nTente novamente mais tarde`);
+                    
+                    } else if (error.message.includes("400")) {
+                        window.alert("Erro de requisição interna!")
+                    }
+                })
+        
         } catch (error) {
             window.alert("Token incorreto ou expirado!")
         } finally {

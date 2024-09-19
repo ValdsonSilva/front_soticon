@@ -31,26 +31,95 @@
         </div>
         
         <div class="botao">
-            <button type="submit">Receber token</button>
+            <button type="submit" id="bo">Receber token</button>
         </div>
     </form>
 </div>
 </body>
 <script src="../env.js"></script>
 <script>
-    function enviarLogin(event) {
-        event.preventDefault()
-        try {
-            const login = document.getElementById("matricula").value
-            console.log("CPF:", login)
-            window.location.href = "token.html"
+    const url_base = window.env.URL_BASE 
 
-        } catch (error) {
-            window.alert("Login incorreto!")
-        } finally {
-            document.getElementById("matricula").value = ""
+    function clearTokens() {
+        if (location.href.includes("/recSenha.html")) {
+            localStorage.removeItem("token")
+            localStorage.removeItem("refreshToken")
+
+        } else {
+            console.log("Erro!")
         }
     }
+    clearTokens()
+
+    function enviarLogin(event) {
+        event.preventDefault()
+
+        const url = url_base + "cortex/api/gerusuarios/v1/password/reset/"
+
+        const cpfUSer = document.getElementById("matricula").value
+
+        const data = {
+            cpf : cpfUSer
+        }
+
+        const options = {
+            method : "POST",
+            headers : {
+                'Content-Type': 'application/json'
+            },
+            body : JSON.stringify(data)
+        }
+
+        const button = document.getElementById("bo")
+        button.innerHTML = "processando..."
+
+        try {
+             // Fazendo a solicitação POST usando a cortex/api Fetch
+            fetch(url, options)
+                .then(response => {
+                    // verificar a resposta
+                    if (!response.ok) {
+                        throw new Error("Erro ao fazer solicitação: " + response.status);
+                    }
+                    // convertando resposta para Json
+                    return response.json();
+                })
+                .then(data => {
+                    if (data) {  
+                        window.alert(`Email enviado com sucesso!\nConfira o código enviado!`)
+                        localStorage.setItem("cpf", cpfUSer)
+                        window.location.href = "token.html"
+                    }
+                    button.innerHTML = 'Receber Token'
+
+                })
+                .catch(error => {
+                    console.error("Ocorreu um erro: ", error.message)
+                    button.innerHTML = 'Receber Token'
+                    
+                     // Tratamento de erros
+                    if (error.message.includes("403")) {
+                        window.alert(`Email não cadastrado!`);
+
+                    } else if (error.message.includes("404")) {
+                        window.alert(`Usuário não encontrado!`);
+                        
+                    } else if (error.message.includes("500")) {
+                        window.alert(`Erro interno!\nTente novamente mais tarde`);
+                    
+                    } else if (error.message.includes("400")) {
+                        window.alert("Erro de requisição interna!")
+                    }
+                })
+                
+        } catch (error) {
+            window.alert("Login incorreto!")
+
+        } finally {
+            document.getElementById("matricula").value = ""
+            // button.innerHTML = 'Receber Token'
+        }
+        }
 </script>
 
 </html>

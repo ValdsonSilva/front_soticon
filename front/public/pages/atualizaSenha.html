@@ -44,8 +44,11 @@
 </body>
 <script src="../env.js"></script>
 <script>
+    const url_base = window.env.URL_BASE
+
     function redefinirSenha(event) {
         event.preventDefault()
+        const url = url_base + "cortex/api/gerusuarios/v1/password/reset/confirm"
 
         const senhaFirst = document.getElementById("Nsenha").value
         const novaSenha = document.getElementById("Rsenha").value
@@ -53,10 +56,69 @@
         if (senhaFirst !== novaSenha) {
             window.alert("Senha incorreta")
             document.getElementById("Rsenha").value = ""
+
         } else {
             console.log("Senha: ", novaSenha)
-        }
+
+            const cpfUSer = localStorage.getItem("cpf")
+
+            const data = {
+                cpf : cpfUSer,
+                password : senhaFirst,
+                password_confirm: novaSenha
+            }
     
+            const options = {
+                method : "POST",
+                headers : {
+                    'Content-Type': 'application/json'
+                },
+                body : JSON.stringify(data)
+            }
+
+    
+            try {
+                 // Fazendo a solicitação POST usando a cortex/api Fetch
+                fetch(url, options)
+                    .then(response => {
+                        // verificar a resposta
+                        if (!response.ok) {
+                            throw new Error("Erro ao fazer solicitação: " + response.status);
+                        }
+                        // convertando resposta para Json
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data) {  
+                            window.alert(`Reset feito!`)
+                        }
+    
+                    })
+                    .catch(error => {
+                        console.error("Ocorreu um erro: ", error.message)
+                        
+                         // Tratamento de erros
+                        if (error.message.includes("403")) {
+                            window.alert(`Email não cadastrado!`);
+    
+                        } else if (error.message.includes("404")) {
+                            window.alert(`Usuário não encontrado!`);
+                            
+                        } else if (error.message.includes("500")) {
+                            window.alert(`Erro interno!\nTente novamente mais tarde`);
+                        
+                        } else if (error.message.includes("400")) {
+                            window.alert("Senhas não conferem!")
+                        }
+                    })
+            } catch (error) {
+                window.alert("Erro!")
+            } finally {
+                document.getElementById("Nsenha").value = ""
+                document.getElementById("Rsenha").value = ""
+            }
+    
+        }
     }
 </script>
 
