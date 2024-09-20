@@ -57,6 +57,10 @@
             body : JSON.stringify(data)
         }
 
+        
+        const button = document.getElementById("bo")
+        button.innerHTML = "verificando..."
+
         try {
             
             fetch(url, options)
@@ -74,9 +78,12 @@
                         window.location.href = "./atualizaSenha.html"
                     }
 
+                    button.innerHTML = "Verificar token"
+
                 })
                 .catch(error => {
                     console.error("Ocorreu um erro: ", error.message)
+                    button.innerHTML = "Verificar token"
                     
                      // Tratamento de erros
                     if (error.message.includes("403")) {

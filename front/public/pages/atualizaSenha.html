@@ -36,7 +36,7 @@
             </div>
 
             <div class="botao">
-                <button type="submit">Atualizar senha</button>
+                <button type="submit" id="bo">Atualizar senha</button>
             </div>
         </form>
     </div>
@@ -54,8 +54,11 @@
         const novaSenha = document.getElementById("Rsenha").value
 
         if (senhaFirst !== novaSenha) {
-            window.alert("Senha incorreta")
+            window.alert("Senhas diferentes!")
             document.getElementById("Rsenha").value = ""
+
+        } else if (senhaFirst.length !== 8) {
+            window.alert("A senha deve conter 8 caracteres!")
 
         } else {
             console.log("Senha: ", novaSenha)
@@ -76,6 +79,8 @@
                 body : JSON.stringify(data)
             }
 
+            const button = document.getElementById("bo")
+            button.innerHTML = "atualizando..."
     
             try {
                  // Fazendo a solicitação POST usando a cortex/api Fetch
@@ -92,11 +97,12 @@
                         if (data) {  
                             window.alert(`Reset feito!`)
                         }
-    
+                        button.innerHTML = "Atualizar senha"
                     })
                     .catch(error => {
                         console.error("Ocorreu um erro: ", error.message)
-                        
+                        button.innerHTML = "Atualizar senha"
+
                          // Tratamento de erros
                         if (error.message.includes("403")) {
                             window.alert(`Email não cadastrado!`);
