@@ -18,10 +18,16 @@ const setores_permission = [
         setor : "admin"
     },
     {
-        setor : "TI"
+        setor : "ti"
     },
     {
-        setor : "Direcao de Ensino"
+        setor : "direcao de ensino"
+    },
+    {
+        setor : "direcao geral"
+    },
+    {
+        setor : "direcao de administracao e planejamento"
     }
 ]
 

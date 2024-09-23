@@ -127,11 +127,11 @@ const tipo_users = [
         url : './pages/motorista.html',
     },
     {
-        user : "Direcao de Ensino",
+        user : "cadastro de rotas",
         url : './pages/cadastrarRotas.html',
     },
     {
-        user : "Guarita",
+        user : "guarita",
         url : './pages/guarita.html',
     },
     {
@@ -161,13 +161,25 @@ async function redirecionarParaProximaTela(accessToken) {
 
         } else if (resp.nome_tipo === "aluno") {
             window.location.href = tipo_users[1].url
+
+        } else if (resp.nome_tipo === "motorista") {
+            window.location.href = tipo_users[2].url
         
         } else {
-            const router = tipo_users.find((tipo) => setores[0] === tipo.user)
-            if (router) {
-                window.location.href = router.url
+            setores.forEach((setor) => {
+                if (setor === "guarita") {
+                    window.location.href = tipo_users[4].url
+                }
+            })
+
+            setores_autorizados = ["direcao geral", "direcao de ensino", "direcao de administracao e planejamento", "ti"]
+
+            const setor_autorizado = setores_autorizados.some(item => setores.includes(item))
+
+            if (setor_autorizado) {
+                window.location.href = tipo_users[3].url
             } else {
-                window.alert("Usuário não encontrado no sistema!")
+                window.alert("Usuário não autorizado no sistema!")
             }
         }
     } catch (error) {
