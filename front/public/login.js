@@ -127,11 +127,11 @@ const tipo_users = [
         url : './pages/motorista.html',
     },
     {
-        user : "ti",
+        user : "Direcao de Ensino",
         url : './pages/cadastrarRotas.html',
     },
     {
-        user : "terceirizado",
+        user : "Guarita",
         url : './pages/guarita.html',
     },
     {
@@ -149,21 +149,27 @@ async function redirecionarParaProximaTela(accessToken) {
     try {
         // const userId = parseJwt(accessToken).user_id
         const userId = decodeToken(accessToken).user_id
-//          console.log("Recebendo id: ", userId)
+//      console.log("Recebendo id: ", userId)
     
         // verificando o tipo de usuário
         const resp = await verificarTipoUsuario(userId)
-        let url;
+        const setores = resp.nome_setores.map(element => element);
+        // console.log(setores)
 
-        if (resp.nome_tipo) {
-            const router = tipo_users.find((tipo) => resp.nome_tipo === tipo.user)
+        if (resp.nome_tipo === "admin") {
+            window.location.href = tipo_users[0].url
+
+        } else if (resp.nome_tipo === "aluno") {
+            window.location.href = tipo_users[1].url
+        
+        } else {
+            const router = tipo_users.find((tipo) => setores[0] === tipo.user)
             if (router) {
                 window.location.href = router.url
             } else {
                 window.alert("Usuário não encontrado no sistema!")
             }
         }
-
     } catch (error) {
 //  //          console.log("Erro ao redirecionar para a próxima tela: ", error.message);
         // window.alert("Erro ao redirecionar para a próxima tela!");
@@ -197,7 +203,7 @@ async function verificarTipoUsuario(id) {
             throw new Error("Erro ao puxar os usuários" + response.status);
         }
         const data = await response.json();
-//  //          console.log("Aqui está o usuário: ", data);
+        // console.log("Aqui está o usuário: ", data);
         return data;
 
     } catch (error) {

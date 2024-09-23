@@ -13,7 +13,14 @@ body{
     font-family: Inter;
 }
 
-body #form_recSenha {
+/* .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+} */
+
+.container #form_recSenha {
     justify-content: center;
     align-items: center;
     margin-top: 100px;

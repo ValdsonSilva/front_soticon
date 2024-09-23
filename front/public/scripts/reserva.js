@@ -177,8 +177,6 @@ async function GetUserSoticon(user_id) {
     }
 }
 
-/* --------------CORRIGIR ESSA VERIFICAÇÃO/CONDIÇÃO------------------------ */
-
 // função responsável por manter o estilo do botão de reserva
 async function atualizarBotoesReservaVerify(id_rota, botao) {
 //      console.log("Entro na função!")
@@ -610,7 +608,7 @@ async function verificarTipoUsuario(id) {
             throw new Error("Erro ao puxar os usuários" + response.status);
         }
         const data = await response.json();
-//  //          console.log("Aqui está o usuário: ", data);
+        console.log("Aqui está o usuário: ", data);
         return data;
 
     } catch (error) {

@@ -10,46 +10,52 @@
     <link rel="shortcut icon" href="../images/logoOnibus.png" type="image/x-icon">
 </head>
 <body background="../images/backgroundCortex.jpg">
-<!-- <body> -->
-<h1>
-    <a href="../index.html" class="retornar">
-        <img src="../images/logoifpi.png" alt="Instituto federal de educação, ciência e tecnologia. PIAUÍ">
-    </a>
-</h1>
-<div id="form_recSenha">
-    <form onsubmit="enviarLogin(event)">
-        <h2>
-            <i class="fas fa-key" style="margin: 10px;"></i>
-            Recuperar senha
-        </h2>
-        <h3>Para recuperar o seu acesso informe a sua matricula</h3>
-        
-        <label for="matricula">Login do usuário</label>
-        <div class="input">
-            <i class="fa-solid fa-user"></i>
-            <input type="text" placeholder="Login do usuário" id="matricula" required>
+    <!-- <body> -->
+    <div class="container">
+        <h1>
+            <a href="../index.html" class="retornar">
+                <img src="../images/logoifpi.png" alt="Instituto federal de educação, ciência e tecnologia. PIAUÍ">
+            </a>
+        </h1>
+        <!-- <button class="retornar" style="display: flex; justify-content:center; align-items:center; width:80px;height:50px; margin-left: 10px; margin-bottom: 8px;">
+            <i class="fas fa-sign-out-alt"></i> 
+        </button> -->
+        <div id="form_recSenha">
+            <form onsubmit="enviarLogin(event)">
+                <h2>
+                    <i class="fas fa-key" style="margin: 10px;"></i>
+                    Recuperar senha
+                </h2>
+                <h3>Para recuperar o seu acesso informe a sua matricula</h3>
+                
+                <label for="matricula">Login do usuário</label>
+                <div class="input">
+                    <i class="fa-solid fa-user"></i>
+                    <input type="text" placeholder="Login do usuário" id="matricula" required>
+                </div>
+                
+                <div class="botao">
+                    <button type="submit" id="bo">Receber token</button>
+                </div>
+            </form>
         </div>
-        
-        <div class="botao">
-            <button type="submit" id="bo">Receber token</button>
-        </div>
-    </form>
-</div>
+    </div>
 </body>
 <script src="../env.js"></script>
 <script>
     const url_base = window.env.URL_BASE 
 
-    function clearTokens() {
-        if (location.href.includes("/recSenha.html")) {
-            localStorage.removeItem("token")
-            localStorage.removeItem("refreshToken")
-
-        } else {
-            console.log("Erro!")
-        }
-    }
-    clearTokens()
+    // logout no front
+    const logout_elemenst = document.querySelectorAll(".retornar")
+    logout_elemenst.forEach(function(element) {
+        element.addEventListener("click", function(){
+            for (var i = 0; i < logout_elemenst.length; i++){
+                localStorage.removeItem('token')
+                localStorage.removeItem('refreshToken')
+                window.location.href = "../index.html"
+            }   
+        })
+    })
 
     function enviarLogin(event) {
         event.preventDefault()

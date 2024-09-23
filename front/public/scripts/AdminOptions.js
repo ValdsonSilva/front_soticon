@@ -13,6 +13,14 @@ function decodeToken(token) {
 }
 const token_decodificado = decodeToken(token)
 
+const setores_permission = [
+    {
+        setor : "admin"
+    },
+    {
+        setor : "TI"
+    }
+]
 
 // verificando id do usuário
 async function VerifyUserPermission(token_decodificado) {
@@ -23,11 +31,11 @@ async function VerifyUserPermission(token_decodificado) {
         const resp = await verificarTipoUsuario(token_decodificado.user_id);
 //  //          console.log("O tipo do usuário: ", resp.nome_tipo);
 
-        if (resp.nome_tipo !== "admin") {
-            window.location.href = "../index.html";
-            
+        if (resp.nome_tipo !== setores_permission[0].setor & resp.nome_setores[0] !== setores_permission[1].setor) {
+            window.location.href = "../index.html"
+
         } else {
-//              console.log("Usuário certo")
+        //              console.log("Usuário certo")
         }
     }
 

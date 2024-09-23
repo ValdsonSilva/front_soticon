@@ -146,7 +146,7 @@ async function VerifyUserPermission(token_decodificado) {
         const resp = await verificarTipoUsuario(token_decodificado.user_id);
 //  //          console.log("O tipo do usuário: ", resp.nome_tipo);
 
-        if (resp.nome_tipo !== "admin" & resp.nome_tipo !== "serv.terceirizado") {
+        if (resp.nome_tipo !== "admin" & resp.nome_setores[0] !== "Guarita") {
             window.location.href = "../index.html";
             
         } else {

@@ -73,6 +73,19 @@
     color: #ffff;
 }
 
+#bo-retornar {
+    border: 3px solid #fff;
+    border-radius: 12px;
+    text-decoration: none;
+    color: #fff;
+}
+
+#bo-retornar:hover {
+    font-size: 70px;
+    border: 5px solid #ffff;
+    transition: font-size 0.3s ease-in-out;
+}   
+
 button{
     height: 68px;
     width: 420px;
