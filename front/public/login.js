@@ -10,7 +10,6 @@ document.getElementById("login").addEventListener("click", function() {
     const password = document.getElementById("senha").value;
 
     const cpf_formatado = limparCPF(cpf)
-//      console.log("Cpf formatado: ", cpf_formatado)
     
     try {
         if (cpf_formatado !== "" && password !== "") {

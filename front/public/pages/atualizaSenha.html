@@ -11,12 +11,14 @@
     <link rel="shortcut icon" href="../images/logoOnibus.png" type="image/x-icon">
 </head>
 
-<body background="../images/backgroundCortex.jpg" style="display: flex; justify-content:space-between; flex-direction:column">
+<body background="../images/backgroundCortex.jpg"
+    style="display: flex; justify-content:space-between; flex-direction:column">
     <a href="../index.html" class="retornar">
         <h1><img src="../images/logoifpi.png" alt="Instituto federal de educação, ciência e tecnologia. PIAUÍ"></h1>
     </a>
-    <button class="retornar" style="display: flex; justify-content:center; align-items:center; width:80px;height:50px; margin-left: 10px; margin-bottom: 8px;">
-            <i class="fas fa-sign-out-alt"></i> 
+    <button class="retornar"
+        style="display: flex; justify-content:center; align-items:center; width:80px;height:50px; margin-left: 10px; margin-bottom: 8px;">
+        <i class="fas fa-sign-out-alt"></i>
     </button>
     <div id="form_recSenha" style="margin-top: 0px; padding-top:0px">
         <form onsubmit="redefinirSenha(event)" style="margin-top: 0px;">
@@ -51,13 +53,13 @@
 
     // logout no front
     const logout_elemenst = document.querySelectorAll(".retornar")
-    logout_elemenst.forEach(function(element) {
-        element.addEventListener("click", function(){
-            for (var i = 0; i < logout_elemenst.length; i++){
+    logout_elemenst.forEach(function (element) {
+        element.addEventListener("click", function () {
+            for (var i = 0; i < logout_elemenst.length; i++) {
                 localStorage.removeItem('token')
                 localStorage.removeItem('refreshToken')
                 window.location.href = "../index.html"
-            }   
+            }
         })
     })
 
@@ -76,29 +78,28 @@
             window.alert("A senha deve conter 8 caracteres!")
 
         } else {
-            console.log("Senha: ", novaSenha)
 
             const cpfUSer = localStorage.getItem("cpf")
 
             const data = {
-                cpf : cpfUSer,
-                password : senhaFirst,
+                cpf: cpfUSer,
+                password: senhaFirst,
                 password_confirm: novaSenha
             }
-    
+
             const options = {
-                method : "POST",
-                headers : {
+                method: "POST",
+                headers: {
                     'Content-Type': 'application/json'
                 },
-                body : JSON.stringify(data)
+                body: JSON.stringify(data)
             }
 
             const button = document.getElementById("bo")
             button.innerHTML = "atualizando..."
-    
+
             try {
-                 // Fazendo a solicitação POST usando a cortex/api Fetch
+                // Fazendo a solicitação POST usando a cortex/api Fetch
                 fetch(url, options)
                     .then(response => {
                         // verificar a resposta
@@ -109,7 +110,7 @@
                         return response.json();
                     })
                     .then(data => {
-                        if (data) {  
+                        if (data) {
                             window.alert(`Reset feito!`)
                         }
                         button.innerHTML = "Atualizar senha"
@@ -118,16 +119,16 @@
                         console.error("Ocorreu um erro: ", error.message)
                         button.innerHTML = "Atualizar senha"
 
-                         // Tratamento de erros
+                        // Tratamento de erros
                         if (error.message.includes("403")) {
                             window.alert(`Email não cadastrado!`);
-    
+
                         } else if (error.message.includes("404")) {
                             window.alert(`Usuário não encontrado!`);
-                            
+
                         } else if (error.message.includes("500")) {
                             window.alert(`Erro interno!\nTente novamente mais tarde`);
-                        
+
                         } else if (error.message.includes("400")) {
                             window.alert("Senhas não conferem!")
                         }
@@ -138,7 +139,7 @@
                 document.getElementById("Nsenha").value = ""
                 document.getElementById("Rsenha").value = ""
             }
-    
+
         }
     }
 </script>
