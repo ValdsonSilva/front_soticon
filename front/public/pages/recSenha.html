@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://kit.fontawesome.com/a772aefe7b.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/imask/6.0.7/imask.min.js"></script>
     <link rel="stylesheet" href="../styles/recSenha.css">
     <title>CORTEX - IFPI/RECUPERAR SENHA</title>
     <link rel="shortcut icon" href="../images/logoOnibus.png" type="image/x-icon">
@@ -28,12 +29,12 @@
                     <i class="fas fa-key" style="margin: 10px;"></i>
                     Recuperar senha
                 </h2>
-                <h3>Para recuperar o seu acesso informe a sua matricula</h3>
+                <h3>Para recuperar o seu acesso informe o seu CPF.</h3>
 
-                <label for="matricula">Login do usuário</label>
+                <label for="usuario">Login do usuário</label>
                 <div class="input">
                     <i class="fa-solid fa-user"></i>
-                    <input type="text" placeholder="Login do usuário" id="matricula" required>
+                    <input type="text" placeholder="Login do usuário" id="cpf" name="usuario" required>
                 </div>
 
                 <div class="botao">
@@ -44,6 +45,12 @@
     </div>
 </body>
 <script src="../env.js"></script>
+<script>
+    // Cria uma máscara de CPF para o campo de entrada
+    var mascaraCPF = IMask(document.getElementById('cpf'), {
+        mask: '000.000.000-00'
+    });
+</script>
 <script>
     const url_base = window.env.URL_BASE
 
