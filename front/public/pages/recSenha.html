@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://kit.fontawesome.com/a772aefe7b.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="../styles/recSenha.css">
+    <link rel="stylesheet" href="../styles/recSenhaInit.css">
     <title>CORTEX - IFPI/RECUPERAR SENHA</title>
     <link rel="shortcut icon" href="../images/logoOnibus.png" type="image/x-icon">
 </head>
@@ -23,17 +23,18 @@
             <i class="fas fa-sign-out-alt"></i> 
         </button> -->
         <div id="form_recSenha">
-            <form onsubmit="enviarLogin(event)">
+            <form onsubmit="enviarLogin(event)" id="formAtt">
                 <h2>
                     <i class="fas fa-key" style="margin: 10px;"></i>
                     Recuperar senha
                 </h2>
+                
                 <h3>Para recuperar o seu acesso informe a sua matricula</h3>
 
-                <label for="matricula">Login do usuário</label>
+                <label for="matricula">CPF</label>
                 <div class="input">
                     <i class="fa-solid fa-user"></i>
-                    <input type="text" placeholder="Login do usuário" id="matricula" required>
+                    <input type="text" placeholder="Informe seu cpf" id="matricula" required>
                 </div>
 
                 <div class="botao">
@@ -129,5 +130,4 @@
         }
     }
 </script>
-
 </html>
