@@ -152,8 +152,8 @@ function ConsumirRefreshToken(refresh) {
 }
 
 // endpoint user_soticon
-async function GetUserSoticon(user_id) {
-    const url = url_base + `cortex/api/soticon/v1/users/?usuario=${user_id}`
+async function GetUserSoticon() {
+    const url = url_base + `cortex/api/soticon/v1/users/`
 
     const options = {
         method: 'GET',
@@ -182,7 +182,7 @@ async function atualizarBotoesReservaVerify(id_rota, botao) {
 //      console.log("Entro na função!")
     try {
         // Verificar se há tickets reservados associados à rota do botão
-        const resp = await GetUserSoticon(token_decodificado.user_id);
+        const resp = await GetUserSoticon();
 //          console.log("A droga do resp: ", resp)
         // id rota e user_soticon
         if (resp && resp.tickets_reservados && resp.tickets_reservados.length > 0) {
@@ -206,7 +206,7 @@ async function atualizarBotoesReservaVerify(id_rota, botao) {
 async function atualizarPosicaoFIla(id_rota, posicao) {
     try {
         // Verificar se há tickets reservados associados à rota do botão
-        const resp = await GetUserSoticon(token_decodificado.user_id);
+        const resp = await GetUserSoticon();
 //          console.log("A droga do resp: ", resp)
         if (resp && resp.tickets_reservados && resp.tickets_reservados.length > 0) {
             const ticketReservado = resp.tickets_reservados.find(ticket => {
@@ -314,7 +314,7 @@ async function montarElementosDaTela() {
         // adicionando ouvinte do evento de clique no botão
         botao.addEventListener("click", function() {
             // passando o user_soticon
-            GetUserSoticon(token_decodificado.user_id).then(resp => {
+            GetUserSoticon().then(resp => {
                 user_soticon = resp.id
                 // Aqui você pode usar o valor de user_soticon
 //  //                  console.log("O id user_soticon: ", user_soticon);
@@ -482,7 +482,7 @@ async function criarElementoRota() {
     // Adicionando ouvinte do evento de clique no botão
     botao.addEventListener("click", function() {
         // Passando o user_soticon
-        GetUserSoticon(token_decodificado.user_id).then(resp => {
+        GetUserSoticon().then(resp => {
             user_soticon = resp.id;
             // Aqui você pode usar o valor de user_soticon
 //  //              console.log("O id user_soticon: ", user_soticon);
