@@ -71,7 +71,7 @@
 
         const url = url_base + "cortex/api/gerusuarios/v1/password/reset/"
 
-        const cpfUSer = document.getElementById("cpf").value
+        const cpfUSer = document.getElementById("cpf").value.replace(/\D/g, '')
 
         const data = {
             cpf: cpfUSer
