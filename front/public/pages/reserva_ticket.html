@@ -31,6 +31,27 @@
 
     </div>
 </body>
+    <script>
+        function disableButtonTemporarily(button) {
+
+            button.classList.add('disabled-temporary');
+
+            // Desabilita o botão
+            button.disabled = true;
+        
+            // Reabilita o botão após 2 segundos
+            setTimeout(function() {
+                button.disabled = false;
+                button.classList.remove ('disabled-temporary');
+            }, 5000);
+        }
+        
+        document.querySelectorAll('button[id^="bo"]').forEach(button => {
+            button.addEventListener('click', () => {
+                disableButtonTemporarily(button);
+            });
+        });
+    </script>
     <script src="../env.js"></script>
     <script src="../scripts/reserva.js"></script>
 </html>
