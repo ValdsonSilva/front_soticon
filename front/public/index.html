@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,6 +11,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/imask/6.0.7/imask.min.js"></script>
   <title>CORTEX - IFPI/LOGIN</title>
 </head>
+
 <body background="./images/backgroundCortex.jpg">
   <h1>
     <img src="./images/logoifpi.png" alt="Instituto federal de educação, ciência e tecnologia. PIAUÍ">
@@ -38,12 +40,13 @@
     </form>
   </div>
 </body>
-  <script src="./env.js"></script>
-  <script src="./login.js"></script>
-  <script>
-        // Cria uma máscara de CPF para o campo de entrada
-        var mascaraCPF = IMask(document.getElementById('cpf'), {
-            mask: '000.000.000-00'
-        });
-  </script>
+<script src="./env.js"></script>
+<script src="./login.js"></script>
+<script>
+  // Cria uma máscara de CPF para o campo de entrada
+  var mascaraCPF = IMask(document.getElementById('cpf'), {
+    mask: '000.000.000-00'
+  });
+</script>
+
 </html>

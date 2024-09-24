@@ -27,7 +27,7 @@
                 <i class="fas fa-key" style="margin: 10px;"></i>
                 Recuperar senha
             </h2>
-            <h3>Para recuperar o seu acesso informe o seu CPF</h3>
+            <h3>Para recuperar o seu acesso informe o seu CPF.</h3>
 
             <label for="Nsenha">Nova senha</label>
             <div class="input">
@@ -74,8 +74,8 @@
             window.alert("Senhas diferentes!")
             document.getElementById("Rsenha").value = ""
 
-        } else if (senhaFirst.length !== 8) {
-            window.alert("A senha deve conter 8 caracteres!")
+        } else if (senhaFirst.length < 8) {
+            window.alert("A senha deve conter ao menos 8 caracteres!")
 
         } else {
 

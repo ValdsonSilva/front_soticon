@@ -46,6 +46,12 @@
 </body>
 <script src="../env.js"></script>
 <script>
+    // Cria uma máscara de CPF para o campo de entrada
+    var mascaraCPF = IMask(document.getElementById('cpf'), {
+        mask: '000.000.000-00'
+    });
+</script>
+<script>
     const url_base = window.env.URL_BASE
 
     // logout no front
@@ -65,7 +71,7 @@
 
         const url = url_base + "cortex/api/gerusuarios/v1/password/reset/"
 
-        const cpfUSer = document.getElementById("matricula").value
+        const cpfUSer = document.getElementById("cpf").value.replace(/\D/g, '')
 
         const data = {
             cpf: cpfUSer
@@ -125,7 +131,7 @@
             window.alert("Login incorreto!")
 
         } finally {
-            document.getElementById("matricula").value = ""
+            document.getElementById("cpf").value = ""
             // button.innerHTML = 'Receber Token'
         }
     }
