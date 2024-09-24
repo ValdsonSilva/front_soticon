@@ -109,6 +109,11 @@ button:hover{
     transition: font-size 0.3s ease-in-out;
 }
 
+button.disabled-temporary {
+    opacity: 0.6; /* ou ajuste o estilo de acordo com o visual desejado */
+    cursor: not-allowed; /* cursor indica que o botão está desativado */
+}
+
 .botao_container{
     display: grid;
     place-content: center;
@@ -140,11 +145,11 @@ button:hover{
     place-content: center;
 }
 
-.link:hover {
+/* .link:hover {
     font-size: 35px;
     border: 5px solid #ffff;
     transition: font-size 0.3s ease-in-out;
-}
+} */
 
 .icon-container {
     display: flex;
@@ -199,15 +204,13 @@ button:hover{
         font-size: 30px;
     }
 
-    button:active{
-        font-size: 55px;
+    button:hover, button:active, button:focus {
+        transform: none !important; /* Garante que não haja transformações */
+        transition: none !important; /* Remove qualquer transição */
+        background-color: inherit !important; /* Garante que o background não mude */
+        box-shadow: none !important; /* Remove sombra ou outros efeitos */
+        outline: none !important; /* Remove efeitos de foco */
     }
-
-    /* button:hover{
-        font-size: 70px;
-        border: 5px solid #ffff;
-        transition: font-size 0.3s ease-in-out;
-    } */
 
     .loading-icon {
         font-size: 80px;
@@ -243,7 +246,15 @@ button:hover{
         left: 80px;
     } 
 
+    button:hover, button:active, button:focus {
+        transform: none !important; /* Garante que não haja transformações */
+        transition: none !important; /* Remove qualquer transição */
+        background-color: inherit !important; /* Garante que o background não mude */
+        box-shadow: none !important; /* Remove sombra ou outros efeitos */
+        outline: none !important; /* Remove efeitos de foco */
+      }
+/* 
     button:active{
-        font-size: 55px;
-    }
+        font-size: inherit;
+    } */
 }
