@@ -1,4 +1,5 @@
 const url_base = window.env.URL_BASE 
+var button_disable_state = false
 
 // obter o token do localstorage senão retorna o usuário para tela de login
 const token = localStorage.getItem('token') ? localStorage.getItem('token') : window.location.href = "../index.html";
@@ -376,6 +377,7 @@ async function montarElementosDaTela() {
         loadingIcon.style.display = 'inline-block';
 
         async function reservarOuCancelarTicket(rota, user_soticon){
+            button_disable_state = true
             try {
                 const url = url_base + 'cortex/api/soticon/v1/reservar_ticket/';
 
@@ -401,7 +403,7 @@ async function montarElementosDaTela() {
     
                 const data = await response.json();
 
-//  //                  console.log('Reserva de ticket processada com sucesso:', data);
+                console.log('Reserva de ticket processada com sucesso:', data);
 
                 // Ocultar ícone de carregamento após a requisição
                 loadingIcon.style.display = "none";
@@ -423,6 +425,7 @@ async function montarElementosDaTela() {
             } finally {
                 // ocultar o ícone de carregamento
                 loadingIcon.style.display = 'none';
+                button_disable_state = false
             }
         };
 
@@ -638,3 +641,22 @@ function redirecionarSeNecessario() {
 // Chamada para verificar e redirecionar
 redirecionarSeNecessario();
 
+function disableButtonTemporarily(button) { 
+    button.classList.add('disabled-temporary');
+
+    // Desabilita o botão
+    button.disabled = true;
+
+    // Reabilita o botão após 2 segundos
+    setTimeout(function() {
+        button.disabled = false;
+        button.classList.remove ('disabled-temporary');
+    }, 120000); // 1 minuto
+}
+
+document.querySelectorAll('button[id^="bo"]').forEach(button => {
+    button.addEventListener('click', () => {
+        // disableButtonTemporarily(button);
+        disableButtonTemporarily(button)
+    });
+});
