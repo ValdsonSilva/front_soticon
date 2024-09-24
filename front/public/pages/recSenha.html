@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,6 +10,7 @@
     <title>CORTEX - IFPI/RECUPERAR SENHA</title>
     <link rel="shortcut icon" href="../images/logoOnibus.png" type="image/x-icon">
 </head>
+
 <body background="../images/backgroundCortex.jpg">
     <!-- <body> -->
     <div class="container">
@@ -27,13 +29,13 @@
                     Recuperar senha
                 </h2>
                 <h3>Para recuperar o seu acesso informe a sua matricula</h3>
-                
+
                 <label for="matricula">Login do usuário</label>
                 <div class="input">
                     <i class="fa-solid fa-user"></i>
                     <input type="text" placeholder="Login do usuário" id="matricula" required>
                 </div>
-                
+
                 <div class="botao">
                     <button type="submit" id="bo">Receber token</button>
                 </div>
@@ -43,17 +45,17 @@
 </body>
 <script src="../env.js"></script>
 <script>
-    const url_base = window.env.URL_BASE 
+    const url_base = window.env.URL_BASE
 
     // logout no front
     const logout_elemenst = document.querySelectorAll(".retornar")
-    logout_elemenst.forEach(function(element) {
-        element.addEventListener("click", function(){
-            for (var i = 0; i < logout_elemenst.length; i++){
+    logout_elemenst.forEach(function (element) {
+        element.addEventListener("click", function () {
+            for (var i = 0; i < logout_elemenst.length; i++) {
                 localStorage.removeItem('token')
                 localStorage.removeItem('refreshToken')
                 window.location.href = "../index.html"
-            }   
+            }
         })
     })
 
@@ -65,22 +67,22 @@
         const cpfUSer = document.getElementById("matricula").value
 
         const data = {
-            cpf : cpfUSer
+            cpf: cpfUSer
         }
 
         const options = {
-            method : "POST",
-            headers : {
+            method: "POST",
+            headers: {
                 'Content-Type': 'application/json'
             },
-            body : JSON.stringify(data)
+            body: JSON.stringify(data)
         }
 
         const button = document.getElementById("bo")
         button.innerHTML = "processando..."
 
         try {
-             // Fazendo a solicitação POST usando a cortex/api Fetch
+            // Fazendo a solicitação POST usando a cortex/api Fetch
             fetch(url, options)
                 .then(response => {
                     // verificar a resposta
@@ -91,7 +93,7 @@
                     return response.json();
                 })
                 .then(data => {
-                    if (data) {  
+                    if (data) {
                         window.alert(`Email enviado com sucesso!\nConfira o código enviado!`)
                         localStorage.setItem("cpf", cpfUSer)
                         window.location.href = "token.html"
@@ -100,24 +102,24 @@
 
                 })
                 .catch(error => {
-                    console.error("Ocorreu um erro: ", error.message)
+                    //console.error("Ocorreu um erro: ", error.message)
                     button.innerHTML = 'Receber Token'
-                    
-                     // Tratamento de erros
+
+                    // Tratamento de erros
                     if (error.message.includes("403")) {
                         window.alert(`Email não cadastrado!`);
 
                     } else if (error.message.includes("404")) {
                         window.alert(`Usuário não encontrado!`);
-                        
+
                     } else if (error.message.includes("500")) {
                         window.alert(`Erro interno!\nTente novamente mais tarde`);
-                    
+
                     } else if (error.message.includes("400")) {
                         window.alert("Erro de requisição interna!")
                     }
                 })
-                
+
         } catch (error) {
             window.alert("Login incorreto!")
 
@@ -125,7 +127,7 @@
             document.getElementById("matricula").value = ""
             // button.innerHTML = 'Receber Token'
         }
-        }
+    }
 </script>
 
 </html>

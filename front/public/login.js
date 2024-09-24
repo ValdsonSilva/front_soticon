@@ -95,7 +95,7 @@ function getToken(cpf, password) {
             }
         })
         .catch(error => {
-            console.error("Ocorreu um erro: ", error.message)
+//            console.error("Ocorreu um erro: ", error.message)
 //  //              console.log("token ", data.access);
 //              console.log("refresh ", data.refresh)
             
@@ -218,7 +218,7 @@ async function verificarTipoUsuario(id) {
         return data;
 
     } catch (error) {
-        console.error("Erro durante a requisição dos usuários: ", error.message);
+      //  console.error("Erro durante a requisição dos usuários: ", error.message);
     }
 }
 

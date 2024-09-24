@@ -67,7 +67,7 @@ function VerificarToken(token, refresh) {
         })
         .catch(error => {
             // Lidar com erros
-            console.error("Ocorreu um erro ao verificar o token: ", error.message);
+            //console.error("Ocorreu um erro ao verificar o token: ", error.message);
             
             // Verificar se o erro é de token inválido (401)
             if (error.message.includes('401')) {
@@ -136,7 +136,7 @@ function ConsumirRefreshToken(refresh) {
         })
         .catch(error => {
             // Lidar com erros
-            console.error("Ocorreu um erro ao consumir o refresh token: ", error);
+            //console.error("Ocorreu um erro ao consumir o refresh token: ", error);
 
             localStorage.removeItem('token')
             localStorage.removeItem('refreshToken')
@@ -186,7 +186,7 @@ async function verificarTipoUsuario(id) {
         return data;
 
     } catch (error) {
-        console.error("Erro durante a requisição dos usuários: ", error.message);
+        //console.error("Erro durante a requisição dos usuários: ", error.message);
     }
 }
 
@@ -257,7 +257,7 @@ function listarRotasDoDia() {
 
         })
         .catch ((error) => {
-            console.error("Erro ao puxar as rotas do dia!")
+            //console.error("Erro ao puxar as rotas do dia!")
         })
         .finally(() => {
             loader.style.display = "none"
@@ -317,7 +317,7 @@ async function exibirRotas(rotas) {
     });
 
     if (rotas.length === 0) {
-        console.log("Não há rotas!")
+        //console.log("Não há rotas!")
 
         const mensagem = document.createElement("div")
         mensagem.textContent = "Não há rotas disponiveis no sistema!";

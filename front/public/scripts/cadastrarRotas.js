@@ -89,7 +89,7 @@ function VerificarToken(token, refresh) {
         })
         .catch(error => {
             // Lidar com erros
-            console.error("Ocorreu um erro ao verificar o token: ", error.message);
+            //console.error("Ocorreu um erro ao verificar o token: ", error.message);
             
             // Verificar se o erro é de token inválido (401)
             if (error.message.includes('401')) {
@@ -159,7 +159,7 @@ function ConsumirRefreshToken(refresh) {
         })
         .catch(error => {
             // Lidar com erros
-            console.error("Ocorreu um erro ao consumir o refresh token: ", error);
+            //console.error("Ocorreu um erro ao consumir o refresh token: ", error);
 
             localStorage.removeItem('token')
             localStorage.removeItem('refreshToken')
@@ -224,7 +224,7 @@ cadastrarButton.addEventListener("click", function(e) {
                 window.alert("Rota cadastrada com sucesso!")
             })
             .catch(error => {
-                console.error("Erro ao enviar dados do formulário:", error);
+                //console.error("Erro ao enviar dados do formulário:", error);
                 // Tratar erros de forma apropriada, como exibir uma mensagem de erro ao usuário
                 // Adicione uma classe CSS para indicar falha
                 cadastrarButton.classList.add("error-animation");
@@ -240,7 +240,7 @@ cadastrarButton.addEventListener("click", function(e) {
                 }, 3000); // Tempo em milissegundos
             })
     } else {
-        console.error("Preencha os campos do formulário!");
+        //console.error("Preencha os campos do formulário!");
         window.alert("Obrigatório preencher todos os campos do formulário!");
     }
 })
@@ -278,7 +278,7 @@ async function cadastrarRotas(detalhes_rota, data, status, horario) {
 //  //          console.log("Resposta do servidor:", data);
         // Processa a resposta do servidor, se necessário
     } catch (error) {
-        console.error("Erro durante a requisição:", error);
+        //console.error("Erro durante a requisição:", error);
         throw error; // Propagar o erro para o chamador, se necessário
     }
 };
@@ -317,7 +317,7 @@ async function verificarTipoUsuario(id) {
         return data;
 
     } catch (error) {
-        console.error("Erro durante a requisição dos usuários: ", error.message);
+        //console.error("Erro durante a requisição dos usuários: ", error.message);
     }
 }
 
@@ -365,7 +365,7 @@ const carregar_rotas = async () => {
         return data.results
         // Processa a resposta do servidor, se necessário
     } catch (error) {
-        console.error("Erro durante a requisição:", error);
+        //console.error("Erro durante a requisição:", error);
         throw error; // Propagar o erro para o chamador, se necessário
     }
 }

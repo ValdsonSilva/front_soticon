@@ -69,7 +69,7 @@ async function verificarTipoUsuario(id) {
         return data;
 
     } catch (error) {
-        console.error("Erro durante a requisição dos usuários: ", error.message);
+        //console.error("Erro durante a requisição dos usuários: ", error.message);
     }
 }
 

@@ -50,7 +50,7 @@ function VerificarToken(token, refresh) {
         })
         .catch(error => {
             // Lidar com erros
-            console.error("Ocorreu um erro ao verificar o token: ", error.message);
+            //console.error("Ocorreu um erro ao verificar o token: ", error.message);
             
             // Verificar se o erro é de token inválido (401)
             if (error.message.includes('401')) {
@@ -121,7 +121,7 @@ function ConsumirRefreshToken(refresh) {
         })
         .catch(error => {
             // Lidar com erros
-            console.error("Ocorreu um erro ao consumir o refresh token: ", error);
+            //console.error("Ocorreu um erro ao consumir o refresh token: ", error);
 
             localStorage.removeItem('token')
             localStorage.removeItem('refreshToken')
@@ -181,7 +181,7 @@ async function getTicketsRota(id_rota) {
         return data.results;
 
     } catch (error) {
-        console.error("Erro durante a requisição dos tickets da rota: ", error.message);
+        //console.error("Erro durante a requisição dos tickets da rota: ", error.message);
         window.alert("Erro ao carregar rotas do dia!")
     }
 }
@@ -247,7 +247,7 @@ async function listarTicketsNaPagina(id_rota) {
         });
 
     } catch {
-        console.error("Erro ao listar tickets:", error);
+        //.error("Erro ao listar tickets:", error);
         window.alert("Erro ao carregar tickets da rota")
     } finally {
         // Remove o ícone de carregamento, independentemente do resultado da requisição
@@ -278,7 +278,7 @@ async function verificarTipoUsuario(id) {
         return data;
 
     } catch (error) {
-        console.error("Erro durante a requisição dos usuários: ", error.message);
+        //console.error("Erro durante a requisição dos usuários: ", error.message);
     }
 }
 
@@ -346,7 +346,7 @@ document.getElementById("formulario").addEventListener("submit", function(event)
             }
         })
         .catch((error) => {
-            console.error("Erro ao associar CPF ao ticket:", error);
+            //console.error("Erro ao associar CPF ao ticket:", error);
             window.alert("Ticket não encontrado nas pendências!")
         })
         .finally(() => {
@@ -399,7 +399,7 @@ botao_finalizar_rota.addEventListener("click", async function() {
         window.alert("Rota finalizada!");
         return data
     } catch (error) {
-        console.error("Erro ao finalizar rota: ", error)
+        //console.error("Erro ao finalizar rota: ", error)
         window.alert("Erro ao finalizar rota!")
     } finally {
 //          console.log("foi")
@@ -421,9 +421,10 @@ async function associarCPFaoTicket(id_rota_path, cpf) {
         return ticket_aluno_encontrado;
     } catch (error) {
         // Lidar com qualquer erro que ocorra durante o processo
-        console.error("Erro ao associar CPF ao ticket:", error);
-        throw error; // Rejeitar a Promise com o erro
+        //console.error("Erro ao associar CPF ao ticket:", error);
         window.alert("Reserva não encontrada!")
+        throw error; // Rejeitar a Promise com o erro
+        
     }
 }
 
@@ -461,7 +462,7 @@ async function verificaTicket(user_soticon, id_rota) {
         return data;
     
     } catch (error) {
-        console.error("Erro: ", error);
+        //console.error("Erro: ", error);
     
         // Verifica a mensagem de erro para determinar o código de status
         if (error.message.includes("404") || error.message.includes("401")) {

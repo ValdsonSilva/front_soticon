@@ -66,7 +66,7 @@ function VerificarToken(token, refresh) {
         })
         .catch(error => {
             // Lidar com erros
-            console.error("Ocorreu um erro ao verificar o token: ", error.message);
+            //console.error("Ocorreu um erro ao verificar o token: ", error.message);
             
             // Verificar se o erro é de token inválido (401)
             if (error.message.includes('401')) {
@@ -135,7 +135,7 @@ function ConsumirRefreshToken(refresh) {
         })
         .catch(error => {
             // Lidar com erros
-            console.error("Ocorreu um erro ao consumir o refresh token: ", error);
+            //console.error("Ocorreu um erro ao consumir o refresh token: ", error);
 
             localStorage.removeItem('token')
             localStorage.removeItem('refreshToken')
@@ -169,11 +169,11 @@ async function GetUserSoticon(user_id) {
             throw new Error("Erro ao pegar user_soticon" + response.status);
         }
         const data = await response.json();
-//  //          console.log("Aqui está o user_soticon: ", data);
+         //console.log("Aqui está o user_soticon: ", data);
         return data
 
     } catch (error) {
-        console.error("Erro durante a requisição do user_soticon: ", error.message);
+        //console.error("Erro durante a requisição do user_soticon: ", error.message);
     }
 }
 
@@ -198,7 +198,7 @@ async function atualizarBotoesReservaVerify(id_rota, botao) {
             botao.textContent = "+"
         }
     } catch (error) {
-        console.error('Erro na atualização dos botões de reserva:', error);
+        //console.error('Erro na atualização dos botões de reserva:', error);
     }
 }
 /*-------------------------------------------------------------------------------- */
@@ -220,7 +220,7 @@ async function atualizarPosicaoFIla(id_rota, posicao) {
             posicao.textContent = ""
         }
     } catch (error) {
-        console.error('Erro na atualização dos botões de reserva:', error);
+        //console.error('Erro na atualização dos botões de reserva:', error);
     }
 }
 
@@ -230,7 +230,7 @@ let rotasDoDia;
 
 async function ListarRotasDoDIa() {
     // url da requisição
-    const url = url_base + `cortex/api/soticon/v1/rotas/?data_valida=${data_rota}&status=${'espera'}`;
+    const url = url_base + `cortex/api/soticon/v1/rotas/?data_valida=${data_rota}`;
 
     const options = {
         method: 'GET',
@@ -252,7 +252,7 @@ async function ListarRotasDoDIa() {
         return data.results;
 
     } catch (erro) {
-        console.error("Erro durante a requisição das rotas do dia: ", erro.message);
+        //console.error("Erro durante a requisição das rotas do dia: ", erro.message);
         window.location.reload()
     }
 }
@@ -352,13 +352,13 @@ async function montarElementosDaTela() {
         const Botao = document.getElementById("bo" + id_rota);
         const bo_conteudo = Botao.textContent
         if (!Botao) {
-            console.error("Botão não encontrado para o índice:", id_rota);
+            //console.error("Botão não encontrado para o índice:", id_rota);
             return;
         }
         
         const Posicao = Botao.nextElementSibling;
         if (!Posicao) {
-            console.error("Próximo elemento irmão não encontrado para o botão:", Botao);
+            //console.error("Próximo elemento irmão não encontrado para o botão:", Botao);
             return;
         }
 
@@ -418,7 +418,7 @@ async function montarElementosDaTela() {
 
     
             } catch (error) {
-                console.error('Erro ao reservar/cancelar ticket:', error.message);
+                //.error('Erro ao reservar/cancelar ticket:', error.message);
                 Botao.textContent = "+"
             } finally {
                 // ocultar o ícone de carregamento
@@ -431,7 +431,7 @@ async function montarElementosDaTela() {
     }
 
     if (rotas.length === 0) {
-        console.log("Não há rotas")
+        //console.log("Não há rotas")
 
         const mensagem = document.createElement("div");
 
@@ -446,7 +446,7 @@ async function montarElementosDaTela() {
 
 // Chamando a função para montar os elementos da tela
 montarElementosDaTela().catch(error => {
-    console.error("Erro ao carregar os elementos da tela: ", error)
+    //console.error("Erro ao carregar os elementos da tela: ", error)
 })
 
 async function criarElementoRota() {
@@ -572,7 +572,7 @@ async function getTickets() {
         return data.results;
 
     } catch (error) {
-        console.error("Erro durante a requisição dos tickets: ", error.message);
+        //console.error("Erro durante a requisição dos tickets: ", error.message);
     }
 }
 getTickets()
@@ -608,11 +608,11 @@ async function verificarTipoUsuario(id) {
             throw new Error("Erro ao puxar os usuários" + response.status);
         }
         const data = await response.json();
-        console.log("Aqui está o usuário: ", data);
+        //console.log("Aqui está o usuário: ", data);
         return data;
 
     } catch (error) {
-        console.error("Erro durante a requisição dos usuários: ", error.message);
+        //console.error("Erro durante a requisição dos usuários: ", error.message);
     }
 }
 
