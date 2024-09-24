@@ -71,7 +71,7 @@
 
         const url = url_base + "cortex/api/gerusuarios/v1/password/reset/"
 
-        const cpfUSer = document.getElementById("matricula").value
+        const cpfUSer = document.getElementById("cpf").value
 
         const data = {
             cpf: cpfUSer
@@ -131,7 +131,7 @@
             window.alert("Login incorreto!")
 
         } finally {
-            document.getElementById("matricula").value = ""
+            document.getElementById("cpf").value = ""
             // button.innerHTML = 'Receber Token'
         }
     }
