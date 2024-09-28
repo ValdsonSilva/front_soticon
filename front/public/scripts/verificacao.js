@@ -3,9 +3,8 @@ const url_base = window.env.URL_BASE
 const token = localStorage.getItem('token') ? localStorage.getItem('token') : window.location.href = "../index.html";
 const refresh = localStorage.getItem('refreshToken') ? localStorage.getItem('refreshToken') : window.location.href = "../index.html";
 
-// Obter o objeto URLSearchParams da URL atual
+
 var path = new URLSearchParams(window.location.search);
-// Obter o valor do parâmetro 'id'
 var id_rota_path = path.get('id');
 
 //  console.log(id_rota_path)
@@ -222,17 +221,17 @@ async function listarTicketsNaPagina(id_rota) {
             cont1.classList.add('cont1');
     
             const nomeAluno = document.createElement('h3');
-            nomeAluno.textContent = ticket.nome; // Supondo que o objeto ticket tenha uma propriedade 'aluno_nome'
+            nomeAluno.textContent = ticket.nome;
     
             const posicao = document.createElement('p');
-            posicao.textContent = `Posição ${ticket.posicao_fila}`; // Supondo que o objeto ticket tenha uma propriedade 'posicao'
+            posicao.textContent = `Posição ${ticket.posicao_fila}`;
     
             const cont2 = document.createElement('div');
             cont2.classList.add('cont2');
     
             const status = document.createElement('div');
             status.classList.add('status');
-            status.textContent = ticket.usado & ticket.reservado ? "Usado" : "Pendente"; // Supondo que o objeto ticket tenha uma propriedade 'status'
+            status.textContent = ticket.usado & ticket.reservado ? "Usado" : "Pendente"; 
             status.style.backgroundColor = ticket.usado & ticket.reservado ? "green" : "#394538";
 
             // Adiciona os elementos filhos aos elementos pais
@@ -304,8 +303,6 @@ function redirecionarSeNecessario() {
 // Chamada para verificar e redirecionar
 redirecionarSeNecessario();
 
-// cpf : "07925967307" 
-// user_soticon : 1218
 
 document.getElementById("formulario").addEventListener("submit", function(event) {
     // Impedir o comportamento padrão de envio do formulário
@@ -336,9 +333,9 @@ document.getElementById("formulario").addEventListener("submit", function(event)
     associarCPFaoTicket(id_rota_path, cpf_formatado)
         .then((ticket) => {
             if (ticket) {
-//  //                  console.log("Ticket associado encontrado:", ticket);
+                // console.log("Ticket associado encontrado:", ticket);
 
-                // Se um ticket associado for encontrado, reservar o ticket
+                // Se um ticket associado for encontrado, verifica o ticket
                 verificaTicket(ticket.user_soticon, id_rota_path)
 
             } else {

@@ -215,7 +215,7 @@ async function atualizarPosicaoFIla(id_rota, posicao) {
                 return ticket.rota && ticket.rota.some(rota => rota.id === id_rota && rota.status === 'espera');
             });
             // Definir o conteúdo do botão com base na presença de tickets reservados
-            posicao.textContent = ticketReservado ? `Posição ${resp.tickets_reservados[0].num_ticket}/58` : "";
+            posicao.textContent = ticketReservado ? `Posição ${resp.tickets_reservados[0].num_ticket}/84` : "";
 //              console.log("Passou na condição: ", ticketReservado)
         } else {
             posicao.textContent = ""
