@@ -181,7 +181,7 @@ async function getTicketsRota(id_rota) {
 
     } catch (error) {
         //console.error("Erro durante a requisição dos tickets da rota: ", error.message);
-        window.alert("Erro ao carregar rotas do dia!")
+        window.alert("Erro ao carregar tickets da rota!")
     }
 }
 
@@ -201,6 +201,7 @@ async function listarTicketsNaPagina(id_rota) {
     try {
         // o objeto dos tíckets
         const tickets = await getTicketsRota(id_rota);
+        console.log("tickets:", tickets)
 
         // Limpa o conteúdo existente
         containerPai.innerHTML = '';
@@ -234,20 +235,47 @@ async function listarTicketsNaPagina(id_rota) {
             status.textContent = ticket.usado & ticket.reservado ? "Usado" : "Pendente"; 
             status.style.backgroundColor = ticket.usado & ticket.reservado ? "green" : "#394538";
 
+            // const buttonFaltante = document.createElement('button');
+            // buttonFaltante.classList.add('faltante');
+            // buttonFaltante.textContent = "Faltou";
+          
+            // buttonFaltante.addEventListener("click", async function() {
+            //   // passando o user_soticon
+            //   await declararFaltante(ticket.user_soticon, ticket.rota, buttonFaltante);
+            // });
+
+            if (!window.location.href.includes("espera.html")) {
+                const buttonFaltante = document.createElement('button');
+                buttonFaltante.classList.add('faltante');
+                buttonFaltante.textContent = "Faltou";
+              
+                buttonFaltante.addEventListener("click", async function() {
+                  // passando o user_soticon
+                  await declararFaltante(ticket.user_soticon, ticket.rota, buttonFaltante);
+                });
+              
+                // Adicione o botão ao DOM (a um container específico, por exemplo)
+                cont2.appendChild(buttonFaltante); // ou outro container
+              }
+              
+              
+
             // Adiciona os elementos filhos aos elementos pais
             fotoCaixa.appendChild(fotoAluno);
             cont1.appendChild(nomeAluno);
             cont1.appendChild(posicao);
             cont2.appendChild(status);
+            // cont2.appendChild(buttonFaltante)
             container.appendChild(fotoCaixa);
             container.appendChild(cont1);
             container.appendChild(cont2);
             containerPai.appendChild(container);
         });
 
-    } catch {
+    } catch(erro) {
         //.error("Erro ao listar tickets:", error);
         window.alert("Erro ao carregar tickets da rota")
+        containerPai.innerHTML = "Não há tickets!"
     } finally {
         // Remove o ícone de carregamento, independentemente do resultado da requisição
         containerPai.removeChild(loadingIcon);
@@ -475,4 +503,94 @@ async function verificaTicket(user_soticon, id_rota) {
 function limparCPF(cpf) {
     // Remove todos os caracteres que não são dígitos
     return cpf.replace(/\D/g, '');
+}
+
+// var botao_faltante = document.querySelector("faltante")
+// botao_faltante.addEventListener("click", function() {
+
+//     // // Obter o valor do campo idUsuario
+//     // var cpf = document.getElementById("idUsuario").value;
+//     // // Isso irá retornar o CPF sem pontos e barras
+//     // const cpf_formatado = limparCPF(cpf)
+
+//     associarCPFaoTicket(id_rota_path, cpf_formatado)
+//         .then((ticket) => {
+//             if (ticket) {
+//                 // console.log("Ticket associado encontrado:", ticket);
+
+//                 // Se um ticket associado for encontrado, verifica o ticket
+//                 declararFaltante(ticket.user_soticon, id_rota_path)
+
+//             } else {
+//                 throw new Error("Nenhum ticket associado encontrado para o CPF fornecido.");
+//             }
+//         })
+//         .catch((error) => {
+//             //console.error("Erro ao associar CPF ao ticket:", error);
+//             window.alert("Ticket não encontrado nas pendências!")
+//         })
+//         .finally(() => {
+//             document.getElementById("idUsuario").value = "";
+//             const botao = document.querySelector(".proximo");
+//             const originalContent = botao.getAttribute('data-original-content');
+//             botao.innerHTML = originalContent;
+//         })
+
+// })
+
+async function declararFaltante(user_soticon, id_rota, botao) {
+    //      console.log("Rota: ", id_rota, "user_soticon", user_soticon)
+
+        botao.innerHTML = "carregando..."
+    
+        const url = url_base + `cortex/api/soticon/v1/aluno_faltante/`
+    
+        const dados = {
+            rota : id_rota,
+            user_soticon : user_soticon
+        }
+
+        console.log({user_soticon, id_rota, botao})
+    
+        const options = {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization' : `Bearer ${localStorage.getItem('token')}`
+            },
+            body : JSON.stringify(dados)
+        };
+    
+        try {
+            const response = await fetch(url, options);
+            if (!response.ok) {
+                throw new Error(`Erro ao declarar como faltante: ${response.status}`);
+            }
+            const data = await response.json();
+            console.log(`adicionado a lista de espera:`, data);
+            
+            // Alerta exibido apenas se a solicitação for bem-sucedida
+            window.alert("Ticket adicionado à fila de espera!");
+        
+            return data;
+        
+        } catch (error) {
+            //console.error("Erro: ", error);
+
+            if (error.message.includes("400")) {
+                window.alert("O usuário já usou o ticket.")
+            }
+            // Verifica a mensagem de erro para determinar o código de status
+            if (error.message.includes("404") || error.message.includes("401")) {
+                window.alert("Usuário não localizado\tUsuário não possui reserva\tRota não localizada.");
+            }
+           
+            if (error.message.includes("500")) {
+                window.alert("Erro interno.")
+            }
+
+        } finally {
+             botao.innerHTML = "..."
+            window.location.reload();
+        }
 }
