@@ -325,6 +325,7 @@ async function exibirRotas(rotas) {
         const horario = document.createElement('p');
         horario.classList.add('horario');
         horario.textContent = `Ônibus das ${rota.horario}h`;
+        const h = horario.textContent
 
         // Criar contêiner para os botões
         const containerButton = document.createElement('div');
@@ -352,7 +353,7 @@ async function exibirRotas(rotas) {
         btnEditar.addEventListener("click", function(event) {
             const id = rota.id; // Obtenha o id da rota
             if (id) {
-                redirecionarParaEditar(id); // Chama a função de redirecionamento
+                avancarTela(id); // Chama a função de redirecionamento
             }
         });
 
@@ -404,6 +405,47 @@ function Dayweek(data) {
 
 // avança o usuário para verificar aquela rota específica
 function avancarTela(id) {
-    const url = `../pages/verificacao.html?id=${id}`
+    const url = `../pages/editar_rota.html?id=${id}`
     window.location.href = url
 }
+
+document.addEventListener("DOMContentLoaded", async () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const rotaId = urlParams.get("id");
+
+    if (rotaId) {
+        await carregarDadosRota(rotaId);
+    }
+});
+
+async function carregarDadosRota(id) {
+    const url = `${url_base}cortex/api/soticon/v1/rotas/${id}/`;
+
+    const options = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+    };
+
+    try {
+        const response = await fetch(url, options);
+        if (!response.ok) {
+            throw new Error("Erro ao carregar os dados da rota");
+        }
+        const data = await response.json();
+        preencherFormulario(data);
+    } catch (error) {
+        console.error("Erro ao carregar dados da rota para edição:", error);
+        window.alert("Erro ao carregar dados da rota.");
+    }
+}
+
+function preencherFormulario(rota) {
+    document.getElementById("obs").value = rota.obs;
+    document.getElementById("data").value = rota.data;
+    document.getElementById("status").value = rota.status;
+    document.getElementById("horario").value = rota.horario;
+}
+document.getElementById("horario").innerText = h
