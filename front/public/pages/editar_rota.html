@@ -5,10 +5,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guarita - adm</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="../styles/guarita_adm.css">
-    <link rel="icon" href="../images/logoOnibus.png">
+    <title>Guarita</title>
+    <script src="https://kit.fontawesome.com/a772aefe7b.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../styles/editar_rota.css">
+    <link rel="icon" href="../images/logoOnibus.png"/>
 </head>
 
 <body background="../images/backgroundCortex.jpg">
@@ -16,7 +16,45 @@
     <figure class="logo">
         <img src="../images/logoOnibus.png" alt="imagem do ônibus" width="200px" height="200px">
     </figure>
+
     <a class="retornar" id="bo-retornar" href="../index.html" style="display: flex; justify-content:center; align-items:center; width:80px;height: 50px; font-size: 15px; margin-left: 10px; margin-bottom: 8px;">
         <i class="fas fa-sign-out-alt fa-lg"></i> 
         <!-- logout -->
     </a>
+
+    <div class="container">
+        <h1>Criar uma nova Rota</h1>
+        <form class="formulario" id="formulario" method="POST">
+            <div>
+                <label for="obs">detalhes:</label><br>
+                <textarea id="obs" name="obs" placeholder="Informe os detalhes" required></textarea>
+            </div>
+
+            <div>
+                <label for="data">data:</label><br>
+                <input type="date" id="data" name="data" placeholder="Informe a data" required>
+            </div>
+
+            <div>
+                <label for="status">status:</label><br>
+                <select id="status" name="status" required >
+                    <option value="" selected disabled>Informe o status</option>
+                    <option value="espera">espera</option>
+                    <option value="cancelada">cancelada</option>
+                    <option value="executada">executada</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="horario">horário:</label><br>
+                <input type="time" id="horario" name="horario" placeholder="Informe o horário" required/>
+            </div>
+            <button type="submit" id="botao">concluir</button>
+        </form>
+
+    </div>
+
+</body>
+<script src="../env.js"></script>
+<script src="../scripts/editar_rota.js"></script>
+</html>
