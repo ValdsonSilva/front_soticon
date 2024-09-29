@@ -159,6 +159,7 @@ logout_elemenst.forEach(function(element) {
         for (var i = 0; i < logout_elemenst.length; i++){
             localStorage.removeItem('token')
             localStorage.removeItem('refreshToken')
+            localStorage.removeItem("id_rota")
             window.location.href = "../index.html"
         }   
     })
@@ -299,10 +300,10 @@ async function exibirRotas(rotas) {
         // Adicionando um evento de clique aos botões de "Monitorar"
         btnMonitorar.addEventListener("click", function(event) {
 //              console.log("Clicou")
-            const id = event.target.classList[0].split('bo')[1];
+            // const id = event.target.classList[0].split('bo')[1];
 
-            if (id !== '_disable') {
-                avancarTela(id);
+            if (rota.id !== '_disable') {
+                avancarTela(rota.id);
             }
         })
 
@@ -348,5 +349,6 @@ function Dayweek(data) {
 // avança o usuário para verificar aquela rota específica
 function avancarTela(id) {
     const url = `../pages/verificacao.html?id=${id}`
+    localStorage.setItem('id_rota', id)
     window.location.href = url
 }

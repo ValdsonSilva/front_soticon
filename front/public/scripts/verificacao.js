@@ -5,11 +5,16 @@ const refresh = localStorage.getItem('refreshToken') ? localStorage.getItem('ref
 
 
 var path = new URLSearchParams(window.location.search);
-var id_rota_path = path.get('id');
+var id_rota = path.get('id')
+
+var id_rota_localstorage = localStorage.getItem('id_rota')
+
+var id_rota_path = id_rota ? id_rota : id_rota_localstorage;
+console.log("id_rota: ", id_rota_path)
 
 //  console.log(id_rota_path)
 
-//  // console.log(token)
+//  console.log(token)
 //  console.log(localStorage.getItem('token'))
 //  console.log(localStorage.getItem('refreshToken'))
 
@@ -159,8 +164,14 @@ VerifyUserPermission(token_decodificado)
 
 // tickets reservados para essa rota
 async function getTicketsRota(id_rota) {
-//      console.log("Rota: ", id_rota)
-    const url = url_base + `cortex/api/soticon/v1/tickets/?rota_valida=${id_rota}`;
+
+    let baseUrl = url_base + `cortex/api/soticon/v1/tickets/?rota_valida=${id_rota}`;
+    if (window.location.href.includes("espera.html")) {
+        baseUrl += `&faltantes=${true}`;
+    }
+    const url = baseUrl;  // `url` agora é uma constante
+
+    console.log("url:", url)
 
     const options = {
         method: 'GET',
@@ -173,14 +184,14 @@ async function getTicketsRota(id_rota) {
     try {
         const response = await fetch(url, options);
         if (!response.ok) {
-            throw new Error("Erro ao puxar os tickets da rota" + erro.status);
+            throw new Error("Erro ao puxar os tickets da rota" + error.status);
         }
         const data = await response.json();
 //  //          console.log(`Aqui estão os tickets da rota ${id_rota}: `, data.results);
         return data.results;
 
     } catch (error) {
-        //console.error("Erro durante a requisição dos tickets da rota: ", error.message);
+        console.log("Erro durante a requisição dos tickets da rota: ", error);
         window.alert("Erro ao carregar tickets da rota!")
     }
 }
@@ -235,15 +246,6 @@ async function listarTicketsNaPagina(id_rota) {
             status.textContent = ticket.usado & ticket.reservado ? "Usado" : "Pendente"; 
             status.style.backgroundColor = ticket.usado & ticket.reservado ? "green" : "#394538";
 
-            // const buttonFaltante = document.createElement('button');
-            // buttonFaltante.classList.add('faltante');
-            // buttonFaltante.textContent = "Faltou";
-          
-            // buttonFaltante.addEventListener("click", async function() {
-            //   // passando o user_soticon
-            //   await declararFaltante(ticket.user_soticon, ticket.rota, buttonFaltante);
-            // });
-
             if (!window.location.href.includes("espera.html")) {
                 const buttonFaltante = document.createElement('button');
                 buttonFaltante.classList.add('faltante');
@@ -258,7 +260,6 @@ async function listarTicketsNaPagina(id_rota) {
                 cont2.appendChild(buttonFaltante); // ou outro container
               }
               
-              
 
             // Adiciona os elementos filhos aos elementos pais
             fotoCaixa.appendChild(fotoAluno);
@@ -272,10 +273,22 @@ async function listarTicketsNaPagina(id_rota) {
             containerPai.appendChild(container);
         });
 
-    } catch(erro) {
+        if (tickets.length === 0) {
+            const frase = document.createElement("h1")
+            frase.textContent = "Não há tickets no momento!"
+            frase.style.color = "#fff"
+            frase.style.marginTop = "20px"
+            containerPai.appendChild(frase)
+        }
+
+    } catch(error) {
         //.error("Erro ao listar tickets:", error);
         window.alert("Erro ao carregar tickets da rota")
-        containerPai.innerHTML = "Não há tickets!"
+        const frase = document.createElement("h1")
+        frase.textContent = "Não há tickets no momento!"
+        frase.style.color = "#fff"
+        frase.style.marginTop = "20px"
+        containerPai.appendChild(frase)
     } finally {
         // Remove o ícone de carregamento, independentemente do resultado da requisição
         containerPai.removeChild(loadingIcon);
@@ -457,7 +470,12 @@ async function associarCPFaoTicket(id_rota_path, cpf) {
 async function verificaTicket(user_soticon, id_rota) {
 //      console.log("Rota: ", id_rota, "user_soticon", user_soticon)
 
-    const url = url_base + `cortex/api/soticon/v1/verificar_tickets/`;
+
+    if (window.location.href.includes("espera.html")) {
+        var url = url_base + "/cortex/api/soticon/v1/verificar_tickets_faltantes/";
+    } else {
+        var url = url_base + `cortex/api/soticon/v1/verificar_tickets/`;
+    }
 
     const dados = {
         user_soticon : user_soticon,
