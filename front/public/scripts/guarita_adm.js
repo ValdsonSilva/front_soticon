@@ -335,10 +335,6 @@ async function exibirRotas(rotas) {
         btnMonitorar.classList.add('bo');
         btnMonitorar.textContent = 'Monitorar';
 
-        const btnEditar = document.createElement('button');
-        btnEditar.classList.add('bo');
-        btnEditar.textContent = 'Editar';
-
         // Adicionar evento de clique para o botão "Monitorar"
         btnMonitorar.addEventListener("click", function(event) {
             const id = rota.id;
@@ -348,7 +344,17 @@ async function exibirRotas(rotas) {
         });
 
         // Criar o botão "Editar"
-  
+        const btnEditar = document.createElement('button');
+        btnEditar.classList.add('bo');
+        btnEditar.textContent = 'Editar';
+
+        // Adicionar evento de clique ao botão "Editar"
+        btnEditar.addEventListener("click", function(event) {
+            const id = rota.id; // Obtenha o id da rota
+            if (id) {
+                redirecionarParaEditar(id); // Chama a função de redirecionamento
+            }
+        });
 
         // Adicionar o botão "Monitorar" e "Editar" ao contêiner dos botões
         containerButton.appendChild(btnMonitorar);
@@ -372,6 +378,11 @@ async function exibirRotas(rotas) {
 
         container.appendChild(mensagem);
     }
+}
+
+function redirecionarParaEditar(id) {
+    const url = `../pages/editar_rota.html?id=${id}`;
+    window.location.href = url;
 }
 listarRotasDoDia();
 
