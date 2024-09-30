@@ -5,11 +5,16 @@ const refresh = localStorage.getItem('refreshToken') ? localStorage.getItem('ref
 
 
 var path = new URLSearchParams(window.location.search);
-var id_rota_path = path.get('id');
+var id_rota = path.get('id')
+
+var id_rota_localstorage = localStorage.getItem('id_rota')
+
+var id_rota_path = id_rota ? id_rota : id_rota_localstorage;
+console.log("id_rota: ", id_rota_path)
 
 //  console.log(id_rota_path)
 
-//  // console.log(token)
+//  console.log(token)
 //  console.log(localStorage.getItem('token'))
 //  console.log(localStorage.getItem('refreshToken'))
 
@@ -159,8 +164,14 @@ VerifyUserPermission(token_decodificado)
 
 // tickets reservados para essa rota
 async function getTicketsRota(id_rota) {
-//      console.log("Rota: ", id_rota)
-    const url = url_base + `cortex/api/soticon/v1/tickets/?rota_valida=${id_rota}`;
+
+    let baseUrl = url_base + `cortex/api/soticon/v1/tickets/?rota_valida=${id_rota}`;
+    if (window.location.href.includes("espera.html")) {
+        baseUrl += `&faltantes=${true}`;
+    }
+    const url = baseUrl;  // `url` agora é uma constante
+
+    console.log("url:", url)
 
     const options = {
         method: 'GET',
@@ -173,15 +184,15 @@ async function getTicketsRota(id_rota) {
     try {
         const response = await fetch(url, options);
         if (!response.ok) {
-            throw new Error("Erro ao puxar os tickets da rota" + erro.status);
+            throw new Error("Erro ao puxar os tickets da rota" + error.status);
         }
         const data = await response.json();
 //  //          console.log(`Aqui estão os tickets da rota ${id_rota}: `, data.results);
         return data.results;
 
     } catch (error) {
-        //console.error("Erro durante a requisição dos tickets da rota: ", error.message);
-        window.alert("Erro ao carregar rotas do dia!")
+        console.log("Erro durante a requisição dos tickets da rota: ", error);
+        window.alert("Erro ao carregar tickets da rota!")
     }
 }
 
@@ -205,7 +216,7 @@ async function listarTicketsNaPagina(id_rota) {
         // Limpa o conteúdo existente
         containerPai.innerHTML = '';
 
-        tickets.forEach(ticket => {
+        tickets.forEach((ticket, index) => {
             // Cria os elementos HTML
             const container = document.createElement('div');
             container.classList.add('container3');
@@ -234,20 +245,76 @@ async function listarTicketsNaPagina(id_rota) {
             status.textContent = ticket.usado & ticket.reservado ? "Usado" : "Pendente"; 
             status.style.backgroundColor = ticket.usado & ticket.reservado ? "green" : "#394538";
 
+            if (window.location.href.includes("espera.html") & (!ticket.usado)) {
+                const buttonPassar = document.createElement('button');
+                buttonPassar.classList.add('passar');
+                buttonPassar.textContent = "Passar";
+              
+                buttonPassar.addEventListener("click", async function() {
+                  // passando o user_soticon
+                  await verificaTicketPeloBotao(ticket.id, buttonPassar);
+                });
+              
+                // Adicione o botão ao DOM (a um container específico, por exemplo)
+                cont2.appendChild(buttonPassar); // ou outro container
+            }
+
+            if (index === 0 && !window.location.href.includes("espera.html") & (!ticket.usado)) {
+                const buttonPassar = document.createElement('button');
+                buttonPassar.classList.add('passar');
+                buttonPassar.textContent = "Passar";
+              
+                buttonPassar.addEventListener("click", async function() {
+                  // passando o user_soticon
+                  await verificaTicketPeloBotao(ticket.id, buttonPassar);
+                });
+              
+                // Adicione o botão ao DOM (a um container específico, por exemplo)
+                cont2.appendChild(buttonPassar); // ou outro container
+
+
+                const buttonFaltante = document.createElement('button');
+                buttonFaltante.classList.add('faltante');
+                buttonFaltante.textContent = "Faltou";
+              
+                buttonFaltante.addEventListener("click", async function() {
+                  // passando o user_soticon
+                  await declararFaltante(ticket.id, buttonFaltante);
+                });
+              
+                // Adicione o botão ao DOM (a um container específico, por exemplo)
+                cont2.appendChild(buttonFaltante); // ou outro container
+            }
+              
+
             // Adiciona os elementos filhos aos elementos pais
             fotoCaixa.appendChild(fotoAluno);
             cont1.appendChild(nomeAluno);
             cont1.appendChild(posicao);
             cont2.appendChild(status);
+            // cont2.appendChild(buttonFaltante)
             container.appendChild(fotoCaixa);
             container.appendChild(cont1);
             container.appendChild(cont2);
             containerPai.appendChild(container);
         });
 
-    } catch {
+        if (tickets.length === 0) {
+            const frase = document.createElement("h1")
+            frase.textContent = "Não há tickets no momento!"
+            frase.style.color = "#fff"
+            frase.style.marginTop = "20px"
+            containerPai.appendChild(frase)
+        }
+
+    } catch(error) {
         //.error("Erro ao listar tickets:", error);
         window.alert("Erro ao carregar tickets da rota")
+        const frase = document.createElement("h1")
+        frase.textContent = "Não há tickets no momento!"
+        frase.style.color = "#fff"
+        frase.style.marginTop = "20px"
+        containerPai.appendChild(frase)
     } finally {
         // Remove o ícone de carregamento, independentemente do resultado da requisição
         containerPai.removeChild(loadingIcon);
@@ -329,21 +396,29 @@ document.getElementById("formulario").addEventListener("submit", function(event)
     botao.appendChild(loadingIcon);
 
 
-    // Exemplo de uso da função associarCPFaoTicket
-    associarCPFaoTicket(id_rota_path, cpf_formatado)
+    if (cpf_formatado.length < 6) {
+        window.alert("Informe no mínimo 6 digitos!");
+        document.getElementById("idUsuario").value = "";
+        const botao = document.querySelector(".proximo");
+        const originalContent = botao.getAttribute('data-original-content');
+        botao.innerHTML = originalContent;
+        
+    } else {
+        // Exemplo de uso da função associarCPFaoTicket
+        associarCPFaoTicket(id_rota_path, cpf_formatado)
         .then((ticket) => {
             if (ticket) {
                 // console.log("Ticket associado encontrado:", ticket);
 
                 // Se um ticket associado for encontrado, verifica o ticket
-                verificaTicket(ticket.user_soticon, id_rota_path)
+                verificaTicket(ticket)
 
             } else {
-                throw new Error("Nenhum ticket associado encontrado para o CPF fornecido.");
+                throw new Error("Nenhum ticket associado encontrado para o CPF fornecido.", error);
             }
         })
         .catch((error) => {
-            //console.error("Erro ao associar CPF ao ticket:", error);
+            console.log("error: ", error)
             window.alert("Ticket não encontrado nas pendências!")
         })
         .finally(() => {
@@ -352,6 +427,8 @@ document.getElementById("formulario").addEventListener("submit", function(event)
             const originalContent = botao.getAttribute('data-original-content');
             botao.innerHTML = originalContent;
         })
+    }
+
 })
 
 var botao_finalizar_rota = document.querySelector(".finalizar")
@@ -411,8 +488,9 @@ async function associarCPFaoTicket(id_rota_path, cpf) {
         // Obter os tickets associados à rota especificada
         const tickets = await getTicketsRota(id_rota_path);
         
-        // Encontrar o primeiro ticket cujo CPF corresponda ao CPF fornecido
-        const ticket_aluno_encontrado = tickets.find((ticket) => ticket.cpf === cpf);
+        const ticket_aluno_encontrado = tickets.find(
+            (ticket) => ticket.cpf.startsWith(cpf.substring(0, 6)) && ticket.usado === false
+        );
         
         // Retornar o ticket encontrado
         return ticket_aluno_encontrado;
@@ -421,20 +499,24 @@ async function associarCPFaoTicket(id_rota_path, cpf) {
         //console.error("Erro ao associar CPF ao ticket:", error);
         window.alert("Reserva não encontrada!")
         throw error; // Rejeitar a Promise com o erro
-        
     }
 }
 
 // função que verifica os tickets
-async function verificaTicket(user_soticon, id_rota) {
+async function verificaTicket(ticket) {
 //      console.log("Rota: ", id_rota, "user_soticon", user_soticon)
 
-    const url = url_base + `cortex/api/soticon/v1/verificar_tickets/`;
 
-    const dados = {
-        user_soticon : user_soticon,
-        rota : id_rota 
+    if (window.location.href.includes("espera.html")) {
+        var url = url_base + `cortex/api/soticon/v1/tickets/verificar_tickets_faltantes/${ticket.id}/`;
+    } else {
+        var url = url_base + `cortex/api/soticon/v1/tickets/verificar_tickets/${ticket.id}/`;
     }
+
+    // const dados = {
+    //     user_soticon : user_soticon,
+    //     rota : id_rota 
+    // }
 
     const options = {
         method: 'PUT',
@@ -442,13 +524,19 @@ async function verificaTicket(user_soticon, id_rota) {
             'Content-Type': 'application/json',
             'Authorization' : `Bearer ${localStorage.getItem('token')}`
         },
-        body : JSON.stringify(dados)
+        // body : JSON.stringify(dados)
     };
 
     try {
         const response = await fetch(url, options);
         if (!response.ok) {
-            throw new Error(`Erro ao verificar o ticket: ${response.status}`);
+            const data = await response.json();
+            
+            if (data.posicao_esperada) {
+                const erro = `Aluno fora de Ordem!\n\nPosição esperada: ${data.posicao_esperada}\nPosição passada: ${data.posicao_passada}`;
+                window.alert(erro);
+            }
+            throw new Error(`${response.status}, ${data.posicao_esperada}`);
         }
         const data = await response.json();
 //  //          console.log(`ticket da rota ${id_rota} e user_soticon ${user_soticon} verificado `, data);
@@ -463,7 +551,7 @@ async function verificaTicket(user_soticon, id_rota) {
     
         // Verifica a mensagem de erro para determinar o código de status
         if (error.message.includes("404") || error.message.includes("401")) {
-            window.alert("O ticket já foi utilizado!");
+            window.alert("Ticket não localizado!");
         }
     } finally {
         // Recarrega a página (descomente se desejar)
@@ -471,8 +559,147 @@ async function verificaTicket(user_soticon, id_rota) {
     }
 }
 
+// função que verifica os tickets
+async function verificaTicketPeloBotao(id_ticket, botao) {
+        botao.innerHTML = "carregando..."
+
+        if (window.location.href.includes("espera.html")) {
+            var url = url_base + `cortex/api/soticon/v1/tickets/verificar_tickets_faltantes/${id_ticket}/`;
+        } else {
+            var url = url_base + `cortex/api/soticon/v1/tickets/verificar_tickets/${id_ticket}/`;
+        }
+
+        const options = {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization' : `Bearer ${localStorage.getItem('token')}`
+            },
+            // body : JSON.stringify(dados)
+        };
+    
+        try {
+            const response = await fetch(url, options);
+            if (!response.ok) {
+                const data = await response.json();
+                
+                throw new Error(`${response.status}, ${data.posicao_esperada}`);
+            }
+            const data = await response.json();
+    //  //          console.log(`ticket da rota ${id_rota} e user_soticon ${user_soticon} verificado `, data);
+            
+            // Alerta exibido apenas se a solicitação for bem-sucedida
+            window.alert("Ticket verificado com sucesso!");
+        
+            return data;
+        
+        } catch (error) {
+            //console.error("Erro: ", error);
+        
+            // Verifica a mensagem de erro para determinar o código de status
+            if (error.message.includes("404") || error.message.includes("401")) {
+                window.alert("Ticket não localizado!");
+            }
+        } finally {
+            // Recarrega a página (descomente se desejar)
+            botao.innerHTML = "..."
+            window.location.reload();
+        }
+    }
+
+
 // "xxxxxxxxxxx"
 function limparCPF(cpf) {
     // Remove todos os caracteres que não são dígitos
     return cpf.replace(/\D/g, '');
+}
+
+// var botao_faltante = document.querySelector("faltante")
+// botao_faltante.addEventListener("click", function() {
+
+//     // // Obter o valor do campo idUsuario
+//     // var cpf = document.getElementById("idUsuario").value;
+//     // // Isso irá retornar o CPF sem pontos e barras
+//     // const cpf_formatado = limparCPF(cpf)
+
+//     associarCPFaoTicket(id_rota_path, cpf_formatado)
+//         .then((ticket) => {
+//             if (ticket) {
+//                 // console.log("Ticket associado encontrado:", ticket);
+
+//                 // Se um ticket associado for encontrado, verifica o ticket
+//                 declararFaltante(ticket.user_soticon, id_rota_path)
+
+//             } else {
+//                 throw new Error("Nenhum ticket associado encontrado para o CPF fornecido.");
+//             }
+//         })
+//         .catch((error) => {
+//             //console.error("Erro ao associar CPF ao ticket:", error);
+//             window.alert("Ticket não encontrado nas pendências!")
+//         })
+//         .finally(() => {
+//             document.getElementById("idUsuario").value = "";
+//             const botao = document.querySelector(".proximo");
+//             const originalContent = botao.getAttribute('data-original-content');
+//             botao.innerHTML = originalContent;
+//         })
+
+// })
+
+async function declararFaltante(id_ticket, botao) {
+    //      console.log("Rota: ", id_rota, "user_soticon", user_soticon)
+
+        botao.innerHTML = "carregando..."
+    
+        const url = url_base + `cortex/api/soticon/v1/tickets/aluno_faltante/${id_ticket}/`
+    
+        // const dados = {
+        //     rota : id_rota,
+        //     user_soticon : user_soticon
+        // }
+
+        // console.log({user_soticon, id_rota, botao})
+    
+        const options = {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization' : `Bearer ${localStorage.getItem('token')}`
+            },
+            // body : JSON.stringify(dados)
+        };
+    
+        try {
+            const response = await fetch(url, options);
+            if (!response.ok) {
+                throw new Error(`Erro ao declarar como faltante: ${response.status}`);
+            }
+            const data = await response.json();
+            console.log(`adicionado a lista de espera:`, data);
+            
+            // Alerta exibido apenas se a solicitação for bem-sucedida
+            window.alert("Ticket adicionado à fila de espera!");
+        
+            return data;
+        
+        } catch (error) {
+            //console.error("Erro: ", error);
+
+            if (error.message.includes("400")) {
+                window.alert("O usuário já usou o ticket.")
+            }
+            // Verifica a mensagem de erro para determinar o código de status
+            if (error.message.includes("404")) {
+                window.alert("Usuário não localizado\tUsuário não possui reserva\tRota não localizada.");
+            }
+           
+            if (error.message.includes("500")) {
+                window.alert("Erro interno.")
+            }
+
+        } finally {
+            botao.innerHTML = "..."
+            window.location.reload();
+        }
 }

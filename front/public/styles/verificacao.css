@@ -11,7 +11,8 @@
 
 .logo {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
+    /* justify-content: flex-end; */
 }
 
 .retornar {
@@ -19,6 +20,13 @@
     border: 3px solid #fff;
     border-radius: 50%;
     color: #fff;
+}
+ 
+.container_links {
+    /* background-color: blue; */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .link {
@@ -43,6 +51,24 @@
     font-size: 35px;
     border: 5px solid #ffff;
     transition: font-size 0.3s ease-in-out;
+}
+
+.espera {
+    height: 58px;
+    width: 320px;
+    border: 3px solid #ffff;
+    background: transparent;
+    border-radius: 40px;
+    cursor: pointer;
+    text-decoration: none;
+
+    font:400;
+    font-size: 30px;
+    color: #ffff;
+    box-shadow: 0px 4px 4px 0px #00000040;
+
+    display: grid;
+    place-content: center;
 }
 
 .caixa1 {
@@ -269,6 +295,15 @@ p {
 
 }
 
+.cont2 {
+    /* background-color: red; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+}
+
 .status {
     display: grid;
     place-content: center;
@@ -282,12 +317,63 @@ p {
     box-sizing: border-box;
     width: 166px;
     height: 47px;
-    left: 1005px;
-    margin-top: 65px;
+    /* left: 1005px; */
+    /* margin-top: 65px; */
 
     background: #394538;
     border: 3px solid #FFFFFF;
     border-radius: 10px;
+}   
+
+.passar {
+    display: grid;
+    place-content: center;
+    text-align: center;
+
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 25px;
+    letter-spacing: 0em;
+    color: #ffffff;
+    box-shadow: 2px 1px 0px 1px #ffffff;
+    box-sizing: border-box;
+    width: 166px;
+    height: 47px;
+
+    background: #1ba100;
+    border: 3px solid #1ba100;
+    border-radius: 10px;
+}
+
+.passar:hover, .passar:active {
+    font-size: 25px;
+    /* padding-left: 2px; */
+}
+
+
+.faltante {
+    display: grid;
+    place-content: center;
+    text-align: center;
+
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 25px;
+    letter-spacing: 0em;
+    color: #000000;
+    box-shadow: 2px 1px 0px 1px #000;
+    box-sizing: border-box;
+    width: 166px;
+    height: 47px;
+
+    background: #fefefe;
+    border: 3px solid #FFFFFF;
+    border-radius: 10px;
+}
+
+.faltante:hover, .faltante:active {
+    font-size: 25px;
+    /* padding-left: 2px; */
 }
 
 .escondido {
@@ -421,12 +507,60 @@ p {
         box-sizing: border-box;
         width: 150px;
         height: 40px;
-        left: 1005px;
-        margin-top: 65px;
     
         background: #394538;
         border: 3px solid #FFFFFF;
         border-radius: 10px;
+    }
+
+    .faltante {
+        display: grid;
+        place-content: center;
+        text-align: center;
+    
+        font-size: 22px;
+        font-weight: 700;
+        line-height: 25px;
+        letter-spacing: 0em;
+        color: #000000;
+        box-shadow: 2px 1px 0px 1px #000;
+        box-sizing: border-box;
+        width: 150px;
+        height: 40px;
+    
+        background: #fefefe;
+        border: 3px solid #FFFFFF;
+        border-radius: 10px;
+    }
+    
+    .faltante:hover, .faltante:active {
+        font-size: 25px;
+        /* padding-left: 2px; */
+    }
+
+    .passar {
+        display: grid;
+        place-content: center;
+        text-align: center;
+    
+        font-size: 22px;
+        font-weight: 700;
+        line-height: 25px;
+        letter-spacing: 0em;
+        color: #ffffff;
+        box-shadow: 2px 1px 0px 1px #ffffff;
+        box-sizing: border-box;
+        width: 150px;
+        height: 40px;
+    
+        background: #1ba100;
+        border: 3px solid #1ba100;
+        border-radius: 10px;
+    }
+    
+    .passar:hover, .passar:active {
+        font-size: 25px;
+        /* padding-left: 2px; */
     }
 }
 
