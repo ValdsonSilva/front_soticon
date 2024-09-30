@@ -323,7 +323,33 @@ p {
     background: #394538;
     border: 3px solid #FFFFFF;
     border-radius: 10px;
+}   
+
+.passar {
+    display: grid;
+    place-content: center;
+    text-align: center;
+
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 25px;
+    letter-spacing: 0em;
+    color: #ffffff;
+    box-shadow: 2px 1px 0px 1px #ffffff;
+    box-sizing: border-box;
+    width: 166px;
+    height: 47px;
+
+    background: #1ba100;
+    border: 3px solid #1ba100;
+    border-radius: 10px;
 }
+
+.passar:hover, .passar:active {
+    font-size: 25px;
+    /* padding-left: 2px; */
+}
+
 
 .faltante {
     display: grid;
@@ -508,6 +534,31 @@ p {
     }
     
     .faltante:hover, .faltante:active {
+        font-size: 25px;
+        /* padding-left: 2px; */
+    }
+
+    .passar {
+        display: grid;
+        place-content: center;
+        text-align: center;
+    
+        font-size: 22px;
+        font-weight: 700;
+        line-height: 25px;
+        letter-spacing: 0em;
+        color: #ffffff;
+        box-shadow: 2px 1px 0px 1px #ffffff;
+        box-sizing: border-box;
+        width: 150px;
+        height: 40px;
+    
+        background: #1ba100;
+        border: 3px solid #1ba100;
+        border-radius: 10px;
+    }
+    
+    .passar:hover, .passar:active {
         font-size: 25px;
         /* padding-left: 2px; */
     }
