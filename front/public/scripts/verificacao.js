@@ -246,19 +246,19 @@ async function listarTicketsNaPagina(id_rota) {
             status.textContent = ticket.usado & ticket.reservado ? "Usado" : "Pendente"; 
             status.style.backgroundColor = ticket.usado & ticket.reservado ? "green" : "#394538";
 
-            if (!window.location.href.includes("espera.html")) {
+            if (!window.location.href.includes("espera.html") & (!ticket.usado)) {
                 const buttonFaltante = document.createElement('button');
                 buttonFaltante.classList.add('faltante');
                 buttonFaltante.textContent = "Faltou";
               
                 buttonFaltante.addEventListener("click", async function() {
                   // passando o user_soticon
-                  await declararFaltante(ticket.user_soticon, ticket.rota, buttonFaltante);
+                  await declararFaltante(ticket.id, buttonFaltante);
                 });
               
                 // Adicione o botão ao DOM (a um container específico, por exemplo)
                 cont2.appendChild(buttonFaltante); // ou outro container
-              }
+            }
               
 
             // Adiciona os elementos filhos aos elementos pais
@@ -370,17 +370,25 @@ document.getElementById("formulario").addEventListener("submit", function(event)
     botao.appendChild(loadingIcon);
 
 
-    // Exemplo de uso da função associarCPFaoTicket
-    associarCPFaoTicket(id_rota_path, cpf_formatado)
+    if (cpf_formatado.length < 6) {
+        window.alert("Informe no mínimo 6 digitos!");
+        document.getElementById("idUsuario").value = "";
+        const botao = document.querySelector(".proximo");
+        const originalContent = botao.getAttribute('data-original-content');
+        botao.innerHTML = originalContent;
+        
+    } else {
+        // Exemplo de uso da função associarCPFaoTicket
+        associarCPFaoTicket(id_rota_path, cpf_formatado)
         .then((ticket) => {
             if (ticket) {
                 // console.log("Ticket associado encontrado:", ticket);
 
                 // Se um ticket associado for encontrado, verifica o ticket
-                verificaTicket(ticket.user_soticon, id_rota_path)
+                verificaTicket(ticket)
 
             } else {
-                throw new Error("Nenhum ticket associado encontrado para o CPF fornecido.");
+                throw new Error("Nenhum ticket associado encontrado para o CPF fornecido.", error);
             }
         })
         .catch((error) => {
@@ -393,6 +401,8 @@ document.getElementById("formulario").addEventListener("submit", function(event)
             const originalContent = botao.getAttribute('data-original-content');
             botao.innerHTML = originalContent;
         })
+    }
+
 })
 
 var botao_finalizar_rota = document.querySelector(".finalizar")
@@ -452,8 +462,9 @@ async function associarCPFaoTicket(id_rota_path, cpf) {
         // Obter os tickets associados à rota especificada
         const tickets = await getTicketsRota(id_rota_path);
         
-        // Encontrar o primeiro ticket cujo CPF corresponda ao CPF fornecido
-        const ticket_aluno_encontrado = tickets.find((ticket) => ticket.cpf === cpf);
+        const ticket_aluno_encontrado = tickets.find(
+            (ticket) => ticket.cpf.startsWith(cpf.substring(0, 6)) && ticket.usado === false
+        );
         
         // Retornar o ticket encontrado
         return ticket_aluno_encontrado;
@@ -462,25 +473,24 @@ async function associarCPFaoTicket(id_rota_path, cpf) {
         //console.error("Erro ao associar CPF ao ticket:", error);
         window.alert("Reserva não encontrada!")
         throw error; // Rejeitar a Promise com o erro
-        
     }
 }
 
 // função que verifica os tickets
-async function verificaTicket(user_soticon, id_rota) {
+async function verificaTicket(ticket) {
 //      console.log("Rota: ", id_rota, "user_soticon", user_soticon)
 
 
     if (window.location.href.includes("espera.html")) {
-        var url = url_base + "/cortex/api/soticon/v1/verificar_tickets_faltantes/";
+        var url = url_base + `cortex/api/soticon/v1/tickets/verificar_tickets_faltantes/${ticket.id}/`;
     } else {
-        var url = url_base + `cortex/api/soticon/v1/verificar_tickets/`;
+        var url = url_base + `cortex/api/soticon/v1/tickets/verificar_tickets/${ticket.id}/`;
     }
 
-    const dados = {
-        user_soticon : user_soticon,
-        rota : id_rota 
-    }
+    // const dados = {
+    //     user_soticon : user_soticon,
+    //     rota : id_rota 
+    // }
 
     const options = {
         method: 'PUT',
@@ -488,7 +498,7 @@ async function verificaTicket(user_soticon, id_rota) {
             'Content-Type': 'application/json',
             'Authorization' : `Bearer ${localStorage.getItem('token')}`
         },
-        body : JSON.stringify(dados)
+        // body : JSON.stringify(dados)
     };
 
     try {
@@ -509,7 +519,7 @@ async function verificaTicket(user_soticon, id_rota) {
     
         // Verifica a mensagem de erro para determinar o código de status
         if (error.message.includes("404") || error.message.includes("401")) {
-            window.alert("O ticket já foi utilizado!");
+            window.alert("Ticket não localizado!");
         }
     } finally {
         // Recarrega a página (descomente se desejar)
@@ -556,19 +566,19 @@ function limparCPF(cpf) {
 
 // })
 
-async function declararFaltante(user_soticon, id_rota, botao) {
+async function declararFaltante(id_ticket, botao) {
     //      console.log("Rota: ", id_rota, "user_soticon", user_soticon)
 
         botao.innerHTML = "carregando..."
     
-        const url = url_base + `cortex/api/soticon/v1/aluno_faltante/`
+        const url = url_base + `cortex/api/soticon/v1/tickets/aluno_faltante/${id_ticket}/`
     
-        const dados = {
-            rota : id_rota,
-            user_soticon : user_soticon
-        }
+        // const dados = {
+        //     rota : id_rota,
+        //     user_soticon : user_soticon
+        // }
 
-        console.log({user_soticon, id_rota, botao})
+        // console.log({user_soticon, id_rota, botao})
     
         const options = {
             method: 'PUT',
@@ -576,7 +586,7 @@ async function declararFaltante(user_soticon, id_rota, botao) {
                 'Content-Type': 'application/json',
                 'Authorization' : `Bearer ${localStorage.getItem('token')}`
             },
-            body : JSON.stringify(dados)
+            // body : JSON.stringify(dados)
         };
     
         try {
@@ -599,7 +609,7 @@ async function declararFaltante(user_soticon, id_rota, botao) {
                 window.alert("O usuário já usou o ticket.")
             }
             // Verifica a mensagem de erro para determinar o código de status
-            if (error.message.includes("404") || error.message.includes("401")) {
+            if (error.message.includes("404")) {
                 window.alert("Usuário não localizado\tUsuário não possui reserva\tRota não localizada.");
             }
            
@@ -608,7 +618,7 @@ async function declararFaltante(user_soticon, id_rota, botao) {
             }
 
         } finally {
-             botao.innerHTML = "..."
+            botao.innerHTML = "..."
             window.location.reload();
         }
 }
