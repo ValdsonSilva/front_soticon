@@ -73,6 +73,22 @@
     resize: none;
 }
 
+.icon-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    color: #fff;
+    gap: 8px;
+}
+
+.loading-icon {
+    color: aliceblue;
+    font-size: 100px;
+}
+
+
 #botao {
     background-color: transparent;
     color: #fff;
