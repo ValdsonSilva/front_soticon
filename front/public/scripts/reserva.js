@@ -1,5 +1,4 @@
 const url_base = window.env.URL_BASE 
-var button_disable_state = false
 
 
 const token = localStorage.getItem('token') ? localStorage.getItem('token') : window.location.href = "../index.html";
@@ -271,14 +270,11 @@ iconContainer.appendChild(frase)
 var container = document.querySelector(".container");
 
 
-
-
 async function montarElementosDaTela() {
     
     const rotas = await ListarRotasDoDIa()
     
     container.innerHTML = '';
-
 
     
     for (const item of rotas) {
@@ -311,18 +307,16 @@ async function montarElementosDaTela() {
         await atualizarBotoesReservaVerify(item.id, botao);
 
         let user_soticon;
-
         
         botao.addEventListener("click", function() {
-            
+
             GetUserSoticon().then(resp => {
                 user_soticon = resp.id
-                
-
                 
                 reservarTicket(item.id, user_soticon)
             });
         })
+
 
         var paragrafoPosicao = document.createElement('p');
         paragrafoPosicao.textContent = item.posicao;
@@ -330,8 +324,6 @@ async function montarElementosDaTela() {
         
         await atualizarPosicaoFIla(item.id, paragrafoPosicao)
 
-        
-        
         caixa.appendChild(paragrafoDia);
         caixa.appendChild(spanData);
         caixa.appendChild(paragrafoHora);
@@ -346,95 +338,99 @@ async function montarElementosDaTela() {
     iconContainer.removeChild(loadingIcon);
     iconContainer.removeChild(frase)
 
+    window.onload = function() {
+
+        const estadoBotao = localStorage.getItem('botao_disable_state')
+
+        if (estadoBotao === 'true') {
+            // botao.disabled = true;
+            disableButtonTemporarily(botao)
+        } else {
+            botao.disabled = false;
+            // localStorage.setItem('botao_disable_state', false)
+        }
+    }
     
     function reservarTicket(id_rota, id_user_soticon) {
+        const estadoBotao = localStorage.getItem('botao_disable_state') || 'false'
 
+        if (estadoBotao === 'false') {
 
-        const Botao = document.getElementById("bo" + id_rota);
-        const bo_conteudo = Botao.textContent
-        if (!Botao) {
+            disableButtonTemporarily(botao)
 
-            return;
-        }
-        
-        const Posicao = Botao.nextElementSibling;
-        if (!Posicao) {
-
-            return;
-        }
-
-        
-        const loadingIcon = document.createElement('i');
-        loadingIcon.setAttribute('id', 'loading-icon');
-        loadingIcon.classList.add('fas', 'fa-sync-alt', 'fa-spin');
-        loadingIcon.style.display = 'none';
-
-        
-        Botao.innerHTML = '';
-        Botao.appendChild(loadingIcon);
-
-        
-        loadingIcon.style.display = 'inline-block';
-
-        async function reservarOuCancelarTicket(rota, user_soticon){
-            button_disable_state = true
-            try {
-                const url = url_base + 'cortex/api/soticon/v1/reservar_ticket/';
-
-                const datas = {
-                    rota : rota,
-                    user_soticon : user_soticon
-                }
-
-                const options = {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
-                    },
-                    body: JSON.stringify(datas)
-                }
-                
-                const response = await fetch(url, options);
-    
-                if (!response.ok) {
-                    throw new Error('Erro ao processar a solicitação do ticket');
-                }
-    
-                const data = await response.json();
-
-
-
-                
-                loadingIcon.style.display = "none";
-
-                if (data) {
-                    if (bo_conteudo === "+") {
-                        Botao.textContent = "-";
-                    } else if (bo_conteudo === "-") {
-                        Botao.textContent = "+";
-                    }
-                    const posicao_fila_objeto = data.posicao_fila
-                    Posicao.textContent =  (posicao_fila_objeto !== undefined) ? `Posição ${posicao_fila_objeto}/58` : ""
-                }
-
-    
-            } catch (error) {
-                
-                Botao.textContent = "+"
-            } finally {
-                
-                loadingIcon.style.display = 'none';
-                button_disable_state = false
+            const Botao = document.getElementById("bo" + id_rota);
+            const bo_conteudo = Botao.textContent
+            if (!Botao) {
+                return;
             }
-        };
+            
+            const Posicao = Botao.nextElementSibling;
+            if (!Posicao) {
+                return;
+            }
+            
+            const loadingIcon = document.createElement('i');
+            loadingIcon.setAttribute('id', 'loading-icon');
+            loadingIcon.classList.add('fas', 'fa-sync-alt', 'fa-spin');
+            loadingIcon.style.display = 'none';
+            
+            Botao.innerHTML = '';
+            Botao.appendChild(loadingIcon);
+            
+            loadingIcon.style.display = 'inline-block';
+
+            async function reservarOuCancelarTicket(rota, user_soticon){
+
+                try {
+                    const url = url_base + 'cortex/api/soticon/v1/reservar_ticket/';
+
+                    const datas = {
+                        rota : rota,
+                        user_soticon : user_soticon
+                    }
+
+                    const options = {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${localStorage.getItem('token')}`
+                        },
+                        body: JSON.stringify(datas)
+                    }
+                    
+                    const response = await fetch(url, options);
+        
+                    if (!response.ok) {
+                        throw new Error('Erro ao processar a solicitação do ticket');
+                    }
+        
+                    const data = await response.json();
+                    
+                    loadingIcon.style.display = "none";
+
+                    if (data) {
+                        if (bo_conteudo === "+") {
+                            Botao.textContent = "-";
+                        } else if (bo_conteudo === "-") {
+                            Botao.textContent = "+";
+                        }
+                        const posicao_fila_objeto = data.posicao_fila
+                        Posicao.textContent =  (posicao_fila_objeto !== undefined) ? `Posição ${posicao_fila_objeto}/84` : ""
+                    }
 
         
-        reservarOuCancelarTicket(id_rota, id_user_soticon);
+                } catch (error) {
+                    Botao.textContent = "+"
+                } finally {
+                    
+                    loadingIcon.style.display = 'none';
+                }
+            };
+            reservarOuCancelarTicket(id_rota, id_user_soticon);
+        }
     }
 
     if (rotas.length === 0) {
-
 
         const mensagem = document.createElement("div");
 
@@ -442,7 +438,6 @@ async function montarElementosDaTela() {
 
         mensagem.style.fontSize = "4vw"
 
-        
         iconContainer.appendChild(mensagem)
     }
 }
@@ -587,6 +582,7 @@ logout_elemenst.forEach(function(element) {
         for (var i = 0; i < logout_elemenst.length; i++){
             localStorage.removeItem('token')
             localStorage.removeItem('refreshToken')
+            localStorage.removeItem('botao_disable_state')
             window.location.href = "../index.html"
         }   
     })
@@ -638,25 +634,21 @@ function redirecionarSeNecessario() {
         }
     }
 }
-
 redirecionarSeNecessario();
 
-function disableButtonTemporarily(button) { 
-    button.classList.add('disabled-temporary');
+function disableButtonTemporarily(botao) { 
+    // button.classList.add('disabled-temporary');
 
-    
-    button.disabled = true;
+    botao.disabled = true;
+    localStorage.setItem('botao_disable_state', true)
 
-    
     setTimeout(function() {
-        button.disabled = false;
-        button.classList.remove ('disabled-temporary');
-    }, 120000); 
+        // button.classList.remove('disabled-temporary');
+        botao.disabled = false
+        localStorage.setItem('botao_disable_state', false)
+    }, 10000); 
 }
 
-document.querySelectorAll('button[id^="bo"]').forEach(button => {
-    button.addEventListener('click', () => {
-        
-        disableButtonTemporarily(button)
-    });
-});
+window.addEventListener('beforeunload', function() {
+    localStorage.removeItem('botao_disable_state')
+})
