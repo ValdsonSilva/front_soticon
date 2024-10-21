@@ -127,7 +127,7 @@ const tipo_users = [
     },
     {
         user : "cadastro de rotas",
-        url : './pages/cadastrarRotas.html',
+        url : './pages/listar_rotas.html',
     },
     {
         user : "guarita",

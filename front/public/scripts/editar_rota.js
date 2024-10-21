@@ -176,90 +176,6 @@ function ConsumirRefreshToken(refresh) {
 }
 
 
-function getQueryParameter(param) {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get(param);
-  }
-  
-const id_rota = getQueryParameter('rota');
-
-let editando = false;
-
-
-async function editVerify() {
-    if (id_rota !== null) {
-        const iconContainer = document.querySelector(".icon-container");
-        const loadingIcon = document.createElement('i');
-        const frase = document.createElement('h1');
-        frase.innerHTML = "Carregando rota..."
-
-        loadingIcon.classList.add('fas', 'fa-spinner', 'fa-spin', 'loading-icon');
-        iconContainer.appendChild(loadingIcon)
-        iconContainer.appendChild(frase)
-
-        const texto = document.getElementById('text-criar-rota');
-        texto.textContent = "Editar rota"
-
-        const botao = document.getElementById('botao');
-        botao.textContent = "Cadastrar alterações"
-
-        async function GetRota() {
-            // url da requisição
-            const url = url_base + `cortex/api/soticon/v1/rotas/${id_rota}`;
-        
-            const options = {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization' : `Bearer ${localStorage.getItem('token')}`
-                }
-            };
-        
-            try {
-                const response = await fetch(url, options);
-                // deu erro na busca das rotas do dia
-                if (!response.ok) {
-                    throw new Error("Erro ao puxar as rotas do dia!");
-                }
-                const data = await response.json();
-
-                return data;
-        
-            } catch (erro) {
-                //console.error("Erro durante a requisição das rotas do dia: ", erro.message);
-                window.location.reload()
-            }
-        }
-
-        async function PreencherFormulário() {
-            try{
-                const rota = await GetRota();
-
-                if (rota) {
-                    document.getElementById('obs').value = rota.obs || '';           
-                    document.getElementById('data').value = rota.data || '';          
-                    document.getElementById('status').value = rota.status || '';      
-                    document.getElementById('horario').value = rota.horario || '';
-                    
-                }
-
-                iconContainer.removeChild(loadingIcon);
-                iconContainer.removeChild(frase)
-            } catch (erro) {
-                console.error("Erro ao carregar a rota no formulário: ", erro.message);
-            }
-            
-        }
-        PreencherFormulário()
-
-        editando = true;
-    }
-}
-
-editVerify()
-
-
-
 const cadastrarButton = document.getElementById("botao");
 const form = document.getElementById("formulario")
 
@@ -305,14 +221,7 @@ cadastrarButton.addEventListener("click", function(e) {
                 document.getElementById("horario").value = "";
 
                 cadastrarButton.classList.add("success-animation");
-                if (editando) {
-                    window.alert("Rota atualizada com sucesso!")
-                    window.location.href = "listar_rotas.html";
-                } else {
-                    window.alert("Rota cadastrada com sucesso!")
-                    window.location.href = "cadastrarRotas.html";
-                }
-                
+                window.alert("Rota cadastrada com sucesso!")
             })
             .catch(error => {
                 //console.error("Erro ao enviar dados do formulário:", error);
@@ -339,7 +248,7 @@ cadastrarButton.addEventListener("click", function(e) {
 
 // cadastra as novas rotas
 async function cadastrarRotas(detalhes_rota, data, status, horario) {
-    let url = url_base + "cortex/api/soticon/v1/rotas/";
+    const url = url_base + "cortex/api/soticon/v1/rotas/";
 
     // Obtém os dados do formulário
     const formData = {
@@ -349,33 +258,16 @@ async function cadastrarRotas(detalhes_rota, data, status, horario) {
         status: status,
         horario: horario
     };
-    
-    let options;
+
     // Configurando a solicitação
-    if(!editando) {
-        options = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            },
-            body: JSON.stringify(formData)
-        };
-    }
-    else {
-        url = url + `${id_rota}/`;
-
-        options = {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            },
-            body: JSON.stringify(formData)
-        };
-    }
-
-    
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify(formData)
+    };
 
     try {
         const response = await fetch(url, options);
@@ -451,3 +343,31 @@ function redirecionarSeNecessario() {
 // Chamada para verificar e redirecionar
 redirecionarSeNecessario();
 
+const carregar_rotas = async () => {
+    const url = url_base + "cortex/api/soticon/v1/rotas/";
+
+    // Configurando a solicitação
+    const options = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+    };
+
+    try {
+        const response = await fetch(url, options);
+        if (!response.ok) {
+            throw new Error("Erro ao enviar dados do formulário");
+        }
+        const data = await response.json();
+//  //          console.log("Rotas armazenadas:", data.results);
+        return data.results
+        // Processa a resposta do servidor, se necessário
+    } catch (error) {
+        //console.error("Erro durante a requisição:", error);
+        throw error; // Propagar o erro para o chamador, se necessário
+    }
+}
+
+carregar_rotas()
