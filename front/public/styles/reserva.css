@@ -86,7 +86,7 @@
     transition: font-size 0.3s ease-in-out;
 }   
 
-button{
+button {
     height: 68px;
     width: 420px;
     border: 3px solid #ffff;
@@ -103,10 +103,15 @@ button{
     place-content: center;
 }
 
-button:hover{
+button:hover {
     font-size: 70px;
     border: 5px solid #ffff;
     transition: font-size 0.3s ease-in-out;
+}
+
+button:focus {
+    outline: none;
+    /* border: none; */
 }
 
 button.disabled-temporary {
@@ -204,13 +209,6 @@ button.disabled-temporary {
         font-size: 30px;
     }
 
-    button:hover, button:active, button:focus {
-        transform: none !important; /* Garante que não haja transformações */
-        transition: none !important; /* Remove qualquer transição */
-        background-color: inherit !important; /* Garante que o background não mude */
-        box-shadow: none !important; /* Remove sombra ou outros efeitos */
-        outline: none !important; /* Remove efeitos de foco */
-    }
 
     .loading-icon {
         font-size: 80px;
@@ -246,13 +244,6 @@ button.disabled-temporary {
         left: 80px;
     } 
 
-    button:hover, button:active, button:focus {
-        transform: none !important; /* Garante que não haja transformações */
-        transition: none !important; /* Remove qualquer transição */
-        background-color: inherit !important; /* Garante que o background não mude */
-        box-shadow: none !important; /* Remove sombra ou outros efeitos */
-        outline: none !important; /* Remove efeitos de foco */
-      }
 /* 
     button:active{
         font-size: inherit;
