@@ -213,6 +213,7 @@ async function listarTicketsNaPagina(id_rota) {
         
         const tickets = await getTicketsRota(id_rota);
 
+        tickets.sort((a, b) => a.posicao_fila - b.posicao_fila);
         
         containerPai.innerHTML = '';
 
