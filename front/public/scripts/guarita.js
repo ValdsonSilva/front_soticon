@@ -228,7 +228,7 @@ function DayData() {
 }
 
 function listarRotasDoDia() {
-    const url = url_base + `cortex/api/soticon/v1/rotas/?data_valida=${DayData()}&status=${'espera'}`;
+    const url = url_base + `cortex/api/soticon/v1/rotas/?data=${DayData()}&status=${'espera'}`;
 
 
     const loader = document.getElementById('loader');
