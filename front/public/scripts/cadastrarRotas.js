@@ -258,6 +258,16 @@ async function editVerify() {
 
 editVerify()
 
+function formatarHorario(horario) {
+    const partes = horario.split(':');
+    
+    if (partes.length === 3) {
+        return `${partes[0]}:${partes[1]}`;
+    } else {
+        return horario;
+    }
+}
+
 
 
 const cadastrarButton = document.getElementById("botao");
@@ -269,7 +279,7 @@ cadastrarButton.addEventListener("click", function(e) {
     const detalhes_rota = document.getElementById("obs").value;
     const data = document.getElementById("data").value;
     const status = document.getElementById("status").value;
-    const horario = document.getElementById("horario").value;
+    const horario = formatarHorario(document.getElementById("horario").value);
 
 
     const dataSelecionada = new Date(data);

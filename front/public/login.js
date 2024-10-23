@@ -119,7 +119,7 @@ const tipo_users = [
     },
     {
         user : "aluno",
-        url : './pages/reserva_ticket.html',
+        url : './pages/bem_vindo_aluno.html',
     },
     {
         user : "motorista",
