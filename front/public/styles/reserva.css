@@ -209,6 +209,9 @@ button.disabled-temporary {
         font-size: 30px;
     }
 
+    button:focus {
+        outline: none;
+    }
 
     .loading-icon {
         font-size: 80px;
@@ -244,8 +247,8 @@ button.disabled-temporary {
         left: 80px;
     } 
 
-/* 
-    button:active{
-        font-size: inherit;
-    } */
+    button:focus {
+        outline: none;
+    }
+
 }

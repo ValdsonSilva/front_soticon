@@ -576,17 +576,24 @@ async function getTickets() {
 getTickets()
 
 
-const logout_elemenst = document.querySelectorAll(".retornar")
-logout_elemenst.forEach(function(element) {
-    element.addEventListener("click", function(){
-        for (var i = 0; i < logout_elemenst.length; i++){
-            localStorage.removeItem('token')
-            localStorage.removeItem('refreshToken')
-            localStorage.removeItem('botao_disable_state')
-            window.location.href = "../index.html"
-        }   
-    })
-})
+// const logout_elemenst = document.querySelector(".retornar")
+// logout_elemenst.addEventListener("click", function() {
+//     localStorage.removeItem('token')
+//     localStorage.removeItem('refreshToken')
+//     localStorage.removeItem('botao_disable_state')
+//     window.location.href = "../index.html"
+// })
+
+// logout_elemenst.forEach(function(element) {
+//     element.addEventListener("click", function() {
+//         for (var i = 0; i < logout_elemenst.length; i++) {
+//             localStorage.removeItem('token')
+//             localStorage.removeItem('refreshToken')
+//             localStorage.removeItem('botao_disable_state')
+//             window.location.href = "../index.html"
+//         }   
+//     })
+// })
 
 
 
@@ -614,7 +621,6 @@ async function verificarTipoUsuario(id) {
 
     }
 }
-
 
 function verifyTokenPattern(token) {
     

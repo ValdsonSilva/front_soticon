@@ -12,12 +12,6 @@ var id_rota_localstorage = localStorage.getItem('id_rota')
 var id_rota_path = id_rota ? id_rota : id_rota_localstorage;
 
 
-
-
-
-
-
-
 function decodeToken(token) {
     const payload = token.split('.')[1]
     const decodeToken = atob(payload);
@@ -592,8 +586,7 @@ async function verificaTicketPeloBotao(id_ticket, botao) {
             botao.innerHTML = "..."
             window.location.reload();
         }
-    }
-
+}
 
 
 function limparCPF(cpf) {
@@ -602,51 +595,12 @@ function limparCPF(cpf) {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 async function declararFaltante(id_ticket, botao) {
 
 
         botao.innerHTML = "carregando..."
     
         const url = url_base + `cortex/api/soticon/v1/tickets/aluno_faltante/${id_ticket}/`
-    
-        
-        
-        
-        
-
-
     
         const options = {
             method: 'PUT',
