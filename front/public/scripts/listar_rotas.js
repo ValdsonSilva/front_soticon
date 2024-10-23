@@ -229,57 +229,6 @@ async function montarElementosDaTela() {
     
     container.innerHTML = '';
 
-
-    // Mapeando e adicionando os itens ao container
-    for (const item of rotas) {
-
-        var caixa = document.createElement('div');
-        caixa.classList.add('caixa');
-
-        // Nome do dia da semana
-        var paragrafoDia = document.createElement('p');
-        paragrafoDia.classList.add('dia');
-        paragrafoDia.textContent = Dayweek(item.data);
-
-        // Data no formato "dd/mm/yyyy"
-        var spanData = document.createElement('span');
-        spanData.classList.add('data');
-        spanData.textContent = formatDate(item.data)
-
-        // Hora da rota
-        var paragrafoHora = document.createElement('p');
-        paragrafoHora.classList.add('hora');
-        paragrafoHora.textContent = formatHorario(item.horario)
-
-        var divBotaoContainer = document.createElement('div');
-        divBotaoContainer.classList.add('botao_container');
-
-        var botao = document.createElement('button');
-        botao.setAttribute('type', 'submit');
-        botao.setAttribute('id', 'bo' + item.id); // Adicionando um ID único para cada botão
-        botao.textContent = "Editar";
-
-        // adicionando ouvinte do evento de clique no botão
-        botao.addEventListener("click", function() {
-            window.location.href = `cadastrarRotas.html?rota=${item.id}`;
-        })
-
-        
-        // Adicionando elementos filhos à div .caixa
-        caixa.appendChild(paragrafoDia);
-        caixa.appendChild(spanData);
-        caixa.appendChild(paragrafoHora);
-        caixa.appendChild(divBotaoContainer);
-        divBotaoContainer.appendChild(botao);
-        
-        // Adicionando a div .caixa ao container principal
-        container.appendChild(caixa);
-    }
-
-    iconContainer.removeChild(loadingIcon);
-    iconContainer.removeChild(frase)
-
-
     if (rotas.length === 0) {
         //console.log("Não há rotas")
 
@@ -291,7 +240,70 @@ async function montarElementosDaTela() {
 
         // Adicionando o elemento ao container
         iconContainer.appendChild(mensagem)
+    } else {
+            // Mapeando e adicionando os itens ao container
+        for (const item of rotas) {
+
+            var caixa = document.createElement('div');
+            caixa.classList.add('caixa');
+    
+            // Nome do dia da semana
+            var paragrafoDia = document.createElement('p');
+            paragrafoDia.classList.add('dia');
+            paragrafoDia.textContent = Dayweek(item.data);
+    
+            // Data no formato "dd/mm/yyyy"
+            var spanData = document.createElement('span');
+            spanData.classList.add('data');
+            spanData.textContent = formatDate(item.data)
+    
+            // Hora da rota
+            var paragrafoHora = document.createElement('p');
+            paragrafoHora.classList.add('hora');
+            paragrafoHora.textContent = formatHorario(item.horario)
+    
+            var divBotaoContainer = document.createElement('div');
+            divBotaoContainer.classList.add('botao_container');
+    
+            var botao = document.createElement('button');
+            botao.setAttribute('type', 'submit');
+            botao.setAttribute('id', 'bo' + item.id); // Adicionando um ID único para cada botão
+            botao.textContent = "Editar";
+            botao.classList.add('botao');
+    
+            // adicionando ouvinte do evento de clique no botão
+            botao.addEventListener("click", function() {
+                window.location.href = `cadastrarRotas.html?rota=${item.id}`;
+            })
+    
+            
+            // Adicionando elementos filhos à div .caixa
+            caixa.appendChild(paragrafoDia);
+            caixa.appendChild(spanData);
+            caixa.appendChild(paragrafoHora);
+            caixa.appendChild(divBotaoContainer);
+            divBotaoContainer.appendChild(botao);
+            
+            // Adicionando a div .caixa ao container principal
+            container.appendChild(caixa);
+        }
     }
+
+
+    iconContainer.removeChild(loadingIcon);
+    iconContainer.removeChild(frase)
+
+
+    var botao = document.createElement('button');
+    botao.setAttribute('type', 'button');
+    botao.textContent = "Criar Rota";
+    botao.classList.add('botao', 'botao_criar_rota');
+
+    var linkCriarRota = document.createElement('a');
+    linkCriarRota.href = "../pages/cadastrarRotas.html";
+    linkCriarRota.appendChild(botao);
+
+    iconContainer.appendChild(linkCriarRota)
 }
 
 // Chamando a função para montar os elementos da tela
