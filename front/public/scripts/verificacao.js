@@ -539,6 +539,7 @@ botao_finalizar_rota.addEventListener("click", async function() {
         }
         const data = await response.json()
         window.alert("Rota finalizada!");
+        avancarTela(id_rota_path);
         return data
     } catch (error) {
 
@@ -549,6 +550,12 @@ botao_finalizar_rota.addEventListener("click", async function() {
         botao_finalizar_rota.innerHTML = originalContent;
     }
 })
+
+function avancarTela(id) {
+    const url = `../pages/relatorio_final.html?id=${id}`
+    localStorage.setItem('id_rota', id)
+    window.location.href = url
+}
 
 
 async function associarCPFaoTicket(id_rota_path, cpf) {
