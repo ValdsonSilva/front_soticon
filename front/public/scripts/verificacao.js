@@ -278,13 +278,15 @@ async function listarTicketsNaPagina(id_rota) {
             return;
         }
 
-        await getContagem(id_rota);
-        
         containerPai.innerHTML = '';
 
-        contagemTickets = document.getElementById('p-total-tickets');
+        if (!(window.location.href.includes("espera.html"))) {
+            await getContagem(id_rota);
+        
+            contagemTickets = document.getElementById('p-total-tickets');
 
-        contagemTickets.textContent = `Tickets passados: ${tickets_usados}/${tickets_totais}`;
+            contagemTickets.textContent = `Tickets passados: ${tickets_usados}/${tickets_totais}`;
+        }
 
         tickets.forEach((ticket, index) => {
             
@@ -647,7 +649,7 @@ async function verificaTicketPeloBotao(id_ticket, botao) {
             const response = await fetch(url, options);
             if (!response.ok) {
                 const data = await response.json();
-                
+
                 throw new Error(`${response.status}, ${data.posicao_esperada}`);
             }
             const data = await response.json();
@@ -655,8 +657,6 @@ async function verificaTicketPeloBotao(id_ticket, botao) {
             return data;
         
         } catch (error) {
-
-        
             
             if (error.message.includes("404") || error.message.includes("401")) {
                 window.alert("Ticket não localizado!");
