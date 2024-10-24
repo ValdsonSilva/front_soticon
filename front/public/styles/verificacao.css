@@ -29,6 +29,10 @@
     align-items: center;
 }
 
+.total-tickets{
+    margin-top: 30px;
+}
+
 .link {
     height: 58px;
     width: 320px;
@@ -425,6 +429,8 @@ p {
         height: 50px;
         margin-left: 15px;
     }
+
+    
 
     .linha {
         display: flex;

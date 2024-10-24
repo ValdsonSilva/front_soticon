@@ -156,16 +156,81 @@ async function VerifyUserPermission(token_decodificado) {
 }
 VerifyUserPermission(token_decodificado)
 
+let tickets_totais = 0;
+let tickets_usados = 0;
+
+async function getContagem(id_rota) {
+    let baseUrl = url_base + `cortex/api/soticon/v1/tickets/?rota=${id_rota}&contagem=true`;
+    const url = baseUrl;  
+
+    const options = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization' : `Bearer ${localStorage.getItem('token')}`
+        }
+    }
+
+    try {
+        const response = await fetch(url, options);
+        if (!response.ok) {
+            throw new Error("Erro ao puxar os tickets da rota" + error.status);
+        }
+        const data = await response.json();
+
+        tickets_totais = data.total;
+        tickets_usados = data.usados;
+
+    } catch (error) {
+
+        window.alert("Erro ao carregar tickets da rota!")
+    }
+}
+
+async function getStatusRota(id_rota) {
+    let baseUrl = url_base + `cortex/api/soticon/v1/rotas/${id_rota}/`;
+    const url = baseUrl;  
+
+    const options = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization' : `Bearer ${localStorage.getItem('token')}`
+        }
+    }
+
+    try {
+        const response = await fetch(url, options);
+        if (!response.ok) {
+            throw new Error("Erro ao dados da rota" + error.status);
+        }
+        const data = await response.json();
+
+        if (data.status === "espera") {
+            return true;
+        } else {
+            return false;
+        }
+
+    } catch (error) {
+
+        window.alert("Erro ao carregar tickets da rota!")
+    }
+}
 
 async function getTicketsRota(id_rota) {
 
+    let rota_valida = await getStatusRota(id_rota);
+
+    if (!rota_valida) {
+        return "vazia";
+    }
+
     let baseUrl = url_base + `cortex/api/soticon/v1/tickets/?rota_valida=${id_rota}`;
     if (window.location.href.includes("espera.html")) {
-        baseUrl += `&faltantes=${true}`;
+        baseUrl += `&faltantes=${true}&limit=100`;
     }
     const url = baseUrl;  
-
-
 
     const options = {
         method: 'GET',
@@ -204,12 +269,22 @@ async function listarTicketsNaPagina(id_rota) {
     containerPai.appendChild(loadingIcon);
 
     try {
-        
+
         const tickets = await getTicketsRota(id_rota);
 
-        tickets.sort((a, b) => a.posicao_fila - b.posicao_fila);
+        if (tickets==="vazia"){
+            window.alert("A rota está fechada!")
+            window.location.href = "./guarita.html";
+            return;
+        }
+
+        await getContagem(id_rota);
         
         containerPai.innerHTML = '';
+
+        contagemTickets = document.getElementById('p-total-tickets');
+
+        contagemTickets.textContent = `Tickets passados: ${tickets_usados}/${tickets_totais}`;
 
         tickets.forEach((ticket, index) => {
             
@@ -303,16 +378,14 @@ async function listarTicketsNaPagina(id_rota) {
         }
 
     } catch(error) {
-        
         window.alert("Erro ao carregar tickets da rota")
         const frase = document.createElement("h1")
         frase.textContent = "Não há tickets no momento!"
         frase.style.color = "#fff"
         frase.style.marginTop = "20px"
         containerPai.appendChild(frase)
-    } finally {
         
-        containerPai.removeChild(loadingIcon);
+        
     }
 }
 listarTicketsNaPagina(id_rota_path)
@@ -617,10 +690,6 @@ async function declararFaltante(id_ticket, botao) {
                 throw new Error(`Erro ao declarar como faltante: ${response.status}`);
             }
             const data = await response.json();
-
-            
-            
-            window.alert("Ticket adicionado à fila de espera!");
         
             return data;
         
