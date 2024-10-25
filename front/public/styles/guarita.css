@@ -34,6 +34,10 @@
 .caixa{
     width: 803px;
     height: 474px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
     border: solid 4px #fff;
     border-radius: 50px;
 }
@@ -41,6 +45,15 @@
 .logo {
     display: flex;
     justify-content: center;
+}
+
+.container_day {
+    /* background-color: darkred; */
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: row;
+    width: 100%;
 }
 
 .dia,.data,.horario{
@@ -51,6 +64,7 @@
     letter-spacing: 0em;
     text-align: left;
     color: #fff;
+    /* background-color: red; */
 }
 
 .botao {
@@ -104,19 +118,6 @@ button:hover {
     border: 2px solid #9e9999;
 }
 
-.dia{
-    position: relative;
-    margin-top: 83px;
-    margin-left: 60px;
-}
-
-.data{
-    position: relative;
-    margin-top: -30px;
-    margin-right: 60px;
-    margin-left: 500px;
-}
-
 .horario{
     position: relative;
     margin-top: 70px;
@@ -156,19 +157,19 @@ button:hover {
     color: #f1f3f5; /* cor azul */
 }
 
+
 @media screen and (max-width: 767px) {
     /*diminuir o tamanho da ciaxa*/
     .caixa{
-        width: 600px;
+        width: 350px;
+        margin: 10px;
+        /* background-color: red; */
     }
 
     /*diminuir o tamanho das letras*/
     .dia,.data,.horario{
-        font-size: 25px;
-    }
-
-    .data{
-        margin-left: 300px;
+        font-size: 20px;
+        /* background-color: rgb(51, 10, 216); */
     }
 }
 
@@ -176,6 +177,7 @@ button:hover {
     /*diminuir o tamanho da ciaxa*/
     .caixa{
         width: 700px;
+        /* background-color: blue; */
     }
 
     /*diminuir o tamanho das letras*/
@@ -183,7 +185,4 @@ button:hover {
         font-size: 25px;
     }
     
-    .data{
-        margin-left: 400px;
-    }
 }

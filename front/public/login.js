@@ -110,8 +110,6 @@ function getToken(cpf, password) {
         })
 }
 
-
-
 const tipo_users = [
     {
         user : "admin",
@@ -250,6 +248,7 @@ function verifyTokenPattern(token) {
     
     return /^{{Token .+}}$/.test(token);
 }
+
 
 
 function limparCPF(cpf) {

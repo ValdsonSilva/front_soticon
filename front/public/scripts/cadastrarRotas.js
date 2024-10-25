@@ -301,6 +301,7 @@ cadastrarButton.addEventListener("click", function(e) {
         // Crie o ícone de carregamento linear
         const loadingIcon = document.createElement('i');
         loadingIcon.classList.add('fas', 'fa-sync-alt', 'fa-spin', 'loading-icon');
+        loadingIcon.style.fontSize = "16px"
 
         // Adicione o ícone ao botão
         cadastrarButton.innerHTML = '';
@@ -400,18 +401,6 @@ async function cadastrarRotas(detalhes_rota, data, status, horario) {
         throw error; // Propagar o erro para o chamador, se necessário
     }
 };
-
-
-const logout_elemenst = document.querySelectorAll(".retornar")
-logout_elemenst.forEach(function(element) {
-    element.addEventListener("click", function(){
-        for (var i = 0; i < logout_elemenst.length; i++){
-            localStorage.removeItem('token')
-            localStorage.removeItem('refreshToken')
-            window.location.href = "../index.html"
-        }   
-    })
-})
 
 // retorna varias infos do user, inclusive o tipo
 async function verificarTipoUsuario(id) {

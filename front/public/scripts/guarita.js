@@ -276,6 +276,9 @@ async function exibirRotas(rotas) {
         const caixa = document.createElement('div');
         caixa.classList.add('caixa');
 
+        const container_day = document.createElement('div')
+        container_day.classList.add('container_day')
+
         const dia = document.createElement('p');
         dia.classList.add('dia');
         dia.textContent = Dayweek(rota.data);
@@ -309,8 +312,9 @@ async function exibirRotas(rotas) {
 
         containerButton.appendChild(btnMonitorar); 
 
-        caixa.appendChild(dia);
-        caixa.appendChild(data);
+        container_day.appendChild(dia)
+        container_day.appendChild(data)
+        caixa.appendChild(container_day)
         caixa.appendChild(horario);
         caixa.appendChild(containerButton); 
 

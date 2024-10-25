@@ -63,13 +63,7 @@
     padding-top: 5px;
     border: none;
     font-weight: 600;
-}
-
-#data, #status, #horario, #botao {
     cursor: pointer;
-}
-
-#obs {
     resize: none;
 }
 
@@ -97,13 +91,16 @@
     transition: background-color 0.2s ease-in-out;
     margin-bottom: 10px;
     border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #botao:hover, #botao:active {
     /* background-color: rgb(47, 172, 22); */
     width: 380px;
     height: 60px;
-    font-size: 20px;
+    /* font-size: 20px; */
 }
 
 .success-animation {

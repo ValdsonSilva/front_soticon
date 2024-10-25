@@ -390,13 +390,34 @@ p {
         justify-content: center;
     }
 
+    .retornar {
+        width: 30px;
+        height: 30px;
+    }
+
+    .espera {
+        height: 48px;
+        width: 220px;
+        border-radius: 40px;
+    
+        font-size: 20px;
+    }
+
     .containerUm {
         display: flex;
         justify-content: center;
+        /* background-color: red; */
+        width: 100%;
+        height: max-content;
     }
 
-    .input-container {
-        margin-bottom: 40px;
+    #formulario {
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .cpf {
+        font-size: 20px;
     }
 
     .finalizar {
@@ -407,11 +428,13 @@ p {
         font-weight: 600;
         border: none;
         box-shadow: 2px 1px 0px 1px #000;
+        margin-top: 50px;
     }
 
     .input {
-        height: 50px;
+        height: 40px;
         width: 300px;
+        font-size: 20px;
     }
 
     .fundo {
@@ -420,18 +443,17 @@ p {
 
     .seta {
         height: 60px;
-        margin-top: -7px;
+        margin-top: -13px;
         margin-left: 1px;
     }
 
     .proximo {
         width: 125px;
-        height: 50px;
-        margin-left: 15px;
+        height: 40px;
+        margin-top: 0px;
     }
 
     
-
     .linha {
         display: flex;
         justify-content: center;
@@ -449,20 +471,23 @@ p {
     .cont_container3 {
         display: flex;
         justify-content: center;
+        margin-top: 30px;
         margin-bottom: 15px;
-        margin-top: -15px;
 
         /*background-color: aqua;*/
         padding-bottom: 60px;
+        height: max-content;
     }
 
     .container3 {
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
         margin-top: 88px;
-        /*background-color: blueviolet;*/
+        /* background-color: blueviolet; */
     
-        width: 600px;
+        width: 100%;
         height: 159px;
     }
 
@@ -481,11 +506,13 @@ p {
     }
     
     h3 {
-        font-size: 25px;
+        font-size: 20px;
         font-weight: 700;
-        line-height: 4px;
+        line-height: 30px;
         letter-spacing: 0em;
         text-align: center;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
         color: #FFFFFF;
     }
     
@@ -562,6 +589,7 @@ p {
         background: #1ba100;
         border: 3px solid #1ba100;
         border-radius: 10px;
+        margin-top: 15px;
     }
     
     .passar:hover, .passar:active {

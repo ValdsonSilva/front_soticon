@@ -178,6 +178,8 @@ async function getContagem(id_rota) {
         }
         const data = await response.json();
 
+        console.log(data)
+
         tickets_totais = data.total;
         tickets_usados = data.usados;
 
@@ -479,8 +481,6 @@ document.getElementById("formulario").addEventListener("submit", function(event)
         .then((ticket) => {
             if (ticket) {
 
-
-                
                 verificaTicket(ticket)
 
             } else {
@@ -506,7 +506,6 @@ var botao_finalizar_rota = document.querySelector(".finalizar")
 botao_finalizar_rota.addEventListener("click", async function() {
     const url = url_base + `cortex/api/soticon/v1/finalizar_rota/${id_rota_path}`
     
-
     const data = {
         status : "executada",
         obs: "Rota finalizada"
@@ -581,7 +580,6 @@ async function associarCPFaoTicket(id_rota_path, cpf) {
 
 
 async function verificaTicket(ticket) {
-
 
 
     if (window.location.href.includes("espera.html")) {
