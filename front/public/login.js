@@ -26,14 +26,8 @@ document.getElementById("login").addEventListener("click", function() {
 
 function handleFormSubmit(event) {
     event.preventDefault();
-
-    
     const userInput = document.getElementById("cpf").value;
     const passwordInput = document.getElementById("senha").value;
-
-    
-
-
 
 }
 
@@ -81,13 +75,10 @@ function getToken(cpf, password) {
         .then(data => {
             
             if (data.access && data.refresh) {
+
                 localStorage.setItem('token', data.access)
                 localStorage.setItem('refreshToken', data.refresh)
 
-
-
-
-                
                 return redirecionarParaProximaTela(data.access);
             }
             else {
@@ -95,14 +86,24 @@ function getToken(cpf, password) {
             }
         })
         .catch(error => {
-
-
-
-            
-            
+                    
             loginButton.innerHTML = 'Login';
-            window.location.href = "./index.html";
-            window.alert("CPF ou Senha inválidos! \nTente realizar o login novamente!")
+            let errorMessage = '';
+            
+            if (error.message.includes(401)) {
+                errorMessage = "CPF ou Senha inválidos! \nTente realizar o login novamente!";
+
+            } else if (error.message.includes(400)) {
+                errorMessage = "Senha ou usuário em branco!";
+
+            } else if (error.message.includes(500)) {
+                errorMessage = "Erro de servidor. \nTente novamente mais tarde.";
+            }
+
+            if (errorMessage) {
+                window.alert(errorMessage)
+                window.location.href = "./index.html";
+            }
         })
         .finally(() => {
             
@@ -146,10 +147,9 @@ async function redirecionarParaProximaTela(accessToken) {
     try {
         
         const userId = decodeToken(accessToken).user_id
-
-    
         
         const resp = await verificarTipoUsuario(userId)
+        console.log("resp:", resp)
         const setores = resp.nome_setores.map(element => element);
 
 
@@ -209,22 +209,20 @@ async function verificarTipoUsuario(id) {
     try {
         const response = await fetch(url, options);
         if (!response.ok) {
-            throw new Error("Erro ao puxar os usuários" + response.status);
+            throw new Error("Erro ao puxar o usuário " + response.status);
         }
         const data = await response.json();
 
         return data;
 
     } catch (error) {
-
+        return `${error.message}`
     }
 }
 
 async function redirecionarSeNecessario() {
     const token = localStorage.getItem('token');
     const refresh = localStorage.getItem('refreshToken')
-
-
 
     if (token && refresh) {
         if (verifyTokenPattern(token)) {

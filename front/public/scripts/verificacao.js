@@ -178,8 +178,6 @@ async function getContagem(id_rota) {
         }
         const data = await response.json();
 
-        console.log(data)
-
         tickets_totais = data.total;
         tickets_usados = data.usados;
 
