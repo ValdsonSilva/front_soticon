@@ -178,8 +178,6 @@ async function getContagem(id_rota) {
         }
         const data = await response.json();
 
-        console.log(data)
-
         tickets_totais = data.total;
         tickets_usados = data.usados;
 
@@ -307,6 +305,15 @@ async function listarTicketsNaPagina(id_rota) {
     
             const nomeAluno = document.createElement('h3');
             nomeAluno.textContent = ticket.nome;
+            
+            const deficiencia = document.createElement('img');
+            if (ticket.deficiencia) {
+                deficiencia.src = "../images/acessibilidade.png";
+                deficiencia.alt = "Acessibilidade";
+                deficiencia.width = 50;
+                deficiencia.height = 50;
+            }
+            
     
             const posicao = document.createElement('p');
             posicao.textContent = `Posição ${ticket.posicao_fila}`;
@@ -364,6 +371,10 @@ async function listarTicketsNaPagina(id_rota) {
             
             fotoCaixa.appendChild(fotoAluno);
             cont1.appendChild(nomeAluno);
+            if (ticket.deficiencia) {
+                cont1.appendChild(deficiencia);
+                cont1.style.gap = "15px";
+            }
             cont1.appendChild(posicao);
             cont2.appendChild(status);
             
