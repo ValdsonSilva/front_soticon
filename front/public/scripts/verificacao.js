@@ -310,8 +310,7 @@ async function listarTicketsNaPagina(id_rota) {
             if (ticket.deficiencia) {
                 deficiencia.src = "../images/acessibilidade.png";
                 deficiencia.alt = "Acessibilidade";
-                deficiencia.width = 50;
-                deficiencia.height = 50;
+                deficiencia.classList.add('icone-acessibilidade');
             }
             
     
