@@ -1,0 +1,234 @@
+@charset "utf-8";
+
+* {
+    padding: 0px;
+    margin: 0px;
+    font-family: Arial, Helvetica, sans-serif;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 20px;
+}
+
+span {
+    color: #000000;
+}
+
+button {
+    width: 200px;
+    height: 30px;
+    border-radius: 10px;
+    font-weight: 600;
+    border: none;
+    box-shadow: 1px 1px 2px 1px #000;
+    background-color: #3fc8fe;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+button:hover {
+    padding-left: 20px;
+    border-radius: 5px;
+}
+
+input, select {
+    width: 200px;
+    height: 30px;
+    border-radius: 6px;
+    outline: none;
+    border: none;
+    background-color: #ffffff;
+    padding: 5px;
+    font-weight: 600;
+}
+
+.logo {
+    display: flex;
+    justify-content: center;
+}
+
+.container_links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 50px;
+    border: 3px solid #fff;
+    margin-bottom: 50px;
+    margin-left: 20px;
+    border-radius: 15px;
+    font-size: 25px;
+}
+
+.retornar {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.caixaUm {
+    /* background-color: rgb(3, 97, 205); */
+    display: flex;
+    justify-content: center;
+    /* backdrop-filter: blur(20px); */
+}
+
+.container2 {
+    display: flex;
+    justify-content: center;
+}
+
+.filter_form {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+    width: 800px;
+    padding-bottom: 10px;
+    border: 3px solid #ffffff;
+    border-radius: 15px;
+    gap: 20px;
+    padding: 10px;
+    background: #a9a9a9;
+    box-shadow: 1px 1px 5px 1px #000000;
+}
+
+.periodo {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    /* background-color: red; */
+    width: 100%;
+    gap: 6%;
+}
+
+.container_submit {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    /* gap: 90px; */
+    /* background-color: black; */
+}
+
+.linha {
+    display: flex;
+    justify-content: center;
+    height: 7px;
+    width: 100%;
+    margin-left: 94px;
+    margin-right: 95px;
+    margin-top: 80px;
+    border-radius: 3px;
+    background: #D9D9D9;
+}
+
+.listagem {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+
+}
+
+.container3 {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 88px;
+    /*background-color: blueviolet;*/
+
+    width: 900px;
+    height: 159px;
+}
+
+.fotocaixa {
+    height: 159px;
+    width: 120px;
+    background-color: #FFFFFF;
+    border-radius: 12px;
+}
+
+/* dentro do container 3*/
+.cont1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+}
+
+h3, h2 {
+    font-size: 38px;
+    font-weight: 700;
+    line-height: 43px;
+    letter-spacing: 0em;
+    text-align: center;
+    color: #FFFFFF;
+}
+
+p {
+   
+    font-size: 25px;
+    font-weight: 700;
+    line-height: 28px;
+    letter-spacing: 0em;
+    text-align: center;
+    color: #FFFFFF;
+
+}
+
+table {
+    width: 100%;
+    margin: 20px 0;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 18px;
+    text-align: left;
+    background-color: #d9d8d8;
+    backdrop-filter: blur(20px);
+}
+
+thead th {
+    color: #000;
+}
+
+th, td {
+    padding: 12px;
+    border: 1px solid #000000;
+    color: #000000;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+.cont2 {
+    /* background-color: red; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.status {
+    display: grid;
+    place-content: center;
+    text-align: center;
+
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 25px;
+    letter-spacing: 0em;
+    color: #FFFFFF;
+    box-sizing: border-box;
+    width: 166px;
+    height: 47px;
+    /* left: 1005px; */
+    /* margin-top: 65px; */
+
+    background: #394538;
+    border: 3px solid #FFFFFF;
+    border-radius: 10px;
+}   

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatórios-administrativo</title>
+    <link rel="icon" href="../images/logoOnibus.png" type="image/x-icon">
+    <link rel="stylesheet" href="../styles/relatorio.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/imask/6.0.7/imask.min.js"></script>
+</head>
+
+<body background="../images/backgroundCortex.jpg">
+
+    <figure class="logo">
+        <img src="../images/logoOnibus.png" alt="imagem do ônibus" width="200px" height="200px">
+    </figure>
+
+    <div class="container_links">
+        <a class="retornar" href="./conferente.html">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+    </div>
+
+    <div class="caixaUm">
+        <!-- <h1>Detalhar rotas</h1> -->
+        <form class="filter_form">
+            <div class="periodo">
+                <div>
+                    <span>Início</span><br>
+                    <input type="date">
+                </div>
+                <span>Até</span>
+                <div>
+                    <span>Fim</span><br>
+                    <input type="date">
+                </div>
+            </div>
+
+            <div class="container_submit">
+                <div>
+                    <span>Rota</span><br>
+                    <select name="" id="">
+                        <option value="#" selected>escolha a rota</option>
+                        <option value="">1</option>
+                        <option value="">2</option>
+                        <option value="">3</option>
+                        <option value="">4</option>
+                    </select>
+                </div>
+
+                <button type="submit">
+                    <i class="fas fa-search"></i>
+                    Buscar
+                </button>
+                <button type="button">
+                    <i class="fas fa-file-pdf"></i>
+                    Gerar PDF
+                </button>
+            </div>
+           
+        </form>
+    </div>
+
+    <div class="container2">
+        <div class="linha"></div>
+    </div>
+
+    <div class="listagem">
+        <h2>Tabela de Resumo de Embarques</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Dia</th>
+                    <th>Emitidos</th>
+                    <th>Confirmados</th>
+                    <th>Faltantes</th>
+                    <th>Sem ticket</th>
+                    <th>Total Embarque</th>
+                    <th>Detalhes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <!-- Essa função deve receber o id da rota -->
+                    <td><a href="../pages/relatorio_list_tickets.html" onclick="listarRota('23/10 (qua)')">23/10 (qua)</a></td>
+                    <td>54</td>
+                    <td>42</td>
+                    <td>12</td>
+                    <td>10</td>
+                    <td>52</td>
+                    <td>Ver mais</td>
+                </tr>
+                <tr>
+                    <td><a href="../pages/relatorio_list_tickets.html" onclick="listarRota('24/10 (qui)')">24/10 (qui)</a></td>
+                    <td>38</td>
+                    <td>16</td>
+                    <td>22</td>
+                    <td>26</td>
+                    <td>42</td>
+                    <td>Ver mais</td>
+                </tr>
+                <tr>
+                    <td>25/10 (sex)</td>
+                    <td>53</td>
+                    <td>45</td>
+                    <td>8</td>
+                    <td>4</td>
+                    <td>49</td>
+                    <td><a href="../pages/relatorio_list_tickets.html" onclick="listarRota('25/10 (sex)')">Ver mais</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- 
+        CRIAR PDF'S
+        Usando jsPDF
+        jsPDF é uma biblioteca de código aberto que permite a criação de PDFs no lado do cliente 
+        (no navegador) de forma fácil e rápida.
+     -->
+
+</body>
+<script src="../env.js"></script>
+<!-- <script src="../scripts/verificacao.js"></script> -->
+<!-- Script para inicializar a máscara de CPF -->
+<script>
+    // Cria uma máscara de CPF para o campo de entrada
+    var mascaraCPF = IMask(document.getElementById('idUsuario'), {
+        mask: '000.000.000-00'
+    });
+</script>
+
+</html>

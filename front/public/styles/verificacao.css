@@ -240,9 +240,7 @@
     margin-right: 95px;
     margin-top: 80px;
     border-radius: 3px;
-
     background: #D9D9D9;
-
 }
 
 .cont_container3 {
@@ -393,6 +391,9 @@ p {
     .retornar {
         width: 30px;
         height: 30px;
+        border: none;
+        border-radius: 0px;
+        border-bottom: 3px solid #ffff;
     }
 
     .espera {
@@ -484,11 +485,11 @@ p {
         justify-content: center;
         align-items: center;
         flex-direction: column;
-        margin-top: 88px;
-        /* background-color: blueviolet; */
+        margin-bottom: 30px;
+        background-color: blueviolet;
     
         width: 100%;
-        height: 159px;
+        height: auto;
     }
 
     .container2 {
