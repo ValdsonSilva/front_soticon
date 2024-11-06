@@ -21,6 +21,21 @@
     text-decoration: none;
     color: #fff;
 }
+
+.fotocaixa {
+    height: 159px;
+    width: 120px;
+    background-color: #FFFFFF;
+    border-radius: 12px;
+}
+
+.fotoAluno{
+    height: 159px;
+    width: 120px;
+    border-radius: 12px;
+    box-shadow: 2px 1px 0px 1px #000;
+    box-sizing: border-box;
+}
  
 .container_links {
     /* background-color: blue; */

@@ -517,27 +517,67 @@ document.getElementById("formulario").addEventListener("submit", function(event)
 })
 
 var botao_finalizar_rota = document.querySelector(".finalizar")
+let alunosSemTicket = null;
 
-botao_finalizar_rota.addEventListener("click", async function() {
-    const url = url_base + `cortex/api/soticon/v1/finalizar_rota/${id_rota_path}`
+function criarModal() {
+    const modal = document.createElement('div');
+    modal.classList.add('modal-overlay');
+
+    const modalContent = document.createElement('div');
+    modalContent.classList.add('modal-content');
+
+    const label = document.createElement('label');
+    label.innerText = "Quantos alunos embarcaram sem marcar ticket?";
     
+    const input = document.createElement('input');
+    input.type = 'number';
+    input.min = 0;
+    input.classList.add('modal-input');
+    
+    const confirmar = document.createElement('button');
+    confirmar.innerText = "Confirmar";
+    confirmar.classList.add('modal-confirm-button');
+    
+    confirmar.addEventListener('click', () => {
+        alunosSemTicket = parseInt(input.value) || 0;
+        document.body.removeChild(modal);
+        executarFinalizarRota(); 
+    });
+
+    modalContent.appendChild(label);
+    modalContent.appendChild(input);
+    modalContent.appendChild(confirmar);
+    modal.appendChild(modalContent);
+
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            document.body.removeChild(modal);
+        }
+    });
+
+    document.body.appendChild(modal);
+}
+
+async function executarFinalizarRota() {
+    const url = url_base + `cortex/api/soticon/v1/finalizar_rota/${id_rota_path}`;
+
     const data = {
-        status : "executada",
-        obs: "Rota finalizada"
-    }
+        status: "executada",
+        obs: "Rota finalizada",
+        embarques_sem_tickets: alunosSemTicket
+    };
 
     const options = {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization' : `Bearer ${localStorage.getItem('token')}`
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
         },
         body: JSON.stringify(data)
     };
 
-    
     if (!botao_finalizar_rota.hasAttribute('data-original-content')) {
-            botao_finalizar_rota.setAttribute('data-original-content', botao_finalizar_rota.innerHTML);
+        botao_finalizar_rota.setAttribute('data-original-content', botao_finalizar_rota.innerHTML);
     }
 
     botao_finalizar_rota.innerHTML = "";
@@ -546,26 +586,32 @@ botao_finalizar_rota.addEventListener("click", async function() {
     loadingIcon.classList.add('fas', 'fa-spinner', 'fa-spin', 'loading-icon');
     loadingIcon.style.fontSize = "2em";
     loadingIcon.style.color = 'black';
-    botao_finalizar_rota.appendChild(loadingIcon)
+    botao_finalizar_rota.appendChild(loadingIcon);
 
     try {
-        const response = await fetch(url, options)
+        const response = await fetch(url, options);
         if (!response.ok) {
             throw new Error(`Erro ao finalizar rota: ${response.status}`);
         }
-        const data = await response.json()
+        const data = await response.json();
         window.alert("Rota finalizada!");
         avancarTela(id_rota_path);
-        return data
+        return data;
     } catch (error) {
-
-        window.alert("Erro ao finalizar rota!")
+        window.alert("Erro ao finalizar rota!");
     } finally {
-
         const originalContent = botao_finalizar_rota.getAttribute('data-original-content');
         botao_finalizar_rota.innerHTML = originalContent;
     }
-})
+}
+
+botao_finalizar_rota.addEventListener("click", () => {
+    if (alunosSemTicket === null) {
+        criarModal();
+    } else {
+        executarFinalizarRota();
+    }
+});
 
 function avancarTela(id) {
     const url = `../pages/relatorio_final.html?id=${id}`
