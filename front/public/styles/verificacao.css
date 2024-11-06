@@ -264,10 +264,18 @@
 }
 
 .fotocaixa {
-    height: 159px;
-    width: 120px;
+    height: 200px;
+    width: 150px;
     background-color: #FFFFFF;
     border-radius: 12px;
+}
+
+.fotoAluno{
+    height: 200px;
+    width: 150px;
+    border-radius: 12px;
+    box-shadow: 2px 1px 0px 1px #000;
+    box-sizing: border-box;
 }
 
 .icone-acessibilidade {
