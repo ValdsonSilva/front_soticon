@@ -9,8 +9,8 @@
     <link rel="icon" href="../images/logoOnibus.png" type="image/x-icon">
     <link rel="stylesheet" href="../styles/relatorio.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/imask/6.0.7/imask.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 
 <body background="../images/backgroundCortex.jpg">
@@ -20,43 +20,33 @@
     </figure>
 
     <div class="container_links">
-        <a class="retornar" href="./conferente.html">
+        <a class="retornar" href="./tecAdm_areaLogada.html">
             <i class="fas fa-arrow-left"></i>
         </a>
     </div>
 
     <div class="caixaUm">
         <!-- <h1>Detalhar rotas</h1> -->
-        <form class="filter_form">
+        <form class="filter_form" id="filter_form">
             <div class="periodo">
                 <div>
                     <span>Início</span><br>
-                    <input type="date">
+                    <input type="date" id="data_ini" required>
                 </div>
                 <span>Até</span>
                 <div>
                     <span>Fim</span><br>
-                    <input type="date">
+                    <input type="date" id="data_fim" required>
                 </div>
             </div>
 
             <div class="container_submit">
-                <div>
-                    <span>Rota</span><br>
-                    <select name="" id="">
-                        <option value="#" selected>escolha a rota</option>
-                        <option value="">1</option>
-                        <option value="">2</option>
-                        <option value="">3</option>
-                        <option value="">4</option>
-                    </select>
-                </div>
 
-                <button type="submit">
+                <button type="submit" id="buscar_dados">
                     <i class="fas fa-search"></i>
                     Buscar
                 </button>
-                <button type="button">
+                <button type="button" id="pdf">
                     <i class="fas fa-file-pdf"></i>
                     Gerar PDF
                 </button>
@@ -83,39 +73,15 @@
                     <th>Detalhes</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="tabela-body">
                 <tr>
-                    <!-- Essa função deve receber o id da rota -->
-                    <td><a href="../pages/relatorio_list_tickets.html" onclick="listarRota('23/10 (qua)')">23/10 (qua)</a></td>
-                    <td>54</td>
-                    <td>42</td>
-                    <td>12</td>
-                    <td>10</td>
-                    <td>52</td>
-                    <td>Ver mais</td>
-                </tr>
-                <tr>
-                    <td><a href="../pages/relatorio_list_tickets.html" onclick="listarRota('24/10 (qui)')">24/10 (qui)</a></td>
-                    <td>38</td>
-                    <td>16</td>
-                    <td>22</td>
-                    <td>26</td>
-                    <td>42</td>
-                    <td>Ver mais</td>
-                </tr>
-                <tr>
-                    <td>25/10 (sex)</td>
-                    <td>53</td>
-                    <td>45</td>
-                    <td>8</td>
-                    <td>4</td>
-                    <td>49</td>
-                    <td><a href="../pages/relatorio_list_tickets.html" onclick="listarRota('25/10 (sex)')">Ver mais</a></td>
+                    <td colspan="7" style="text-align: center;">...</td>
                 </tr>
             </tbody>
         </table>
     </div>
-    <!-- 
+
+    <!-- <a href="../pages/relatorio_list_tickets.html" onclick="listarRota('23/10 (qua)')">
         CRIAR PDF'S
         Usando jsPDF
         jsPDF é uma biblioteca de código aberto que permite a criação de PDFs no lado do cliente 
@@ -124,13 +90,5 @@
 
 </body>
 <script src="../env.js"></script>
-<!-- <script src="../scripts/verificacao.js"></script> -->
-<!-- Script para inicializar a máscara de CPF -->
-<script>
-    // Cria uma máscara de CPF para o campo de entrada
-    var mascaraCPF = IMask(document.getElementById('idUsuario'), {
-        mask: '000.000.000-00'
-    });
-</script>
-
+<script src="../scripts/relatorio.js"></script>
 </html>

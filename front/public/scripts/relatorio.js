@@ -143,16 +143,11 @@ async function VerifyUserPermission(token_decodificado) {
         
         const resp = await verificarTipoUsuario(token_decodificado.user_id);
 
-
         if (resp.nome_tipo !== "admin" & resp.nome_setores[0] !== "Guarita") {
             window.location.href = "../index.html";
             
-        } else {
-
         }
     }
-
-
 }
 VerifyUserPermission(token_decodificado)
 
@@ -218,103 +213,182 @@ async function getTicketsRota(id_rota) {
 }
 
 
-async function listarTicketsNaPagina(id_rota) {
+async function criarTabelaRelatorio(dia) {
 
-    const containerPai = document.querySelector('.cont_container3');
-    containerPai.innerHTML = '';
+    // const rotas = {
+    //     "23/10 (qua)": {
+    //         emitidos: 54,
+    //         confirmados: 42,
+    //         faltantes: 12,
+    //         semTicket: 10,
+    //         totalEmbarque: 52
+    //     },
+    //     "24/10 (qui)": {
+    //         emitidos: 38,
+    //         confirmados: 16,
+    //         faltantes: 22,
+    //         semTicket: 26,
+    //         totalEmbarque: 42
+    //     },
+    //     "25/10 (sex)": {
+    //         emitidos: 53,
+    //         confirmados: 45,
+    //         faltantes: 8,
+    //         semTicket: 4,
+    //         totalEmbarque: 49
+    //     }
+    // };
 
-    
-    const loadingIcon = document.createElement('i');
-    loadingIcon.classList.add('fas', 'fa-spinner', 'fa-spin', 'loading-icon');
-    loadingIcon.style.fontSize = "6em";
-    loadingIcon.style.color = 'white';
-    containerPai.appendChild(loadingIcon);
 
-    try {
+    if (dia) {
+        console.log("data: ", dia)
 
-        const tickets = await getTicketsRota(id_rota);
+        var rotas = await listarRotas(dia)
 
-        await getContagem(id_rota);
-        
-        containerPai.innerHTML = '';
-
-        contagemTickets = document.getElementById('p-total-tickets');
-
-        contagemTickets.textContent = `Tickets passados: ${tickets_usados}/${tickets_totais}`;
-
-        tickets.forEach((ticket, index) => {
+        if (rotas) {
+            var rotas_pesquisadas = rotas.filter((rota) => rota.data === dia)
             
-            const container = document.createElement('div');
-            container.classList.add('container3');
-    
-            const fotoCaixa = document.createElement('figure');
-            fotoCaixa.classList.add('fotocaixa');
-    
-            const fotoAluno = document.createElement('img');
-            fotoAluno.src = '#' 
-            fotoAluno.alt = 'Foto do aluno';
-    
-            const cont1 = document.createElement('div');
-            cont1.classList.add('cont1');
-    
-            const nomeAluno = document.createElement('h3');
-            nomeAluno.textContent = ticket.nome;
-
-            const deficiencia = document.createElement('img');
-            if (ticket.deficiencia) {
-                deficiencia.src = "../images/acessibilidade.png";
-                deficiencia.alt = "Acessibilidade";
-                deficiencia.width = 50;
-                deficiencia.height = 50;
-            }
-    
-            const posicao = document.createElement('p');
-            posicao.textContent = `Posição ${ticket.posicao_fila}`;
-    
-            const cont2 = document.createElement('div');
-            cont2.classList.add('cont2');
-    
-            const status = document.createElement('div');
-            status.classList.add('status');
-            status.textContent = ticket.usado & ticket.reservado ? "Usado" : "Pendente"; 
-            status.style.backgroundColor = ticket.usado & ticket.reservado ? "green" : "#394538";
-            
-            fotoCaixa.appendChild(fotoAluno);
-            cont1.appendChild(nomeAluno);
-            if (ticket.deficiencia) {
-                cont1.appendChild(deficiencia);
-                cont1.style.gap = "15px";
-            }
-            cont1.appendChild(posicao);
-            cont2.appendChild(status);
-            
-            container.appendChild(fotoCaixa);
-            container.appendChild(cont1);
-            container.appendChild(cont2);
-            containerPai.appendChild(container);
-        });
-
-        if (tickets.length === 0) {
-            const frase = document.createElement("h1")
-            frase.textContent = "Não há tickets no momento!"
-            frase.style.color = "#fff"
-            frase.style.marginTop = "20px"
-            containerPai.appendChild(frase)
+        } else {
+            alert("Não há rotas armazenadas com essa data " + `"${dia}"`)
         }
+    }
 
-    } catch(error) {
-        console.log(`Erro: ${error}`)
-        window.alert("Erro ao carregar tickets da rota")
-        const frase = document.createElement("h1")
-        frase.textContent = "Não há tickets no momento!"
-        frase.style.color = "#fff"
-        frase.style.marginTop = "20px"
-        containerPai.appendChild(frase)
-        
-        
+    const tabelaBody = document.getElementById("tabela-body")
+    tabelaBody.innerHTML = "";
+
+    let row = document.createElement('tr')
+    row.innerHTML = "Carregando dados..."
+    console.log(rotas_pesquisadas)
+
+    if (rotas_pesquisadas[dia]) {
+        const rota = rotas_pesquisadas[dia]
+        row.innerHTML = `
+            <td>${dia}</td>
+            <td>${rota.emitidos}</td>
+            <td>${rota.confirmados}</td>
+            <td>${rota.faltantes}</td>
+            <td>${rota.semTicket}</td>
+            <td>${rota.totalEmbarque}</td>
+            <td>
+                <a href="../pages/relatorio_final.html?id=${rota.id}">
+                    Ver mais
+                </a>
+            </td>
+        `;
+        tabelaBody.appendChild(row)
+    } else {
+        row.innerHTML = `
+            <td colspan="7" style="text-align:center";>Nenhuma rota encontrada para o dia ${dia}</td>
+        `
+        tabelaBody.appendChild(row);
     }
 }
-listarTicketsNaPagina(id_rota_path)
+
+
+const filter_form = document.querySelector("#filter_form")
+filter_form.addEventListener("submit", function(event) {
+    event.preventDefault()
+    // criarTabelaRelatorio("24/10 (qui)")
+    const data_inicial = document.getElementById("data_ini").value;
+    const data_final = document.getElementById("data_fim").value;
+    console.log({data_inicial, data_final})
+
+    if (data_final === data_inicial) {
+        criarTabelaRelatorio(data_inicial)
+        
+    } else {
+        criarTabelaRelatorio(data_inicial, data_final)
+    }
+
+    document.getElementById("data_ini").value = "";
+    document.getElementById("data_fim").value = "";
+})
+
+const gerarPDF = document.querySelector("#pdf")
+gerarPDF.addEventListener("click", function() {
+    const { jsPDF } = window.jspdf;
+    const tabela = document.querySelector('.listagem'); // Seleciona o elemento da tabela que deseja capturar
+
+    html2canvas(tabela,{ scale: 2 }).then(canvas => {
+        const imgData = canvas.toDataURL('image/png'); // Converte a tabela para imagem
+        const pdf = new jsPDF("p", "mm", "a4");
+
+        pdf.text("Tabela de Resumo de Embarques", 10, 20)
+
+        const imgWidth = 190;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width; // Mantém a proporção da imagem
+
+        pdf.addImage(imgData, 'PNG', 10, 30, imgWidth, imgHeight); // Ajusta a imagem centralizada
+        pdf.save("Tabela_Resumo_Embarques.pdf"); // Salva o PDF com o nome especificado
+    });
+})
+
+function relatorio_rotas(id) {
+    const url = url_base + `cortex/api/soticon/v1/rotas/relatorio_rotas/${id}`;
+
+
+    const loader = document.getElementById('loader');
+    loader.style.display = 'block'; 
+
+    const options = {
+        method: "GET",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization' : `Bearer ${localStorage.getItem('token')}`
+        }
+    }
+
+    fetch(url, options)
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error("Erro ao carregar rotas do dia: " + response.status);
+            }
+            return response.json()
+        })
+        .then((data) => {
+            
+            return data.results
+
+        })
+        .catch ((error) => {
+
+        })
+        .finally(() => {
+            loader.style.display = "none"
+        })
+}
+
+async function listarRotas(dia) {
+    const url = url_base + `cortex/api/soticon/v1/rotas/?data=${formatDate(dia)}&status=executada`;
+
+
+    // const loader = document.getElementById('loader');
+    // loader.style.display = 'block'; 
+
+    const options = {
+        method: "GET",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization' : `Bearer ${localStorage.getItem('token')}`
+        }
+    }
+
+    fetch(url, options)
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error("Erro ao carregar rotas do dia: " + response.status);
+            }
+            return response.json()
+        })
+        .then((data) => {
+
+            console.log(data)
+            return data.results
+        })
+        .catch ((error) => {
+            console.log(error)
+        })
+}
 
 
 async function verificarTipoUsuario(id) {
@@ -361,13 +435,12 @@ function redirecionarSeNecessario() {
         }
     }
 }
-
 redirecionarSeNecessario();
 
-const logout_elemenst = document.querySelector(".retornar")
-logout_elemenst.addEventListener("click", function() {
-    localStorage.removeItem('token')
-    localStorage.removeItem('refreshToken')
-    localStorage.removeItem('botao_disable_state')
-    window.location.href = "../index.html"
-})
+function formatDate(dateString) {
+    const parts = dateString.split('-');
+    const year = parts[0];
+    const month = parts[1];
+    const day = parts[2];
+    return `${day}-${month}-${year}`;
+}

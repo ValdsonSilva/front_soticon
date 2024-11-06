@@ -43,16 +43,11 @@ function VerificarToken(token, refresh) {
             if (!response.ok) {
                 throw new Error("Erro ao verificar o token: " + response.status);
             }
-            
 
         })
         .catch(error => {
-            
 
-            
-            
             if (error.message.includes('401')) {
-                
                 ConsumirRefreshToken(refresh);
             }
             
@@ -62,7 +57,6 @@ function VerificarToken(token, refresh) {
 VerificarToken(token, refresh)
 
 const token_decodificado = decodeToken(token)
-
 
 
 let novoTokenDeAcesso;
@@ -143,16 +137,10 @@ async function VerifyUserPermission(token_decodificado) {
         
         const resp = await verificarTipoUsuario(token_decodificado.user_id);
 
-
         if (resp.nome_tipo !== "admin" & resp.nome_setores[0] !== "Guarita") {
             window.location.href = "../index.html";
-            
-        } else {
-
         }
     }
-
-
 }
 VerifyUserPermission(token_decodificado)
 

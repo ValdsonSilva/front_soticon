@@ -264,6 +264,7 @@ function listarRotasDoDia() {
             loader.style.display = "none"
         })
 }
+listarRotasDoDia();
 
 
 async function exibirRotas(rotas) {
@@ -332,7 +333,6 @@ async function exibirRotas(rotas) {
         container.appendChild(mensagem)
     }
 }
-listarRotasDoDia();
 
 
 function formatDate(dateString) {
