@@ -251,7 +251,12 @@ async function listarTicketsNaPagina(id_rota) {
             fotoCaixa.classList.add('fotocaixa');
     
             const fotoAluno = document.createElement('img');
-            fotoAluno.src = '#' 
+            if (ticket.foto){
+                fotoAluno.src = ticket.foto
+            } else{
+                fotoAluno.src = '../images/iconuser.png'
+            }
+            fotoAluno.classList.add('fotoAluno')             
             fotoAluno.alt = 'Foto do aluno';
     
             const cont1 = document.createElement('div');
