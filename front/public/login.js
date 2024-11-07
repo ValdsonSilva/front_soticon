@@ -138,7 +138,7 @@ const tipo_users = [
     },
     {
         user : "tec.administrativo",
-        url : "./index.html",
+        url : "./pages/tecAdm_areaLogada.html",
     },
 ]
 
@@ -164,8 +164,8 @@ async function redirecionarParaProximaTela(accessToken) {
         
         } else {
             setores.forEach((setor) => {
-                if (setor === "guarita") {
-                    window.location.href = tipo_users[4].url
+                if (setor === "tec.administrativo") {
+                    window.location.href = tipo_users[6].url
                 }
             })
 
@@ -180,9 +180,6 @@ async function redirecionarParaProximaTela(accessToken) {
             }
         }
     } catch (error) {
-
-        
-        
     }
 }
 

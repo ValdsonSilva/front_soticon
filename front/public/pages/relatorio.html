@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatórios-administrativo</title>
+    <link rel="icon" href="../images/logoOnibus.png" type="image/x-icon">
+    <link rel="stylesheet" href="../styles/relatorio.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+
+<body background="../images/backgroundCortex.jpg">
+
+    <figure class="logo">
+        <img src="../images/logoOnibus.png" alt="imagem do ônibus" width="200px" height="200px">
+    </figure>
+
+    <div class="container_links">
+        <a class="retornar" href="./tecAdm_areaLogada.html">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+    </div>
+
+    <div class="caixaUm">
+        <!-- <h1>Detalhar rotas</h1> -->
+        <form class="filter_form" id="filter_form">
+            <div class="periodo">
+                <div>
+                    <span>Início</span><br>
+                    <input type="date" id="data_ini" required>
+                </div>
+                <span>Até</span>
+                <div>
+                    <span>Fim</span><br>
+                    <input type="date" id="data_fim" required>
+                </div>
+            </div>
+
+            <div class="container_submit">
+
+                <button type="submit" id="buscar_dados">
+                    <i class="fas fa-search"></i>
+                    Buscar
+                </button>
+                <button type="button" id="pdf">
+                    <i class="fas fa-file-pdf"></i>
+                    Gerar PDF
+                </button>
+            </div>
+           
+        </form>
+    </div>
+
+    <div class="container2">
+        <div class="linha"></div>
+    </div>
+
+    <div class="listagem">
+        <div id="loading-spinner" style="display: none; text-align: center; margin: 20px;">
+            <i class="fas fa-spinner fa-spin" style="font-size: 40px; color: #fff"></i>
+        </div>
+        <h2>Tabela de Resumo de Embarques</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Dia/hora</th>
+                    <th>Emitidos</th>
+                    <th>Confirmados</th>
+                    <th>Faltantes</th>
+                    <th>Sem ticket</th>
+                    <th>Total Embarque</th>
+                    <th>Detalhes</th>
+                </tr>
+            </thead>
+            <tbody id="tabela-body">
+                <tr>
+                    <td colspan="7" style="text-align: center;">...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+<script src="../env.js"></script>
+<script src="../scripts/relatorio.js"></script>
+</html>

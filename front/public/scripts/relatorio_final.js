@@ -368,3 +368,11 @@ function redirecionarSeNecessario() {
 }
 
 redirecionarSeNecessario();
+
+// const logout_elemenst = document.querySelector(".retornar")
+// logout_elemenst.addEventListener("click", function() {
+//     localStorage.removeItem('token')
+//     localStorage.removeItem('refreshToken')
+//     localStorage.removeItem('botao_disable_state')
+//     window.location.href = "../index.html"
+// })
