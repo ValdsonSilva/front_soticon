@@ -43,6 +43,18 @@
     </div>
 
 </body>
+<script>
+    const logout_elemenst = document.querySelectorAll(".retornar")
+    logout_elemenst.forEach(function(element) {
+    element.addEventListener("click", function(){
+        for (var i = 0; i < logout_elemenst.length; i++){
+            localStorage.removeItem('token')
+            localStorage.removeItem('refreshToken')
+            window.location.href = "../index.html"
+        }   
+    })
+})
+</script>
 <script src="../env.js"></script>
 <script src="../scripts/relatorio.js"></script>
 </html>

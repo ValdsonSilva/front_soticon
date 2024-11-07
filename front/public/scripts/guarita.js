@@ -152,20 +152,6 @@ function ConsumirRefreshToken(refresh) {
         })
 }
 
-
-const logout_elemenst = document.querySelectorAll(".retornar")
-logout_elemenst.forEach(function(element) {
-    element.addEventListener("click", function(){
-        for (var i = 0; i < logout_elemenst.length; i++){
-            localStorage.removeItem('token')
-            localStorage.removeItem('refreshToken')
-            localStorage.removeItem("id_rota")
-            window.location.href = "../index.html"
-        }   
-    })
-})
-
-
 async function verificarTipoUsuario(id) {
     const url = url_base + `cortex/api/gerusuarios/v1/users/${id}`;
 

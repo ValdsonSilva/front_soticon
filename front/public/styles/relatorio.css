@@ -231,4 +231,9 @@ th {
     background: #394538;
     border: 3px solid #FFFFFF;
     border-radius: 10px;
-}   
+} 
+
+.hide-last-column td:last-child,
+.hide-last-column th:last-child {
+    display: none;
+}

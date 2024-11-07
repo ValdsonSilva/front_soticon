@@ -252,7 +252,7 @@ async function criarTabelaRelatorio(data_inicial, data_final) {
             if (detalhesRota && detalhesRota.emitidos !== undefined) {
                 let row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${formatDate(detalhesRota.data) + "/" + detalhesRota.horario}</td>
+                    <td>${formatDate(detalhesRota.data) + "-" + detalhesRota.horario}</td>
                     <td>${detalhesRota.emitidos}</td>
                     <td>${detalhesRota.confirmados}</td>
                     <td>${detalhesRota.faltantes}</td>
@@ -270,7 +270,7 @@ async function criarTabelaRelatorio(data_inicial, data_final) {
                 // Exibe uma linha alternativa se detalhes da rota estiverem ausentes
                 let row = document.createElement('tr');
                 row.innerHTML = `
-                    <td colspan="7" style="text-align:center;">Dados da rota do periodo de ${data_inicial} a ${data_final} não disponíveis</td>
+                    <td colspan="7" style="text-align:center;">Dados da rota do periodo de ${formatDate(data_inicial)} a ${formatDate(data_final)} não disponíveis</td>
                 `;
                 tabelaBody.appendChild(row);
             }
@@ -279,7 +279,7 @@ async function criarTabelaRelatorio(data_inicial, data_final) {
             console.error("Erro ao obter detalhes da rota:", error);
             let row = document.createElement('tr');
             row.innerHTML = `
-                <td colspan="7" style="text-align:center;">Erro ao carregar detalhes para a rota de periodo de ${data_inicial} a ${data_final}!</td>
+                <td colspan="7" style="text-align:center;">Erro ao carregar detalhes para a rota de periodo de ${formatDate(data_inicial)} a ${formatDate(data_final)}</td>
             `;
             tabelaBody.appendChild(row);
         }
@@ -289,7 +289,7 @@ async function criarTabelaRelatorio(data_inicial, data_final) {
         // Se nenhuma rota for encontrada, exibe uma mensagem informativa
         let row = document.createElement('tr');
         row.innerHTML = `
-            <td colspan="7" style="text-align:center;">Nenhuma rota encontrada para o periodo ${data_inicial} a ${data_final}!</td>
+            <td colspan="7" style="text-align:center;">Nenhuma rota encontrada para o periodo ${formatDate(data_inicial)} a ${formatDate(data_final)}</td>
         `;
         tabelaBody.appendChild(row);
     }
@@ -317,7 +317,13 @@ gerarPDF.addEventListener("click", function() {
     const { jsPDF } = window.jspdf;
     const tabela = document.querySelector('.listagem'); // Seleciona o elemento da tabela que deseja capturar
 
+    // Adiciona a classe para ocultar a última coluna
+    tabela.classList.add("hide-last-column");
+
     html2canvas(tabela,{ scale: 2 }).then(canvas => {
+
+        tabela.classList.remove('hide-last-column')
+
         const imgData = canvas.toDataURL('image/png'); // Converte a tabela para imagem
         const pdf = new jsPDF("p", "mm", "a4");
 
@@ -433,5 +439,5 @@ function formatDate(dateString) {
     const year = parts[0];
     const month = parts[1];
     const day = parts[2];
-    return `${day}-${month}-${year}`;
+    return `${day}/${month}/${year}`;
 }
