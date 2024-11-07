@@ -219,6 +219,9 @@ async function criarTabelaRelatorio(data_inicial, data_final) {
         return;
     }
 
+    // Exibe o ícone de carregamento
+    document.getElementById('loading-spinner').style.display = 'block';
+
     let rotas_pesquisadas = [];
     try {
 
@@ -290,6 +293,9 @@ async function criarTabelaRelatorio(data_inicial, data_final) {
         `;
         tabelaBody.appendChild(row);
     }
+
+    // Oculta o ícone de carregamento após os dados serem carregados
+    document.getElementById('loading-spinner').style.display = 'none';
 }
 
 
