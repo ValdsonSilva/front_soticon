@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Técnico de TI</title>
+    <title>Diretoria de Ensino</title>
     <link rel="stylesheet" href="../styles/rotas.css">
     <link rel="icon" href="../images/logoOnibus.png">
     <!-- Adicione esta linha na sua página HTML para incluir o ícone de carregamento -->
@@ -34,6 +34,17 @@
     </div>
 </body>
 <script src="../env.js"></script>
+<script>
+    localStorage.setItem("diretor_ensino",true)
+
+    const url_atual = window.location.href
+
+    const link_bottom = document.getElementById("bo-retornar")
+
+    link_bottom.addEventListener("click", function() {
+        localStorage.removeItem("diretor_ensino")
+    })
+</script>
 <script src="../scripts/listar_rotas.js"></script>
 
 </html>
