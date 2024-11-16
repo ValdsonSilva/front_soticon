@@ -380,6 +380,7 @@ async function listarTicketsNaPagina(id_rota) {
             const frase = document.createElement("h1")
             frase.textContent = "Não há tickets no momento!"
             frase.style.color = "#fff"
+            frase.style.textAlign = "center"
             frase.style.marginTop = "20px"
             containerPai.appendChild(frase)
         }
@@ -594,10 +595,12 @@ async function executarFinalizarRota() {
 }
 
 botao_finalizar_rota.addEventListener("click", () => {
-    if (alunosSemTicket === null) {
-        criarModal();
-    } else {
-        executarFinalizarRota();
+    if (confirm("Tem certeza?")) {
+        if (alunosSemTicket === null) {
+            criarModal();
+        } else {
+            executarFinalizarRota()
+        }
     }
 });
 
