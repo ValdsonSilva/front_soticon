@@ -17,7 +17,7 @@
         <img src="../images/logoOnibus.png" alt="imagem do ônibus" width="200px" height="200px">
     </figure>
 
-    <a class="retornar" id="bo-retornar" href="./listar_rotas.html"
+    <a class="retornar" id="bo-retornar" href="./diretorEnsino_areaLogada.html"
         style="display: flex; justify-content:center; align-items:center; width:80px;height: 50px; font-size: 15px; margin-left: 10px; margin-bottom: 8px;">
         <!-- <i class="fas fa-sign-out-alt fa-lg"></i> -->
          <i class="fas fa-arrow-left fa-lg"></i>
@@ -29,23 +29,17 @@
     <div class="container">
         <h1 id="text-criar-rota">Criar uma nova Rota</h1>
         <form class="formulario" id="formulario" method="POST">
-            <div>
-                <label for="obs">detalhes:</label><br>
-                <textarea id="obs" name="obs" placeholder="Informe os detalhes" required></textarea>
-            </div>
-<!-- 
-            <div>
-                <label for="data">data:</label><br>
-                <input type="date" id="data" name="data" placeholder="Informe a data" required>
-            </div> -->
 
             <div>
-                <label for="status">status:</label><br>
+                <label for="status">dia:</label><br>
                 <select id="status" name="status" required>
-                    <option value="" selected disabled>Informe o status</option>
-                    <option value="espera">espera</option>
-                    <option value="cancelada">cancelada</option>
-                    <option value="executada">executada</option>
+                    <option value="" selected disabled>Informe o dia</option>
+                    <option value="segunda">Segunda</option>
+                    <option value="terca">Terça</option>
+                    <option value="quarta">Quarta</option>
+                    <option value="quinta">Quinta</option>
+                    <option value="sexta">Sexta</option>
+                    <option value="sabado">Sábado</option>
                 </select>
             </div>
 

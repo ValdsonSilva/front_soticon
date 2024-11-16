@@ -263,13 +263,38 @@ async function montarElementosDaTela() {
             var botao = document.createElement('button');
             botao.setAttribute('type', 'submit');
             botao.setAttribute('id', 'bo' + item.id); // Adicionando um ID único para cada botão
+            botao.style.marginBottom = "8px"
             botao.textContent = "Editar";
             botao.classList.add('botao');
-    
             // adicionando ouvinte do evento de clique no botão
             botao.addEventListener("click", function() {
                 window.location.href = `direcaoEnsino_cadastrarRotas.html?rota=${item.id}`;
             })
+
+            var botao_delete = document.createElement('button');
+            botao_delete.setAttribute('type', 'button');
+            botao_delete.setAttribute('id', 'bo' + item.id); // Define o id
+            botao_delete.classList.add('botao-sem-hover');
+            
+            // Adiciona o ícone de lixeira e o texto lado a lado
+            botao_delete.innerHTML = `
+                <span>Deletar</span>
+                <i class="fas fa-trash"></i>
+            `;
+            
+            // Estilo inline (opcional, para ajuste fino)
+            botao_delete.style.backgroundColor = "red";
+            botao_delete.style.display = "flex";
+            botao_delete.style.alignItems = "center";
+            botao_delete.style.justifyContent = "center";
+            botao_delete.style.gap = "10px"; // Espaço entre texto e ícone
+            botao_delete.style.padding = "10px";
+            
+            // Adiciona evento de clique
+            botao_delete.addEventListener('click', async function () {
+                await deletar_rota(item.id);
+            });
+            
     
             
             // Adicionando elementos filhos à div .caixa
@@ -278,6 +303,7 @@ async function montarElementosDaTela() {
             caixa.appendChild(paragrafoHora);
             caixa.appendChild(divBotaoContainer);
             divBotaoContainer.appendChild(botao);
+            divBotaoContainer.appendChild(botao_delete)
             
             // Adicionando a div .caixa ao container principal
             container.appendChild(caixa);
@@ -301,7 +327,7 @@ async function montarElementosDaTela() {
     botao.classList.add('botao', 'botao_criar_rota');
 
     var linkCriarRota = document.createElement('a');
-    linkCriarRota.href = "../pages/cadastrarRotas.html";
+    linkCriarRota.href = "../pages/direcaoEnsino_cadastrarRotas.html";
     linkCriarRota.appendChild(botao);
 
     iconContainer.appendChild(mensagem)
@@ -312,6 +338,38 @@ async function montarElementosDaTela() {
 montarElementosDaTela().catch(error => {
     //console.error("Erro ao carregar os elementos da tela: ", error)
 })
+
+
+async function deletar_rota(id) {
+    const url = url_base + `cortex/api/soticon/v1/rotas_automaticas/${id}/`;
+
+    const options = {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization' : `Bearer ${localStorage.getItem('token')}`
+        }
+    };
+
+    if (confirm('Tem certeza que quer deletar a rota?')) {
+        try {
+            const response = await fetch(url, options);
+            // deu erro na busca das rotas do dia
+            if (!response.ok) {
+                throw new Error("Erro ao apagar a rota");
+            }
+            const data = await response.json();
+    
+            return data.results;
+    
+        } catch (erro) {
+            //console.error("Erro durante a requisição das rotas do dia: ", erro.message);
+            // alert("Erro ao apagar a rota")
+        } finally {
+            window.location.reload()
+        }
+    }
+}
 
 
 // função para pegar a data do dia no formato 'yyyy-mm-dd'

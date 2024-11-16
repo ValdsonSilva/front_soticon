@@ -235,11 +235,9 @@ async function editVerify() {
             try{
                 const rota = await GetRota();
 
-                if (rota) {
-                    document.getElementById('obs').value = rota.obs || '';                   
-                    document.getElementById('status').value = rota.status || '';      
+                if (rota) {                
+                    document.getElementById('status').value = rota.dia_da_semana || '';      
                     document.getElementById('horario').value = rota.horario || '';
-                    
                 }
 
                 iconContainer.removeChild(loadingIcon);
@@ -275,14 +273,14 @@ const form = document.getElementById("formulario")
 cadastrarButton.addEventListener("click", function(e) {
     e.preventDefault()
 
-    const detalhes_rota = document.getElementById("obs").value;
-    const status = document.getElementById("status").value;
+    // const detalhes_rota = document.getElementById("obs").value;
+    const data = document.getElementById("status").value;
     const horario = formatarHorario(document.getElementById("horario").value);
 
 
 //      console.log("Dados do form: ", {detalhes_rota, dataFormatada, status, horario})
 
-    if (detalhes_rota !== "" && status !== "" && horario !== "") {
+    if (data !== "" && horario !== "") {
         // Crie o ícone de carregamento linear
         const loadingIcon = document.createElement('i');
         loadingIcon.classList.add('fas', 'fa-sync-alt', 'fa-spin', 'loading-icon');
@@ -292,20 +290,19 @@ cadastrarButton.addEventListener("click", function(e) {
         cadastrarButton.innerHTML = '';
         cadastrarButton.appendChild(loadingIcon);
         
-        cadastrarRotas(detalhes_rota, status, horario)
+        cadastrarRotas(data, horario)
             .then(() => {
                 // Limpar os campos do formulário
-                document.getElementById("obs").value = "";
                 document.getElementById("status").value = "";
                 document.getElementById("horario").value = "";
 
                 cadastrarButton.classList.add("success-animation");
                 if (editando) {
                     window.alert("Rota atualizada com sucesso!")
-                    window.location.href = "listar_rotas.html";
+                    window.location.href = "diretorEnsino_areaLogada.html";
                 } else {
                     window.alert("Rota cadastrada com sucesso!")
-                    window.location.href = "cadastrarRotas.html";
+                    window.location.href = "direcaoEnsino_cadastrarRotas.html";
                 }
                 
             })
@@ -330,14 +327,14 @@ cadastrarButton.addEventListener("click", function(e) {
 
 
 // cadastra as novas rotas
-async function cadastrarRotas(detalhes_rota, status, horario) {
-    let url = url_base + "cortex/api/soticon/v1/criar_rotas_automaticas/";
+async function cadastrarRotas(dia, horario) {
+    let url = url_base + "cortex/api/soticon/v1/rotas_automaticas/";
 
     // Obtém os dados do formulário
     const formData = {
-        is_ativo : true,
-        obs: detalhes_rota,
-        status: status,
+        // is_ativo : true,
+        // obs: detalhes_rota,
+        dia_da_semana: dia,
         horario: horario
     };
     
@@ -370,14 +367,19 @@ async function cadastrarRotas(detalhes_rota, status, horario) {
     try {
         const response = await fetch(url, options);
         if (!response.ok) {
-            throw new Error("Erro ao enviar dados do formulário");
+            throw new Error(response.status);
         }
         const data = await response.json();
         console.log("Resposta do servidor:", data);
         // Processa a resposta do servidor, se necessário
     } catch (error) {
-        console.error("Erro durante a requisição:", error);
-        throw error; // Propagar o erro para o chamador, se necessário
+        console.log("Erro durante a requisição:", {
+            message: error.message,
+            name: error.name,
+            stack: error.stack, // Pega o stack trace (útil para debug)
+            url,
+            options,
+        });
     }
 };
 
