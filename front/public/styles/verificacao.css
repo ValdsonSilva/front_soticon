@@ -544,7 +544,7 @@ p {
         align-items: center;
         flex-direction: column;
         margin-bottom: 30px;
-        background-color: blueviolet;
+        /* background-color: blueviolet; */
     
         width: 100%;
         height: auto;

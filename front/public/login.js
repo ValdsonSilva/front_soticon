@@ -114,7 +114,7 @@ function getToken(cpf, password) {
 const tipo_users = [
     {
         user : "admin",
-        url : './pages/AdminOptions.html',
+        url : './pages/admin_areaLogada.html',
     },
     {
         user : "aluno",

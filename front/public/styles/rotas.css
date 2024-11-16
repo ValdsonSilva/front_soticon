@@ -91,7 +91,7 @@ a{
 }
 
 
-.botao{
+.botao, .botao-sem-hover, .botao_criar_rota {
     height: 68px;
     width: 420px;
     border: 3px solid #ffff;
@@ -100,7 +100,7 @@ a{
     cursor: pointer;
 
     font:400;
-    font-size: 30px;
+    font-size: 25px;
     color: #ffff;
     box-shadow: 0px 4px 4px 0px #00000040;
 
@@ -113,6 +113,12 @@ a{
     border: 5px solid #ffff;
     transition: font-size 0.3s ease-in-out;
 }
+
+.botao-sem-hover {
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
 
 .botao.disabled-temporary {
     opacity: 0.6; /* ou ajuste o estilo de acordo com o visual desejado */
@@ -210,7 +216,7 @@ a{
         font-size: 22px;
     }
 
-    .botao{
+    .botao, .botao-sem-hover{
         width: 200px;
         height: 50px;
         font-size: 30px;
