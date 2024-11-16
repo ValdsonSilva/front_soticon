@@ -91,7 +91,7 @@ a{
 }
 
 
-.botao, .botao-sem-hover {
+.botao, .botao-sem-hover, .botao_criar_rota {
     height: 68px;
     width: 420px;
     border: 3px solid #ffff;
@@ -116,6 +116,7 @@ a{
 
 .botao-sem-hover {
     cursor: pointer;
+    margin-bottom: 20px;
 }
 
 

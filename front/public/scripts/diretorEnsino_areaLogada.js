@@ -265,6 +265,7 @@ async function montarElementosDaTela() {
             botao.setAttribute('id', 'bo' + item.id); // Adicionando um ID único para cada botão
             botao.style.marginBottom = "8px"
             botao.textContent = "Editar";
+            botao.style.fontSize = "20px"
             botao.classList.add('botao');
             // adicionando ouvinte do evento de clique no botão
             botao.addEventListener("click", function() {
@@ -289,6 +290,7 @@ async function montarElementosDaTela() {
             botao_delete.style.justifyContent = "center";
             botao_delete.style.gap = "10px"; // Espaço entre texto e ícone
             botao_delete.style.padding = "10px";
+            botao_delete.style.fontSize = "20px"
             
             // Adiciona evento de clique
             botao_delete.addEventListener('click', async function () {
@@ -324,14 +326,28 @@ async function montarElementosDaTela() {
     var botao = document.createElement('button');
     botao.setAttribute('type', 'button');
     botao.textContent = "Criar Rota";
+    botao.style.fontSize = "20px"
     botao.classList.add('botao', 'botao_criar_rota');
 
     var linkCriarRota = document.createElement('a');
     linkCriarRota.href = "../pages/direcaoEnsino_cadastrarRotas.html";
     linkCriarRota.appendChild(botao);
 
+    // botao de rotas automáticas
+    var botao_ativar_rota = document.createElement('button');
+    botao_ativar_rota.setAttribute('type', 'button');
+    botao_ativar_rota.style.fontSize = "20px"
+    botao_ativar_rota.textContent = "Ativar rotas";
+    botao_ativar_rota.style.backgroundColor = "#3894ef"
+    botao_ativar_rota.classList.add('botao', 'botao-sem-hover');
+    botao_ativar_rota.addEventListener("click", async function() {
+        await ativar_rotas()
+    })
+
+
     iconContainer.appendChild(mensagem)
     iconContainer.appendChild(linkCriarRota)
+    iconContainer.appendChild(botao_ativar_rota)
 }
 
 // Chamando a função para montar os elementos da tela
@@ -368,6 +384,33 @@ async function deletar_rota(id) {
         } finally {
             window.location.reload()
         }
+    }
+}
+
+async function ativar_rotas() {
+    const url = url_base + "cortex/api/soticon/v1/criar_rotas_automaticas/";
+
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization' : `Bearer ${localStorage.getItem('token')}`
+        }
+    };
+
+    try {
+        const response = await fetch(url, options)
+
+        if (!response.ok) {
+            throw new Error(response.status)
+        }
+
+        const data = await response.json()
+        window.alert("Rotas ativadas com sucesso!")
+        return data.message
+        
+    } catch (error) {
+        window.alert("Erro ao ativar as rotas")
     }
 }
 

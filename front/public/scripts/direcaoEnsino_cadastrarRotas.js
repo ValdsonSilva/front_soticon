@@ -175,11 +175,10 @@ function ConsumirRefreshToken(refresh) {
         })
 }
 
-
 function getQueryParameter(param) {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get(param);
-  }
+}
   
 const id_rota = getQueryParameter('rota');
 
@@ -265,8 +264,6 @@ function formatarHorario(horario) {
     }
 }
 
-
-
 const cadastrarButton = document.getElementById("botao");
 const form = document.getElementById("formulario")
 
@@ -324,7 +321,6 @@ cadastrarButton.addEventListener("click", function(e) {
         window.alert("Obrigatório preencher todos os campos do formulário!");
     }
 })
-
 
 // cadastra as novas rotas
 async function cadastrarRotas(dia, horario) {
