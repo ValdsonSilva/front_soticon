@@ -237,3 +237,19 @@ th {
 .hide-last-column th:last-child {
     display: none;
 }
+
+@media screen and (max-width: 480px) {
+    .filter_form {
+        width: 100%;
+    }
+
+    .periodo {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .container_submit {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
