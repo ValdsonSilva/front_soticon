@@ -595,13 +595,13 @@ async function executarFinalizarRota() {
 }
 
 botao_finalizar_rota.addEventListener("click", () => {
-    if (confirm("Tem certeza?")) {
-        if (alunosSemTicket === null) {
-            criarModal();
-        } else {
-            executarFinalizarRota()
-        }
+
+    if (alunosSemTicket === null) {
+        criarModal();
+    } else {
+        executarFinalizarRota()
     }
+    
 });
 
 function avancarTela(id) {
